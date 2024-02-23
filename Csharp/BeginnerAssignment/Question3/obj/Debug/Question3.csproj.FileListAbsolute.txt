@@ -1,0 +1,7 @@
+E:\DeltaX\Csharp\BeginnerAssignment\Question3\bin\Debug\Question3.exe.config
+E:\DeltaX\Csharp\BeginnerAssignment\Question3\bin\Debug\Question3.exe
+E:\DeltaX\Csharp\BeginnerAssignment\Question3\bin\Debug\Question3.pdb
+E:\DeltaX\Csharp\BeginnerAssignment\Question3\obj\Debug\Question3.csproj.AssemblyReference.cache
+E:\DeltaX\Csharp\BeginnerAssignment\Question3\obj\Debug\Question3.csproj.CoreCompileInputs.cache
+E:\DeltaX\Csharp\BeginnerAssignment\Question3\obj\Debug\Question3.exe
+E:\DeltaX\Csharp\BeginnerAssignment\Question3\obj\Debug\Question3.pdb
