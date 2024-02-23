@@ -1,0 +1,113 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "IMDB.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/IMDB.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IMDB.Domain.dll": {}
+        }
+      },
+      "IMDB.Repository/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "IMDB.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/IMDB.Repository.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IMDB.Repository.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "IMDB.Domain/1.0.0": {
+      "type": "project",
+      "path": "../IMDB.Domain/IMDB.Domain.csproj",
+      "msbuildProject": "../IMDB.Domain/IMDB.Domain.csproj"
+    },
+    "IMDB.Repository/1.0.0": {
+      "type": "project",
+      "path": "../IMDB.Repository/IMDB.Repository.csproj",
+      "msbuildProject": "../IMDB.Repository/IMDB.Repository.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "IMDB.Domain >= 1.0.0",
+      "IMDB.Repository >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Anuj\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "E:\\DeltaX\\Csharp\\AdvancedAssignment\\AdvancedAssignment\\IMDB\\IMDB\\IMDB.csproj",
+      "projectName": "IMDB",
+      "projectPath": "E:\\DeltaX\\Csharp\\AdvancedAssignment\\AdvancedAssignment\\IMDB\\IMDB\\IMDB.csproj",
+      "packagesPath": "C:\\Users\\Anuj\\.nuget\\packages\\",
+      "outputPath": "E:\\DeltaX\\Csharp\\AdvancedAssignment\\AdvancedAssignment\\IMDB\\IMDB\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Anuj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "E:\\DeltaX\\Csharp\\AdvancedAssignment\\AdvancedAssignment\\IMDB\\IMDB.Domain\\IMDB.Domain.csproj": {
+              "projectPath": "E:\\DeltaX\\Csharp\\AdvancedAssignment\\AdvancedAssignment\\IMDB\\IMDB.Domain\\IMDB.Domain.csproj"
+            },
+            "E:\\DeltaX\\Csharp\\AdvancedAssignment\\AdvancedAssignment\\IMDB\\IMDB.Repository\\IMDB.Repository.csproj": {
+              "projectPath": "E:\\DeltaX\\Csharp\\AdvancedAssignment\\AdvancedAssignment\\IMDB\\IMDB.Repository\\IMDB.Repository.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
