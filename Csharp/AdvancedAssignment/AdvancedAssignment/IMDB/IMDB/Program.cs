@@ -19,19 +19,22 @@ namespace IMDB
             List<string> allactors = new List<string>{"ksjd","hsdj" };
             List<string> allproducers = new List<string> { "ksaedeaefsjd", "hsdfaefaefa3ej" };
             List<string> actors = new List<string>();
+
+
+            //SAMPLE MOVIES
             List<string> Actors1 = new List<string>() { "Leonardo DiCaprio", "Joseph Gordon-Levitt" };
             services.AddMovie("Inception", "Dom Cobb, a skilled thief, enters the subconscious of targets to steal their secrets, but his latest job involves planting an idea instead.", "2010", Actors1, "Christopher Nolan");
 
             List<string> Actors2 = new List<string>() { "Morgan Freeman", "Tim Robbins" };
-            services.AddMovie("The Shawshank Redemption", "Andy Dufresne, a banker wrongly convicted of murder, forms a bond with fellow inmate Red while finding solace and redemption in Shawshank Prison.", "1994", Actors2, "Frank Darabont");
+            services.AddMovie("Avatar", "Andy Dufresne, a banker wrongly convicted of murder, forms a bond with fellow inmate Red while finding solace and redemption in Shawshank Prison.", "1994", Actors2, "Frank Darabont");
 
             List<string> Actors3 = new List<string>() { "John Travolta", "Uma Thurman" };
-            services.AddMovie("Pulp Fiction ", "A series of interconnected stories involving two hitmen, a boxer, a gangster, and his wife intertwine in the criminal underworld of Los Angeles.", "1994", Actors3, " Lawrence Bender");
+            services.AddMovie("Avatar 2 ", "A series of interconnected stories involving two hitmen, a boxer, a gangster, and his wife intertwine in the criminal underworld of Los Angeles.", "1994", Actors3, " Lawrence Bender");
            
            
             
 
-           /* while(true)
+            while(true)
             {
                 Console.WriteLine("----------------------------------------");
 
@@ -101,9 +104,9 @@ namespace IMDB
                             Console.WriteLine(" ("+services.ListMovie()[i].YearOfRelease+")");
                             Console.WriteLine("   PLOT: "+services.ListMovie()[i].Plot);
                             Console.WriteLine("   HERE IS THE LIST OF ACTORS: ");
-                            for (int j = 0; j<services.ListMovie()[i]._actors.Count; j++)
+                            for (int j = 0; j<services.ListMovie()[i].Actors.Count; j++)
                             {
-                                Console.WriteLine("   "+(j+1)+". "+services.ListMovie()[i]._actors[j]+" ");
+                                Console.WriteLine("   "+(j+1)+". "+services.ListMovie()[i].Actors[j]+" ");
                             }
 
                             Console.WriteLine("   PRODUCER: "+ services.ListMovie()[i].Producer);
@@ -117,18 +120,32 @@ namespace IMDB
 
                 }
             }
-           */
+        
 
             //LINQ QUERIES
 
-            var listMoviesAfter2010 = from mov in services.ListMovie() where mov.YearOfRelease>1990 select mov;
+            var listMoviesAfter2010 = from mov in services.ListMovie() where Convert.ToInt32(mov.YearOfRelease)>Convert.ToInt32("2010") select mov;
             var listNames = from mov in services.ListMovie() where mov.Producer=="James Cameron" select mov.Title;
             var nameandyear = from mov in services.ListMovie()
                               select new
                               {
                                   Name = mov.Title,
                                   Year = mov.YearOfRelease
-                              }; ;
+                              };
+
+            Console.WriteLine(nameandyear.ToList()[0].Name);
+
+            var firstAvatarMovie = services.ListMovie()
+                .Where(mov => mov.Title.Contains("Avatar"))
+                .Select(mov => mov.Title)
+                .FirstOrDefault();
+            Console.WriteLine(firstAvatarMovie);
+
+            var listOfMoviesWillSmith = services.ListMovie()
+                .Where(mov => mov.Actors.Contains("Leonardo DiCaprio"))
+                .Select(mov=>mov).ToList();
+
+            Console.WriteLine(listOfMoviesWillSmith[0].Title);
 
 
 

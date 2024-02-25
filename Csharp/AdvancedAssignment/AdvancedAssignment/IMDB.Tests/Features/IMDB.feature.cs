@@ -120,27 +120,37 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the plot is \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Actors"});
+                table1.AddRow(new string[] {
                             "c,d"});
 #line 9
  testRunner.And("the actors are", ((string)(null)), table1, "And ");
 #line hidden
-#line 11
+#line 12
  testRunner.And("the producer is \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
+#line 13
  testRunner.When("I add the movie in IMDB app", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "Title",
                             "YearofRelease",
                             "Plot",
+                            "Actors",
                             "Producer"});
+                table2.AddRow(new string[] {
+                            "d",
+                            "2",
+                            "c",
+                            "w,e",
+                            "skld"});
                 table2.AddRow(new string[] {
                             "a",
                             "1",
                             "b",
+                            "c,d",
                             "abcd"});
-#line 13
+#line 14
  testRunner.Then("IMDB app would look like this", ((string)(null)), table2, "Then ");
 #line hidden
             }
@@ -157,7 +167,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "addMovie"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Don\'t add empty movie name", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 19
+#line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -177,40 +187,44 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 20
+#line 23
  testRunner.Given("I have a movie with title \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 21
+#line 24
  testRunner.And("the year of release is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 25
  testRunner.And("the plot is \"b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Actors"});
+                table3.AddRow(new string[] {
                             "c,d"});
-#line 23
+#line 26
  testRunner.And("the actors are", ((string)(null)), table3, "And ");
 #line hidden
-#line 25
+#line 29
  testRunner.And("the producer is \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 30
  testRunner.When("I add the movie in IMDB app", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 31
  testRunner.Then("Then I should have an error \"Invalid arguments\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Title",
                             "YearofRelease",
                             "Plot",
+                            "Actors",
                             "Producer"});
                 table4.AddRow(new string[] {
-                            "",
-                            "",
-                            "",
-                            ""});
-#line 28
+                            "d",
+                            "2",
+                            "c",
+                            "w,e",
+                            "skld"});
+#line 32
  testRunner.And("IMDB app would look like this", ((string)(null)), table4, "And ");
 #line hidden
             }
@@ -227,7 +241,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "listMovie"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("List all movies in app", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 33
+#line 38
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -247,23 +261,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 34
+#line 39
  testRunner.Given("I have collection of movies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 35
+#line 40
  testRunner.When("I fetch my movies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                             "Title",
                             "YearofRelease",
                             "Plot",
+                            "Actors",
                             "Producer"});
                 table5.AddRow(new string[] {
-                            "a",
-                            "1",
-                            "b",
-                            "abcd"});
-#line 36
+                            "d",
+                            "2",
+                            "c",
+                            "w,e",
+                            "skld"});
+#line 41
  testRunner.Then("I should have the following movies", ((string)(null)), table5, "Then ");
 #line hidden
             }

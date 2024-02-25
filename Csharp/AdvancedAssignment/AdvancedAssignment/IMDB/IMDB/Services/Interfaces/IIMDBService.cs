@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IMDB.Services
 {
-    public interface IIMDBService
+    public interface IIMDBService  //INTERFACE FOR IMDBService Class
     {
        
 

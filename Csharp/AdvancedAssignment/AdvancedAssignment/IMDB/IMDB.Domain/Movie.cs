@@ -6,14 +6,14 @@ namespace IMDB.Domain
     public class Movie
     {
         public string Title { get; set; }
-        public int YearOfRelease {  get; set; }
+        public string YearOfRelease {  get; set; }
         public string Plot{ get; set; }
-       public List<string> _actors=new List<String>();
+       public List<string> Actors { get; set; }
         public string Producer {  get; set; }
 
-        public Movie(string title,string plot,int yearofrelease,List<string> actors,string producer)
+        public Movie(string title,string plot,string yearofrelease,List<string> actors,string producer)
         {
-            _actors.AddRange(actors);
+            Actors=new List<string>(actors);
             YearOfRelease = yearofrelease;
             Title=title;
             Plot=plot;

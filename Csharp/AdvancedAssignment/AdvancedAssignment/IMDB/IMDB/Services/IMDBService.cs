@@ -29,7 +29,7 @@ namespace IMDB.Services
                 throw new ArgumentException("Invalid arguments");
             }
 
-            Movie movie = new Movie(title,plot,Convert.ToInt32(yearofrelease),actors,producer);
+            Movie movie = new Movie(title,plot,yearofrelease,actors,producer);
             _imdbrepository.Add(movie);
         }
 
