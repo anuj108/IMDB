@@ -1,7 +1,0 @@
-E:\DeltaX\Csharp\BeginnerAssignment\Question2\bin\Debug\Question2.exe.config
-E:\DeltaX\Csharp\BeginnerAssignment\Question2\bin\Debug\Question2.exe
-E:\DeltaX\Csharp\BeginnerAssignment\Question2\bin\Debug\Question2.pdb
-E:\DeltaX\Csharp\BeginnerAssignment\Question2\obj\Debug\Question2.csproj.AssemblyReference.cache
-E:\DeltaX\Csharp\BeginnerAssignment\Question2\obj\Debug\Question2.csproj.CoreCompileInputs.cache
-E:\DeltaX\Csharp\BeginnerAssignment\Question2\obj\Debug\Question2.exe
-E:\DeltaX\Csharp\BeginnerAssignment\Question2\obj\Debug\Question2.pdb
