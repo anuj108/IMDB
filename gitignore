@@ -4,10 +4,10 @@ node_modules/
 dist/
 
 #Project Files - Manually Ignored
-#*.csproj
-#*.feature.cs
-#*.Test.csproj
-#*.sln
+*.csproj
+*.feature.cs
+*.Test.csproj
+*.sln
 
 # Compiled Java class files
 *.class
