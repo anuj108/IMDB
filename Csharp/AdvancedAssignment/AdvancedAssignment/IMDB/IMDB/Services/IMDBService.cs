@@ -12,6 +12,15 @@ using System.Collections;
 
 namespace IMDB.Services
 {
+    public class InvalidDateOfBirthException : Exception
+    {
+        public InvalidDateOfBirthException() { }
+
+        public InvalidDateOfBirthException(string message) : base(message) { }
+
+        
+    }
+
     public class IMDBService:IIMDBService
     {
         private readonly IIMDBRepository _imdbrepository;
@@ -36,6 +45,26 @@ namespace IMDB.Services
         public List<Movie> ListMovie()
         {
             return _imdbrepository.List();
+        }
+
+        public void AddActor(string name,DateTime dateofbirth)
+        {
+            if (dateofbirth > DateTime.Now)
+            {
+                throw new InvalidDateOfBirthException("Date of birth cannot be in the future.");
+            }
+            if (dateofbirth == DateTime.MinValue || dateofbirth == DateTime.MaxValue)
+            {
+                throw new InvalidDateOfBirthException("Invalid date of birth.");
+            }
+
+            Actor actor = new Actor(name, dateofbirth);
+            _imdbrepository.AddActor(actor);
+        }
+
+        public List<Actor> ListActor()
+        {
+            return _imdbrepository.ListActors();
         }
     }
 }

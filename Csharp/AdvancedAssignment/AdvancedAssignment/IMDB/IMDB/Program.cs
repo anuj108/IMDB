@@ -16,7 +16,7 @@ namespace IMDB
             IMDBService services = new IMDBService();
             string title, plot, producer;
             string yearofrelease;
-            List<string> allactors = new List<string>{"ksjd","hsdj" };
+          
             List<string> allproducers = new List<string> { "ksaedeaefsjd", "hsdfaefaefa3ej" };
             List<string> actors = new List<string>();
 
@@ -39,7 +39,7 @@ namespace IMDB
                 Console.WriteLine("----------------------------------------");
 
                 Console.WriteLine("WELCOME TO IMDB APP ... PLEASE SELECT YOUR OPTIONS ");
-                Console.WriteLine("1. ADD MOVIE \n2. LIST MOVIES");
+                Console.WriteLine("1. ADD MOVIE \n2. LIST MOVIES \n3. ADD ACTOR");
 
                 Console.WriteLine("----------------------------------------");
                 int choice = Convert.ToInt32(Console.ReadLine());
@@ -60,9 +60,10 @@ namespace IMDB
                         plot=Console.ReadLine();
                         Console.WriteLine("SELECT THE ACTORS FROM THE LIST : ");
                         int k = 1;
-                        foreach (string actor in allactors)
+                        List<Actor> allactors = services.ListActor();
+                        foreach (Actor actor in allactors)
                         {
-                            Console.Write(k+". "+actor+" ");
+                            Console.Write(k+". "+actor.Name+" ");
                             k++;
                         }
                         Console.WriteLine();
@@ -115,6 +116,34 @@ namespace IMDB
 
                         }
                         
+                        break;
+                    case 3:
+                        Console.WriteLine("ENTER ACTOR NAME: ");
+                        string Aname=Console.ReadLine();
+                        Console.WriteLine("Enter your date of birth (e.g., yyyy-MM-dd):");
+                        string input = Console.ReadLine();
+
+                        try
+                        {
+                            DateTime dateOfBirth = DateTime.Parse(input); // or DateTime.ParseExact(input, "yyyy-MM-dd", null);
+
+                            // Display the date of birth
+                            
+                            services.AddActor(Aname, dateOfBirth);
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("Invalid date format. Please enter a valid date.");
+                        }
+                        
+                        break;
+                     case 4:
+                        for(int i=0;i<services.ListActor().Count;i++)
+                        {
+                            Console.WriteLine(services.ListActor()[i].Name);
+                            Console.WriteLine(services.ListActor()[i].DOB);
+
+                        }
                         break;
                     default: Console.WriteLine("PLEASE CHOOSE A CORRECT OPTION"); break;
 

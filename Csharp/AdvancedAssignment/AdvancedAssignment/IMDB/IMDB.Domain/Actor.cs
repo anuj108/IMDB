@@ -9,9 +9,9 @@ namespace IMDB.Domain
     public class Actor
     {
         public string Name { get; set; }
-        public string DOB { get; set; }
+        public DateTime DOB { get; set; }
 
-        Actor(string name,string dob)
+        public Actor(string name,DateTime dob)
         {
             Name=name;
             DOB=dob;

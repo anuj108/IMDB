@@ -13,9 +13,13 @@ namespace IMDB.Repository
 
 
         public void Add(Movie movie);
-
+       
 
         public List<Movie> List();
+
+        public void AddActor(Actor actor);
+
+        public List <Actor> ListActors();
         
     }
 }
