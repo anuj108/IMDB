@@ -1,7 +1,9 @@
-
+/.vs
 # Node artifact files
 node_modules/
 dist/
+bin/
+obj/
 
 #Project Files - Manually Ignored
 *.csproj
