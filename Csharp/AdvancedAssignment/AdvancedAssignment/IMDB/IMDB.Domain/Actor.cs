@@ -16,5 +16,6 @@ namespace IMDB.Domain
             Name=name;
             DOB=dob;
         }
+        public Actor() { }
     }
 }

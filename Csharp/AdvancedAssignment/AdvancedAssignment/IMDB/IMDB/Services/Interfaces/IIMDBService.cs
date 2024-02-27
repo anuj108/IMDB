@@ -16,6 +16,14 @@ namespace IMDB.Services
 
 
         public List<Movie> ListMovie();
+
+        public void AddActor(string name, DateTime dob);
+        public List<Actor> ListActor();
+
+        public void AddProducer(string name,DateTime dob);
+
+        public List<Producer> ListProducer();
        
+        public bool DeleteMovie(string title);
     }
 }

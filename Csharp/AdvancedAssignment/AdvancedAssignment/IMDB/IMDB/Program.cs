@@ -14,13 +14,10 @@ namespace IMDB
         static void Main(string[] args)
         {
             IMDBService services = new IMDBService();
-            string title, plot, producer;
+            string title, plot, producer="";
             string yearofrelease;
-          
-            List<string> allproducers = new List<string> { "ksaedeaefsjd", "hsdfaefaefa3ej" };
-            List<string> actors = new List<string>();
-
-
+            int result;
+           
             //SAMPLE MOVIES
             List<string> Actors1 = new List<string>() { "Leonardo DiCaprio", "Joseph Gordon-Levitt" };
             services.AddMovie("Inception", "Dom Cobb, a skilled thief, enters the subconscious of targets to steal their secrets, but his latest job involves planting an idea instead.", "2010", Actors1, "Christopher Nolan");
@@ -30,37 +27,54 @@ namespace IMDB
 
             List<string> Actors3 = new List<string>() { "John Travolta", "Uma Thurman" };
             services.AddMovie("Avatar 2 ", "A series of interconnected stories involving two hitmen, a boxer, a gangster, and his wife intertwine in the criminal underworld of Los Angeles.", "1994", Actors3, " Lawrence Bender");
-           
-           
-            
 
-            while(true)
+
+            //SAMPLE ACTORS
+            List<Actor> allactors = services.ListActor();
+            allactors.Add(new Actor("Leonardo DiCaprio", DateTime.Parse("1990-02-02")));
+            allactors.Add(new Actor("Leonardo DiCapri", DateTime.Parse("1990-03-02")));
+            allactors.Add(new Actor("Leonardo DiCapr", DateTime.Parse("1990-12-02")));
+
+            List<Producer> allproducers = services.ListProducer();
+
+            //SAMPLE PRODUCERS
+            allproducers.Add(new Producer("Lawrence Bender", DateTime.Parse("1990-02-02")));
+            allproducers.Add(new Producer("Lawrence Bender", DateTime.Parse("1990-02-02")));
+            allproducers.Add(new Producer("Lawrence Bender", DateTime.Parse("1990-02-02")));
+
+
+
+            while (true)
             {
                 Console.WriteLine("----------------------------------------");
 
                 Console.WriteLine("WELCOME TO IMDB APP ... PLEASE SELECT YOUR OPTIONS ");
-                Console.WriteLine("1. ADD MOVIE \n2. LIST MOVIES \n3. ADD ACTOR");
+                Console.WriteLine("1. ADD MOVIE \n2. LIST MOVIES \n3. ADD ACTOR \n4. ADD PRODUCER \n5. DELETE MOVIE");
 
                 Console.WriteLine("----------------------------------------");
-                int choice = Convert.ToInt32(Console.ReadLine());
 
-                switch (choice)
+                if (!int.TryParse(Console.ReadLine(), out result))
+                {
+                    Console.WriteLine("INVALID FORMAT");
+                    continue;
+                }
+
+                switch (result)
                 {
                     case 1:
                         Console.WriteLine("ENTER MOVIE DETAILS: ");
-                        Console.Write("NAME : ");
+                        Console.Write("NAME : ");                       
                         title=Console.ReadLine();
+                     
                         Console.Write("YEAR OF RELEASE : ");
-                        
-                            yearofrelease=Console.ReadLine();
-                        
-                        
-                        
+                        yearofrelease=Console.ReadLine();
+                       
                         Console.Write("PLOT : ");
                         plot=Console.ReadLine();
+
                         Console.WriteLine("SELECT THE ACTORS FROM THE LIST : ");
                         int k = 1;
-                        List<Actor> allactors = services.ListActor();
+                       
                         foreach (Actor actor in allactors)
                         {
                             Console.Write(k+". "+actor.Name+" ");
@@ -68,21 +82,78 @@ namespace IMDB
                         }
                         Console.WriteLine();
                         string choiceofactor = Console.ReadLine();
-                        string[] choiceindex = choiceofactor.Split(',');
-                        for (int j = 0; j<choiceindex.Length; j++)
+                        string[] choiceindex;
+                        var flag=false;
+                        List<string> actors = new List<string>();
+                        if (!string.IsNullOrEmpty(choiceofactor))
                         {
-                            actors.Add(allactors[Convert.ToInt32(choiceindex[j])-1]);
+                            choiceindex = choiceofactor.Split(',');
+                            for (int j = 0; j<choiceindex.Length; j++)
+                            {
+                                if (int.TryParse(choiceindex[j], out result))
+                                {
+                                    if (result-1<allactors.Count()&&result>=0)
+                                        actors.Add(allactors[result-1].Name);
+                                    else
+                                    {
+                                        Console.WriteLine("INVALID INDEX");
+                                        flag=true;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("WRONG FORMAT");
+                                }
+
+                               
+                            }
+                            if(flag)
+                            {
+                                continue;
+                            }
                         }
+                        
+                       
                         Console.WriteLine("SELECT THE PRODUCERS FROM THE LIST : ");
                         k = 1;
-                        foreach (string x in allproducers)
+                        foreach (Producer x in allproducers)
                         {
-                            Console.Write(k+". "+x+" ");
+                            Console.Write(k+". "+x.Name+" ");
                             k++;
                         }
                         Console.WriteLine();
                         string choiceofproducer = Console.ReadLine();
-                        producer= allproducers[Convert.ToInt32(choiceofproducer)-1];
+                        if(!string.IsNullOrEmpty(choiceofproducer))
+                        {
+                            try
+                            {
+                                if(int.TryParse(choiceofproducer, out result))
+                                {
+                                    if (result-1<allproducers.Count()&&result>=0)
+                                    {
+                                        producer= allproducers[result-1].Name;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("INVALID INDEX");
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("WRONG FORMAT!!");
+                                }
+                                
+                            }
+                            catch(Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                                continue;
+                            }
+                        }
+                        
+
                         try
                         {
                             services.AddMovie(title, plot, yearofrelease, actors, producer);
@@ -91,7 +162,7 @@ namespace IMDB
                         }
                         catch(Exception ex)
                         {
-                            Console.WriteLine("EXCEPTION ENCOUNTERED");
+                            Console.WriteLine(ex.Message);
                         }
                         
                         
@@ -120,29 +191,67 @@ namespace IMDB
                     case 3:
                         Console.WriteLine("ENTER ACTOR NAME: ");
                         string Aname=Console.ReadLine();
-                        Console.WriteLine("Enter your date of birth (e.g., yyyy-MM-dd):");
-                        string input = Console.ReadLine();
+                        Console.WriteLine("ENTER ACTOR's DOB (e.g., yyyy-MM-dd):");
+                        DateTime dateOfBirth = DateTime.Parse(Console.ReadLine());
 
                         try
                         {
-                            DateTime dateOfBirth = DateTime.Parse(input); // or DateTime.ParseExact(input, "yyyy-MM-dd", null);
-
-                            // Display the date of birth
-                            
+    
                             services.AddActor(Aname, dateOfBirth);
                         }
-                        catch (FormatException)
+                        catch (Exception ex)
                         {
-                            Console.WriteLine("Invalid date format. Please enter a valid date.");
+                            Console.WriteLine(ex.Message);
                         }
-                        
+
                         break;
                      case 4:
-                        for(int i=0;i<services.ListActor().Count;i++)
-                        {
-                            Console.WriteLine(services.ListActor()[i].Name);
-                            Console.WriteLine(services.ListActor()[i].DOB);
+                        Console.WriteLine("ENTER PRODUCER NAME: ");
+                        string Pname = Console.ReadLine();
+                        Console.WriteLine("ENTER PRODUCER's DOB (e.g., yyyy-MM-dd):");
+                        dateOfBirth = DateTime.Parse(Console.ReadLine());
 
+                        try
+                        {
+                            services.AddProducer(Pname, dateOfBirth);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+
+                        break;
+
+                        case 5:
+                        Console.WriteLine("WHICH MOVIE DO YOU WANT TO DELETE\n");
+                        int p = 1;
+                        foreach (Movie movie in services.ListMovie())
+                        {
+                            Console.WriteLine(p+". "+movie.Title);
+                            p++;
+                        }
+                        string res=Console.ReadLine();
+                        if(int.TryParse(res, out result))
+                        {
+                            if (result-1<services.ListMovie().Count()&&result>=0)
+                            {
+                                if (services.DeleteMovie(services.ListMovie()[result-1].Title))
+                                {
+                                    Console.WriteLine("DELETED SUCCESSFULLY");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("NOT DELETED");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("INVALID INDEX");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("WRONG FORMAT!!");
                         }
                         break;
                     default: Console.WriteLine("PLEASE CHOOSE A CORRECT OPTION"); break;

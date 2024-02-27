@@ -9,12 +9,14 @@ namespace IMDB.Domain
     public class Producer
     {
         public string Name { get; set; }
-        public string DOB { get; set; }
+        public DateTime DOB { get; set; }
 
-        Producer(string name, string dob)
+        public Producer(string name, DateTime dob)
         {
             Name=name;
             DOB=dob;
         }
+
+        public Producer() { }
     }
 }

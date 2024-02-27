@@ -5,10 +5,12 @@ namespace IMDB.Repository
     {
         private readonly List<Movie> _movie;
         private readonly List<Actor> _actor;
+        private readonly List<Producer> _producer;
         public IMDBRepository()
         {
             _movie = new List<Movie>();
             _actor=new List<Actor>();
+            _producer = new List<Producer>();
         }
 
         public void Add(Movie movie)
@@ -29,6 +31,29 @@ namespace IMDB.Repository
         public List<Actor> ListActors()
         {
             return _actor;
+        }
+
+        public void AddProducer(Producer producer)
+        {
+            _producer.Add(producer);
+        }
+
+        public List<Producer> ListProducers()
+        {
+            return _producer;
+        }
+
+        public bool DeleteMovie(String Title)
+        {
+            var res=_movie.Remove(_movie.SingleOrDefault(r => r.Title==Title));
+            if(res!=null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

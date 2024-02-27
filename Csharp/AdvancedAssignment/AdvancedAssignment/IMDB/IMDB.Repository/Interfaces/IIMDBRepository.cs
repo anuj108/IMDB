@@ -20,6 +20,11 @@ namespace IMDB.Repository
         public void AddActor(Actor actor);
 
         public List <Actor> ListActors();
-        
+
+
+        public void AddProducer(Producer producer);
+
+        public List<Producer> ListProducers();
+        public bool DeleteMovie(String Title);
     }
 }
