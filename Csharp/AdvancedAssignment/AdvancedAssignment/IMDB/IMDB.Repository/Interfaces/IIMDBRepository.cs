@@ -9,9 +9,6 @@ namespace IMDB.Repository
 {
     public interface IIMDBRepository
     {
-
-
-
         public void Add(Movie movie);
        
 

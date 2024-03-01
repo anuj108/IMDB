@@ -12,7 +12,7 @@ namespace IMDB.Services
     {
        
 
-        public void AddMovie(string title, string plot, string yearofrelease, List<string> actors, string producer);
+        public void AddMovie(string title,string yearOfRelease, string plot, string actors, string producer);
 
 
         public List<Movie> ListMovie();

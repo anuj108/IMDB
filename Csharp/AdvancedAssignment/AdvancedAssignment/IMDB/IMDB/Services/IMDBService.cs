@@ -49,6 +49,11 @@ namespace IMDB.Services
         public InvalidPlotException(string message) : base(message) { }
     }
 
+    public class InvalidDeleteException : Exception
+    {
+        public InvalidDeleteException(string message) : base(message) { }
+    }
+
     public class InvalidNameException : Exception
     {
         public InvalidNameException(string message) : base(message) { }
@@ -62,30 +67,72 @@ namespace IMDB.Services
             _imdbrepository = new IMDBRepository();
         }
 
-        public void AddMovie(string title,string plot, string yearOfRelease, List<string> actors, string producer)
+        public void AddMovie(string title, string yearOfRelease, string plot,string actors, string producer)
         {
-            
+
             //validation
 
-            
+            int result;
 
             if(string.IsNullOrEmpty(title))
             {
-                throw new InvalidTitleException("TITLE CANNOT BE EMPTY!!!");
+                throw new InvalidTitleException("TITLE CANNOT BE EMPTY!!! PLEASE TRY AGAIN  --------------------------------------");
             }
            
-            if (Convert.ToInt32(yearOfRelease) < 1800 || Convert.ToInt32(yearOfRelease) > DateTime.Now.Year||string.IsNullOrEmpty(yearOfRelease))
-                throw new InvalidYearOfReleaseException("INVALID YEAR OF RELEASE");
 
-            if (actors == null || actors.Count == 0)
-                throw new InvalidActorsListException("LIST OF ACTORS CANNOT BE EMPTY");
+            if (string.IsNullOrEmpty(yearOfRelease)||Convert.ToInt32(yearOfRelease) < 1800 || Convert.ToInt32(yearOfRelease) > DateTime.Now.Year||string.IsNullOrEmpty(yearOfRelease))
+                throw new InvalidYearOfReleaseException("INVALID YEAR OF RELEASE  PLEASE TRY AGAIN \n --------------------------------------");
+
+            if (string.IsNullOrEmpty(actors))
+                throw new InvalidActorsListException("LIST OF ACTORS CANNOT BE EMPTY  PLEASE TRY AGAIN \n --------------------------------------");
 
             if (string.IsNullOrEmpty(producer))
-                throw new InvalidProducerException("PRODUCER CAN NOT BE EMPTY");
+                throw new InvalidProducerException("PRODUCER CAN NOT BE EMPTY  PLEASE TRY AGAIN \n --------------------------------------");
 
             if (string.IsNullOrEmpty(plot))
-                throw new InvalidPlotException("PLOT CANNOT BE EMPTY");
-            Movie movie = new Movie(title,plot,yearOfRelease,actors,producer);
+                throw new InvalidPlotException("PLOT CANNOT BE EMPTY  PLEASE TRY AGAIN \n --------------------------------------");
+
+           
+            var flag = false;
+            string[] choiceindex = actors.Split(',');
+              
+                for (var j = 0; j<choiceindex.Length; j++)
+                {
+                    if (int.TryParse(choiceindex[j], out result))
+                    {
+                        if (result-1>=ListActor().Count()||result<0)
+                        {
+                            throw new InvalidActorsListException("INVALID INDEX!!  PLEASE TRY AGAIN \n --------------------------------------");
+                            
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidActorsListException("WRONG FORMAT!!  PLEASE TRY AGAIN \n --------------------------------------");
+                    }
+
+
+                }
+
+
+            if (int.TryParse(producer, out  result))
+            {
+                if (result-1>=ListProducer().Count()||result<0)
+                {
+                    throw new InvalidProducerException("INVALID INDEX!!  PLEASE TRY AGAIN \n --------------------------------------");
+                }
+
+            }
+            else
+            {
+                throw new InvalidProducerException("WRONG FORMAT!!  PLEASE TRY AGAIN \n --------------------------------------");
+            }
+               
+           
+
+            List<Actor> selectedactors = choiceindex.Select(index => ListActor()[Convert.ToInt32(index)-1]).ToList();
+            Producer selectedproducer = ListProducer()[Convert.ToInt32(producer)-1];
+            Movie movie = new Movie(title,yearOfRelease, plot, selectedactors,selectedproducer);
             _imdbrepository.Add(movie);
         }
 
@@ -143,11 +190,26 @@ namespace IMDB.Services
             return _imdbrepository.ListProducers();
         }
 
-        public bool DeleteMovie(string Title)
+        public bool DeleteMovie(string index)
         {
             //validation
+            if (string.IsNullOrEmpty(index))
+            {
+                throw new InvalidDeleteException("INDEX CANNOT BE EMPTY!!! PLEASE TRY AGAIN \n --------------------------------------");
+            }
+            if (int.TryParse(index, out int result))
+            {
+                if (result-1>=ListMovie().Count()||result<0)
+                {
+                    throw new InvalidDeleteException("INVALID INDEX!!  PLEASE TRY AGAIN \n --------------------------------------");
+                }
 
-            return _imdbrepository.DeleteMovie(Title);
+            }
+            else
+            {
+                throw new InvalidDeleteException("WRONG FORMAT!!  PLEASE TRY AGAIN \n --------------------------------------");
+            }
+            return _imdbrepository.DeleteMovie(ListMovie()[Convert.ToInt32(index)-1].Title);
         }
     }
 }

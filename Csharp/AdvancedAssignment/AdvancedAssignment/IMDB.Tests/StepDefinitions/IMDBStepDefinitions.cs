@@ -21,9 +21,10 @@ namespace IMDB.Tests.StepDefinitions
 
 
         private string _title,_plot,_producer,_actorName,_producerName;
+        private string _movietodelete;
         private Exception _exception;
-        private string _yearofrelease;
-        List<string> _actors = new List<string>();
+        private string _yearofrelease,_actors;
+        
         private IIMDBService _imdbService;
         private List<Movie> _movies;
         DateTime dateOfBirth;
@@ -34,35 +35,35 @@ namespace IMDB.Tests.StepDefinitions
                 _specFlowOutputHelper = outputHelper; 
         }
         [Given(@"I have a movie with title ""([^""]*)""")]
-        public void GivenIHaveAMovieWithTitle(string a)
+        public void GivenIHaveAMovieWithTitle(string title)
         {
-            _title=a;
+            _title=title;
         }
 
         [Given(@"the year of release is ""([^""]*)""")]
-        public void GivenTheYearOfReleaseIs(string p0)
+        public void GivenTheYearOfReleaseIs(string yor)
         {
-            _yearofrelease=p0;
+            _yearofrelease=yor;
         }
 
 
         [Given(@"the plot is ""([^""]*)""")]
-        public void GivenThePlotIs(string b)
+        public void GivenThePlotIs(string plot)
         {
-            _plot=b;
+            _plot=plot;
         }
 
-        [Given(@"the actors are")]
-        public void GivenTheActorsAre(Table table)
+        [Given(@"the actors are ""([^""]*)""")]
+        public void GivenTheActorsAre(string actors)
         {
-            _actors = new List<string>(table.Rows[0]["Actors"].Split(','));
-            _specFlowOutputHelper.WriteLine("pehla actor "+_actors[0]);
+            _actors=actors;
         }
+
 
         [Given(@"the producer is ""([^""]*)""")]
-        public void GivenTheProducerIs(string abcd)
+        public void GivenTheProducerIs(string producer)
         {
-            _producer=abcd;
+            _producer=producer;
         }
 
         [When(@"I add the movie in IMDB app")]
@@ -70,7 +71,7 @@ namespace IMDB.Tests.StepDefinitions
         {
             try
             {
-                _imdbService.AddMovie(_title, _plot, _yearofrelease, _actors, _producer);
+                _imdbService.AddMovie(_title, _yearofrelease, _plot, _actors, _producer);
                 _specFlowOutputHelper.WriteLine("ADDED SUCCESSFULLY");
             }
             catch (Exception ex)
@@ -89,16 +90,18 @@ namespace IMDB.Tests.StepDefinitions
             {
                 Title = row["Title"],
                 YearOfRelease = row["YearofRelease"],
-                Producer = row["Producer"],
-                Actors = row["Actors"].Split(',').Select(a => a.Trim()).ToList(),
+                Producer = _imdbService.ListProducer()[Convert.ToInt32(row["Producer"])-1],
+                Actors = row["Actors"].Split(',').Select(index => _imdbService.ListActor()[Convert.ToInt32(index)-1]).ToList(),
                 Plot = row["Plot"]
             }).ToList();
+
+
 
             for (int i = 0; i < expectedMovies.Count; i++)
             {
                 if (expectedMovies.Count != movies.Count)
                 {
-                    throw new Exception("NOT MATCHED");
+                    throw new Exception("NOT MATCHE");
                 }
                 if (expectedMovies[i].Title != movies[i].Title || expectedMovies[i].YearOfRelease != movies[i].YearOfRelease||expectedMovies[i].Producer!=movies[i].Producer||expectedMovies[i].Plot!=movies[i].Plot)
                 {
@@ -106,9 +109,12 @@ namespace IMDB.Tests.StepDefinitions
                 }
                 if (!expectedMovies[i].Actors.SequenceEqual(movies[i].Actors))
                 {
-                    throw new Exception("NOT MATCHED");
+                    throw new Exception("NOT MATCH");
                 }
             }
+            
+
+            //Assert.Equal(movies, expectedMovies);
 
         }
 
@@ -132,16 +138,17 @@ namespace IMDB.Tests.StepDefinitions
         }
 
         [Then(@"I should have the following movies")]
-        public void ThenIShouldHaveTheFollowingMovies(Table table)
+        public void ThenIShouldHaveTheFollowingMovies(Table expectedTable)
         {
 
             // table.CompareToSet(_movies);
-            var expectedMovies = table.Rows.Select(row => new Movie
+
+            var expectedMovies = expectedTable.Rows.Select(row => new Movie
             {
                 Title = row["Title"],
                 YearOfRelease = row["YearofRelease"],
-                Producer = row["Producer"],
-                Actors = row["Actors"].Split(',').Select(a => a.Trim()).ToList(),
+                Producer = _imdbService.ListProducer()[Convert.ToInt32(row["Producer"])-1],
+                Actors = row["Actors"].Split(',').Select(index => _imdbService.ListActor()[Convert.ToInt32(index)-1]).ToList(),
                 Plot = row["Plot"]
             }).ToList();
 
@@ -162,6 +169,7 @@ namespace IMDB.Tests.StepDefinitions
 
 
             }
+            
         }
 
         [Given(@"I have Actor Name ""([^""]*)""")]
@@ -258,27 +266,27 @@ namespace IMDB.Tests.StepDefinitions
         [Given(@"I have movie name ""([^""]*)""")]
         public void GivenIHaveMovieName(string d)
         {
-            _title=d;
+            _movietodelete=d;
 
         }
 
         [When(@"I delete movie in IMDB app")]
         public void WhenIDeleteMovieInIMDBApp()
         {
-            _imdbService.DeleteMovie(_title);
+            _imdbService.DeleteMovie(_movietodelete);
         }
 
         [Then(@"movie gets deleted and shows the result")]
-        public void ThenMovieGetsDeletedAndShowsTheResult(Table table)
+        public void ThenMovieGetsDeletedAndShowsTheResult(Table expectedTable)
         {
             var movies = _imdbService.ListMovie();
-            var expectedMovies = table.Rows.Select(row => new Movie
+            var expectedMovies = expectedTable.Rows.Select(row => new Movie
             {
-                Title=row["Title"],
-                YearOfRelease=row["YearofRelease"],
-                Actors = row["Actors"].Split(',').Select(a => a.Trim()).ToList(),
-                Producer=row["Producer"],
-                Plot=row["Plot"]
+                Title = row["Title"],
+                YearOfRelease = row["YearofRelease"],
+                Producer = _imdbService.ListProducer()[Convert.ToInt32(row["Producer"])-1],
+                Actors = row["Actors"].Split(',').Select(index => _imdbService.ListActor()[Convert.ToInt32(index)-1]).ToList(),
+                Plot = row["Plot"]
             }).ToList();
 
             for (int i = 0; i < expectedMovies.Count; i++)
@@ -298,32 +306,88 @@ namespace IMDB.Tests.StepDefinitions
 
 
             }
+            
         }
 
 
         [BeforeScenario("addMovie")]
+
+        public void AddSampleActorsForAdd()
+        {
+            _imdbService.AddActor("Tom Hanks", new DateTime(1956, 7, 9));
+            _imdbService.AddActor("Meryl Streep", new DateTime(1949, 6, 22));
+            _imdbService.AddActor("Leonardo DiCaprio", new DateTime(1974, 11, 11));
+            _imdbService.AddActor("Emma Watson", new DateTime(1990, 4, 15));
+            _imdbService.AddActor("Joseph Gordon-Levitt", new DateTime(1981, 2, 17));
+            _imdbService.AddActor("Tim Robbins", new DateTime(1958, 10, 16));
+            _imdbService.AddActor("Morgan Freeman", new DateTime(1937, 6, 1));
+        }
+        [BeforeScenario("addMovie")]
+        public void AddSampleProducersForAdd()
+        {
+            _imdbService.AddProducer("Christopher Nolan", new DateTime(1970, 7, 30));
+            _imdbService.AddProducer("Steven Spielberg", new DateTime(1946, 12, 18));
+            _imdbService.AddProducer("Niki Marvin", new DateTime(1956, 2, 18));
+
+        }
+        [BeforeScenario("addMovie")]
         public void AddSampleMovieForAdd()
         {
-            _specFlowOutputHelper.WriteLine("CJKBHJGDJHGDJH GJDGC JDGXHJG JHGJHX");
-            List<string> sample= new List<string> { "w","e"};
-            _imdbService.AddMovie("d","c","2002",sample,"skld");
+
+            _imdbService.AddMovie("Inception", "2010", "A thief who enters the dreams of others to steal their secrets must plant an idea into someone's mind in order to return home.", "3,5","1");
         }
 
         [BeforeScenario("listMovie")]
+        public void AddSampleActorsToList()
+        {
+            _imdbService.AddActor("Tom Hanks", new DateTime(1956, 7, 9));
+            _imdbService.AddActor("Meryl Streep", new DateTime(1949, 6, 22));
+            _imdbService.AddActor("Leonardo DiCaprio", new DateTime(1974, 11, 11));
+            _imdbService.AddActor("Emma Watson", new DateTime(1990, 4, 15));
+            _imdbService.AddActor("Joseph Gordon-Levitt", new DateTime(1981, 2, 17));
+            _imdbService.AddActor("Tim Robbins", new DateTime(1958, 10, 16));
+            _imdbService.AddActor("Morgan Freeman", new DateTime(1937, 6, 1));
+        }
+        [BeforeScenario("listMovie")]
+        public void AddSampleProducersToList()
+        {
+            _imdbService.AddProducer("Christopher Nolan", new DateTime(1970, 7, 30));
+            _imdbService.AddProducer("Steven Spielberg", new DateTime(1946, 12, 18));
+            _imdbService.AddProducer("Niki Marvin", new DateTime(1956, 2, 18));
+
+        }
+        [BeforeScenario("listMovie")]
         public void AddSampleMovieForList()
         {
-            _specFlowOutputHelper.WriteLine("CJKBHJGDJHGDJH GJDGC JDGXHJG JHGJHX");
-            List<string> sample = new List<string> { "w", "e" };
-            _imdbService.AddMovie("d", "c", "2002", sample, "skld");
-            
+            _imdbService.AddMovie("Inception", "2010", "A thief who enters the dreams of others to steal their secrets must plant an idea into someone's mind in order to return home.", "3,5", "1");
+
         }
 
         [BeforeScenario("deleteMovie")]
+        public void AddSampleActorsToDelete()
+        {
+            _imdbService.AddActor("Tom Hanks", new DateTime(1956, 7, 9));
+            _imdbService.AddActor("Meryl Streep", new DateTime(1949, 6, 22));
+            _imdbService.AddActor("Leonardo DiCaprio", new DateTime(1974, 11, 11));
+            _imdbService.AddActor("Emma Watson", new DateTime(1990, 4, 15));
+            _imdbService.AddActor("Joseph Gordon-Levitt", new DateTime(1981, 2, 17));
+            _imdbService.AddActor("Tim Robbins", new DateTime(1958, 10, 16));
+            _imdbService.AddActor("Morgan Freeman", new DateTime(1937, 6, 1));
+        }
+        [BeforeScenario("deleteMovie")]
+        public void AddSampleProducersToDelete()
+        {
+            _imdbService.AddProducer("Christopher Nolan", new DateTime(1970, 7, 30));
+            _imdbService.AddProducer("Steven Spielberg", new DateTime(1946, 12, 18));
+            _imdbService.AddProducer("Niki Marvin", new DateTime(1956, 2, 18));
+
+        }
+        [BeforeScenario("deleteMovie")]
         public void AddSampleMovieForDelete()
         {
-            _specFlowOutputHelper.WriteLine("CJKBHJGDJHGDJH GJDGC JDGXHJG JHGJHX");
-            List<string> sample = new List<string> { "w", "e" };
-            _imdbService.AddMovie("d", "c", "2002", sample, "skld");
+            
+            
+            _imdbService.AddMovie("Inception", "2010", "A thief who enters the dreams of others to steal their secrets must plant an idea into someone's mind in order to return home.", "3,5", "1");
         }
 
     }
