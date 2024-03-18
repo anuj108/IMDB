@@ -1,0 +1,32 @@
+
+Social Media Platform Endpoints:
+
+POST /posts
+To create a post
+
+DELETE /posts/{post_id}
+To delete a post
+
+POST /posts/{post_id}/comments
+To comment on a post
+
+POST /posts/{post_id}/likes
+To like a post
+
+DELETE /posts/{post_id}/likes
+To unlike a post
+
+GET /users/{user_id}/posts
+To get all posts for a user
+
+POST /users/{user_id}/follow
+To follow a user
+
+DELETE /users/{user_id}/follow
+To unfollow a user
+
+GET /users/{user_id}/followers
+To get followers for a user
+
+GET /users/{user_id}/following
+To get users followed by a user

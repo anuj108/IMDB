@@ -1,0 +1,26 @@
+GET /products
+To retrieve all products
+
+GET /products/{id}
+To retrieve details of a specific product
+
+POST /cart/items
+To add items to the cart
+
+DELETE /cart/items/{id}
+To delete an item from the cart
+
+GET /cart/items
+To retrieve items from the cart
+
+POST /orders
+To place an order
+
+DELETE /orders/{id}
+To cancel an order
+
+GET /orders/{id}
+To retrieve details of a specific order
+
+GET /orders?user_id={user_id}&start_date={start_date}&end_date={end_date}
+To retrieve previous orders for a user within a given time range
