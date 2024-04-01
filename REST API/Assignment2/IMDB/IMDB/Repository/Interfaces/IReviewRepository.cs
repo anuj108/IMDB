@@ -1,13 +1,15 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
 
 namespace IMDB.Repository.Interfaces
 {
     public interface IReviewRepository
     {
-        void Create(Review review);
-        List<Review> Get(int id);
+        Review Create(Review review);
 
-        Review GetById(int movieId,int id);
+        IList<Review> Get();
+        List<Review> GetByMovieId(int movieId);
+
+        Review Get(int id);
 
         void Update(Review review);
 

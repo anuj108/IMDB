@@ -1,4 +1,4 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
 
 namespace IMDB.Repository
@@ -10,9 +10,10 @@ namespace IMDB.Repository
         _movieRepository =new List<Movie>();
         }
 
-        public void Create(Movie movie)
+        public Movie Create(Movie movie)
         {
             _movieRepository.Add(movie);
+            return movie;
         }
 
         public IList<Movie> Get() {

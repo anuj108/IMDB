@@ -1,4 +1,5 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IMDB.Repository.Interfaces
 {
@@ -6,7 +7,7 @@ namespace IMDB.Repository.Interfaces
     {
         IList<Actor> Get();
         Actor Get(int id);
-        void Create(Actor actor);
+        Actor Create(Actor actor);
         void Update(Actor actor);
         void Delete(int id);
     }

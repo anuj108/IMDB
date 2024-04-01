@@ -1,4 +1,5 @@
-﻿using IMDB.Models;
+﻿
+using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
 
 namespace IMDB.Repository
@@ -10,9 +11,10 @@ namespace IMDB.Repository
             _producerRepository=new List<Producer>();
         }
 
-        public void Create(Producer producer)
+        public Producer Create(Producer producer)
         {
             _producerRepository.Add(producer);
+            return producer;
         }
 
         public IList<Producer> Get()

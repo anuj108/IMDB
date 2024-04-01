@@ -1,6 +1,6 @@
-﻿namespace IMDB.Models
+﻿namespace IMDB.Domain.Response
 {
-    public class Genre
+    public class GenreResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }

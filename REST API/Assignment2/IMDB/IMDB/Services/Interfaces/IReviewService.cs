@@ -1,14 +1,18 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
+using IMDB.Domain.Request;
+using IMDB.Domain.Response;
 
 namespace IMDB.Services.Interfaces
 {
     public interface IReviewService
     {
-        void Create(Review review);
-        List<Review> Get(int id);
+        Review Create(ReviewRequest review);
+        IList<ReviewResponse> Get();
+        ReviewResponse Get(int id);
+        IList<ReviewResponse> GetByMovieId(int movieId);
 
-        Review GetById(int movieId, int id);
-        void Update(Review review);
+
+        void Update(int id,ReviewRequest review);
 
         void Delete(int id);
     }

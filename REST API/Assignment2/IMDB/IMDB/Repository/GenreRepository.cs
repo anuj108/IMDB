@@ -1,4 +1,4 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
 
 namespace IMDB.Repository
@@ -10,9 +10,10 @@ namespace IMDB.Repository
         {
             _genres = new List<Genre>();
         }
-        public void Create(Genre genre)
+        public Genre Create(Genre genre)
         {
             _genres.Add(genre);
+            return genre;
         }
 
         public IList<Genre> Get()

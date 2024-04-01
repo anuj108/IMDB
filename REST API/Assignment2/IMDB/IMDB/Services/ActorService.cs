@@ -1,7 +1,15 @@
-﻿using IMDB.Models;
+﻿using IMDB.CustomExceptions;
+using IMDB.Domain.Model;
+using IMDB.Domain.Request;
+using IMDB.Domain.Response;
 using IMDB.Repository;
 using IMDB.Repository.Interfaces;
 using IMDB.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IMDB.Services
 {
@@ -9,33 +17,84 @@ namespace IMDB.Services
     {
 
         private readonly IActorRepository _actorRepository;
-        public ActorService()
+        private int _id = 0;
+        public ActorService(IActorRepository actorRepository)
         {
-
-            _actorRepository = new ActorRepository();
-        }
-        public void Create(Actor actor)
-        {
-            _actorRepository.Create(actor);
+            _actorRepository = actorRepository;
         }
 
-        public IList<Actor> Get()
+        //TO GET ALL THE ACTORS
+        public IList<ActorResponse> Get()
         {
-            return _actorRepository.Get();
+            
+            var responseData = _actorRepository.Get();
+            if (!responseData.Any()) throw new BadRequestException("Empty Actor List returned");
+            return responseData.Select(x => new ActorResponse()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Bio = x.Bio,
+                DOB = x.DOB,
+                Gender = x.Gender
+            }).ToList();
         }
 
-        public Actor Get(int id)
+        //TO GET THE ACTOR BY ID
+        public ActorResponse Get(int id)
         {
-           return _actorRepository.Get(id);
+            if (!_actorRepository.Get().Any(x => x.Id == id)) throw new BadRequestException("Actor not Found");
+            var actor= _actorRepository.Get(id);
+            return new ActorResponse()
+            {
+                Id = actor.Id,
+                Name = actor.Name,
+                Bio = actor.Bio,
+                DOB = actor.DOB,
+                Gender = actor.Gender
+            };
         }
 
-        public void Update(Actor actor)
+
+        public Actor Create(ActorRequest actorRequest)
         {
-            _actorRepository.Update(actor);
+            
+            if (string.IsNullOrWhiteSpace(actorRequest.Name)) throw new BadRequestException("Invalid Name");
+            if (string.IsNullOrWhiteSpace(actorRequest.Bio)) throw new BadRequestException("Invalid Bio Data");
+            if (actorRequest.DOB.Year < 1800 || actorRequest.DOB.Year > DateTime.Now.Year) throw new BadRequestException("Invalid Date of Birth");
+            if (!actorRequest.Gender.Equals("Male") && !actorRequest.Gender.Equals("Female")) throw new BadRequestException("Invalid Gender");
+            _id++;
+            return _actorRepository.Create(
+                new Actor { Id=_id,
+                Name = actorRequest.Name,
+                Bio = actorRequest.Bio,
+                DOB = actorRequest.DOB,
+                Gender = actorRequest.Gender
+                });
+        }
+
+        
+
+       
+        public void Update(int id,ActorRequest actorRequest)
+        {
+            if (id>_actorRepository.Get().Last().Id || id<=0) throw new BadRequestException("Invalid Id");
+            if (string.IsNullOrWhiteSpace(actorRequest.Name)) throw new BadRequestException("Invalid Name");
+            if (string.IsNullOrWhiteSpace(actorRequest.Bio)) throw new BadRequestException("Invalid Bio Data");
+            if (actorRequest.DOB.Year < 1800 || actorRequest.DOB.Year > DateTime.Now.Year) throw new BadRequestException("Invalid Date of Birth");
+            if (!actorRequest.Gender.Equals("Male") && !actorRequest.Gender.Equals("Female")) throw new BadRequestException("Invalid Gender");
+            _actorRepository.Update(new Actor
+            {
+                Id = id,
+                Name = actorRequest.Name,
+                Bio = actorRequest.Bio,
+                DOB = actorRequest.DOB,
+                Gender = actorRequest.Gender
+            });
         }
 
         public void Delete(int id)
         {
+            if (id>_actorRepository.Get().Last().Id || id<=0) throw new BadRequestException("Invalid Id");
             _actorRepository.Delete(id);
         }
     }

@@ -1,5 +1,6 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IMDB.Repository
 {
@@ -18,9 +19,10 @@ namespace IMDB.Repository
         {
             return _actors.Where(actor => actor.Id==id).FirstOrDefault();
         }
-        public void Create(Actor actor)
+        public Actor Create(Actor actor)
         {
             _actors.Add(actor);
+             return actor;
         }
         public void Update(Actor actor)
         {

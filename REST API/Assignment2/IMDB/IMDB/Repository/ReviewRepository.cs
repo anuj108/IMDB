@@ -1,4 +1,4 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
 
 namespace IMDB.Repository
@@ -11,18 +11,27 @@ namespace IMDB.Repository
             _reviewRepository = new List<Review>();
         }
 
-        public void Create(Review review)
+        public Review Create(Review review)
         {
             _reviewRepository.Add(review);
+            return review;
         }
 
-        public List<Review> Get(int movieId)
+        //To Get All The Reviews
+        public IList<Review> Get()
+        {
+            return _reviewRepository;
+        }
+
+        //To Get Reviews for a movie
+        public List<Review> GetByMovieId(int movieId)
         {
             return _reviewRepository.Where(review=>review.MovieId == movieId).ToList();
         }
 
-        public Review GetById(int movieId,int id) {
-            return _reviewRepository.FirstOrDefault(review => review.MovieId==movieId&&review.Id==id);
+        //To get a particular review
+        public Review Get(int id) {
+            return _reviewRepository.FirstOrDefault(review =>review.Id==id);
         }
 
         public void Update(Review review)

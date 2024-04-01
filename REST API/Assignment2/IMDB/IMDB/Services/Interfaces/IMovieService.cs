@@ -1,16 +1,18 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
+using IMDB.Domain.Request;
+using IMDB.Domain.Response;
 
 namespace IMDB.Services.Interfaces
 {
     public interface IMovieService
     {
-        void Create(Movie movie);
+        Movie Create(MovieRequest movie);
 
-        IList<Movie> GetByYear(int year);
-        IList<Movie> Get();
-        Movie Get(int id);
+        IList<MovieResponse> GetByYear(int year);
+        IList<MovieResponse> Get();
+        MovieResponse Get(int id);
 
-        void Update(Movie movie);
+        void Update(int id,MovieRequest movie);
 
         void Delete(int id);
     }

@@ -1,4 +1,6 @@
-﻿using IMDB.Models;
+﻿using IMDB.CustomExceptions;
+using IMDB.Domain.Model;
+using IMDB.Domain.Request;
 using IMDB.Services;
 using IMDB.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -19,34 +21,75 @@ namespace IMDB.Controllers
         [HttpGet]
         public IActionResult GetAllProducers()
         {
-            return Ok(_producerService.Get());
+            try
+            {
+                return Ok(_producerService.Get());
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
         //To get an Producer by ID
         [HttpGet("{id}")]
         public IActionResult GetProducer(int id)
         {
-            return Ok(_producerService.Get(id));
+            try
+            {
+                return Ok(_producerService.Get(id));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpPost]
-        public IActionResult AddProducer([FromBody] Producer producer)
+        public IActionResult AddProducer([FromBody]ProducerRequest producerRequest)
         {
-            _producerService.Create(producer);
-            return Ok(_producerService.Get());
+            try
+            {
+                var producerAdded = _producerService.Create(producerRequest);
+                var routeValues = new { id = producerAdded.Id };
+                return CreatedAtAction("GetProducer",routeValues,producerAdded);
+            }
+            catch(BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Producer producer)
+        public IActionResult Update(int id, [FromBody] ProducerRequest producer)
         {
-            _producerService.Update(producer);
-            return Ok(_producerService.Get());
+            try
+            {
+                _producerService.Update(id, producer);
+                return Ok("Producer with id updated "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _producerService.Delete(id);
-            return Ok(_producerService.Get());
+            try
+            {
+                _producerService.Delete(id);
+                return Ok("Producer with id deleted "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
     }
 }

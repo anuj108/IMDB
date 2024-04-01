@@ -1,14 +1,16 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
+using IMDB.Domain.Request;
+using IMDB.Domain.Response;
 
 namespace IMDB.Services.Interfaces
 {
     public interface IGenreService
     {
-        void Create(Genre genre);
-        IList<Genre> Get();
-        Genre Get(int id);
+        Genre Create(GenreRequest genreRequest);
+        IList<GenreResponse> Get();
+        GenreResponse Get(int id);
 
-        void Update(Genre genre);
+        void Update(int id,GenreRequest genreRequest);
         void Delete(int id);
     }
 }

@@ -1,4 +1,4 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
 
 namespace IMDB.Repository.Interfaces
 {
@@ -6,7 +6,7 @@ namespace IMDB.Repository.Interfaces
     {
         IList<Producer> Get();
         Producer Get(int id);
-        void Create(Producer actor);
+        Producer Create(Producer actor);
         void Update(Producer actor);
         void Delete(int id);
     }

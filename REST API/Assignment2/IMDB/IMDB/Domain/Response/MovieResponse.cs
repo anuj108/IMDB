@@ -1,6 +1,6 @@
-﻿namespace IMDB.Models
+﻿namespace IMDB.Domain.Response
 {
-    public class Movie
+    public class MovieResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -9,9 +9,9 @@
 
         public string Plot { get; set; }
 
-        public List<Actor> Actors {  get; set; }
-        public List<Genre> Genres {  get; set; }
-        public Producer Producer { get; set; }
+        public string Actors { get; set; }
+        public string Genres { get; set; }
+        public string Producer { get; set; }
 
         public string CoverImage { get; set; }
     }

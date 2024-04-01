@@ -1,11 +1,11 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
 
 namespace IMDB.Repository.Interfaces
 {
     public interface IGenreRepository
     {
         
-        void Create(Genre genre);
+        Genre Create(Genre genre);
         IList<Genre> Get();
         Genre Get(int id);
 

@@ -1,10 +1,10 @@
-﻿using IMDB.Models;
+﻿using IMDB.Domain.Model;
 
 namespace IMDB.Repository.Interfaces
 {
     public interface IMovieRepository
     {
-        void Create(Movie movie);
+        Movie Create(Movie movie);
         IList<Movie> Get();
         Movie Get(int id);
 

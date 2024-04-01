@@ -1,4 +1,6 @@
-﻿using IMDB.Models;
+﻿using IMDB.CustomExceptions;
+using IMDB.Domain.Model;
+using IMDB.Domain.Request;
 using IMDB.Services;
 using IMDB.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -21,34 +23,71 @@ namespace IMDB.Controllers
         [HttpGet]
         public IActionResult GetAllGenres()
         {
-            return Ok(_genreService.Get());
+            try
+            {
+                return Ok(_genreService.Get());
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         //To get an Genre by ID
         [HttpGet("{id}")]
         public IActionResult GetGenre(int id)
         {
-            return Ok(_genreService.Get(id));
+            try
+            {
+                return Ok(_genreService.Get(id));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
-        public IActionResult AddGenre([FromBody] Genre genre)
+        public IActionResult AddGenre([FromBody] GenreRequest genreRequest)
         {
-            _genreService.Create(genre);
-            return Ok(_genreService.Get());
+            try
+            {
+                var addedGenre = _genreService.Create(genreRequest);
+                var routeValues = new { id = addedGenre.Id };
+                return CreatedAtAction("GetGenre", routeValues, addedGenre);
+            }
+            
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromBody] Genre genre)
+        public IActionResult Update([FromRoute ]int id,[FromBody] GenreRequest genreRequest)
         {
-            _genreService.Update(genre);
-            return Ok(_genreService.Get());
+            try
+            {
+                _genreService.Update(id,genreRequest);
+                return Ok("GENRE UPDATED WITH ID "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _genreService.Delete(id);
-            return Ok(_genreService.Get());
+            try
+            {
+                _genreService.Delete(id);
+                return Ok("GENRE DELETED WITH ID "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

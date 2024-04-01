@@ -1,5 +1,7 @@
 ﻿
-using IMDB.Models;
+using IMDB.CustomExceptions;
+using IMDB.Domain.Model;
+using IMDB.Domain.Request;
 using IMDB.Services;
 using IMDB.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -19,39 +21,74 @@ namespace IMDB.Controllers
         [HttpGet]
         public IActionResult GetAllActors()
         {
-            return Ok(_actorService.Get());
+            try
+            {
+                return Ok(_actorService.Get());
+            }
+            catch(BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         //To get an actor by ID
         [HttpGet("{id}")]
-        public IActionResult GetActor(int id)
+        public IActionResult GetActor([FromRoute]int id)
         {
+
+            try
+            {
+                return Ok(_actorService.Get(id));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             
-            return Ok(_actorService.Get(id));
         }
 
         [HttpPost]
-        public IActionResult AddActor([FromBody]Actor actor)
+        public IActionResult AddActor(ActorRequest actorRequest)
         {
-            _actorService.Create(actor);
-            var actors = _actorService.Get();
-            return Ok(actors);
+            try
+            {
+                var actorAdded=_actorService.Create(actorRequest);
+                var routeValues = new { id = actorAdded.Id };
+                return CreatedAtAction("GetActor",routeValues,actorAdded);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Actor actor)
+        public IActionResult Update(int id, [FromBody] ActorRequest actorRequest)
         {
-            _actorService.Update(actor);
-            var actors = _actorService.Get();
-            return Ok(actors);
+            try
+            {
+                _actorService.Update(id,actorRequest);
+                return Ok("Actor with id updated "+id);
+            }
+            catch(BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _actorService.Delete(id);
-            var actors = _actorService.Get();
-            return Ok(actors);
+            try
+            {
+                _actorService.Delete(id);
+                return Ok("Actor with id deleted "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
 
         }
     }

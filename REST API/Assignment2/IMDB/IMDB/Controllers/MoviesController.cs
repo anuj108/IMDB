@@ -1,4 +1,6 @@
-﻿using IMDB.Models;
+﻿using IMDB.CustomExceptions;
+using IMDB.Domain.Model;
+using IMDB.Domain.Request;
 using IMDB.Services;
 using IMDB.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -23,35 +25,74 @@ namespace IMDB.Controllers
   
         public IActionResult GetAllMoviesByYear([FromQuery] int year)
         {
-           var moviesByYear=_movieService.GetByYear(year);
-            return Ok(moviesByYear);
+            try
+            {
+                return Ok(_movieService.GetByYear(year));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+           
         }
         //To get an Movie by ID
         [HttpGet("{id}")]
         public IActionResult GetMovie(int id)
         {
-            return Ok(_movieService.Get(id));
+            try
+            {
+                return Ok(_movieService.Get(id));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpPost]
-        public IActionResult AddMovie([FromBody] Movie movie)
+        public IActionResult AddMovie([FromBody] MovieRequest movieRequest)
         {
-            _movieService.Create(movie);
-            return Ok(_movieService.Get());
+            try
+            {
+                var addedMovie=_movieService.Create(movieRequest);
+                var routeValues=new {id=addedMovie.Id};
+                return CreatedAtAction("GetMovie",routeValues,addedMovie);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromBody] Movie movie)
+        public IActionResult Update(int id,[FromBody] MovieRequest movieRequest)
         {
-            _movieService.Update(movie);
-            return Ok(_movieService.Get());
+            try
+            {
+                _movieService.Update(id, movieRequest);
+                return Ok("Movie updated with id "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute]int id)
         {
-            _movieService.Delete(id);
-            return Ok(_movieService.Get());
+            try
+            {
+                _movieService.Delete(id);
+                return Ok("Movie deleted with id "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
