@@ -37,7 +37,7 @@ namespace IMDB.Services
         public IList<ProducerResponse> Get()
         {
             var responseData= _producerRepository.Get();
-            if (responseData.Any()) throw new BadRequestException("Invalid Request");
+            if (!responseData.Any()) throw new BadRequestException("Invalid Request");
             return responseData.Select(x=>new ProducerResponse { Id=x.Id, Name=x.Name, Bio=x.Bio,Gender=x.Gender}).ToList();
         }
 
