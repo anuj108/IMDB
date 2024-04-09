@@ -35,14 +35,14 @@ Select Scope_Identity()";
 
         public async Task<IEnumerable<Producer>> Get()
         {
-            const string query = @"Select [id],[Name],[Sex],[DOB],[Bio] from FOUNDATIONS.Producers";
+            const string query = @"Select [id],[Name],[Sex],[DOB],[Bio] from FOUNDATION.Producers";
             return await Get(query);
         }
 
         public async Task<Producer> Get(int id)
         {
-            const string query = @"Select [id],[Name],[Sex],[DOB],[Bio] from FOUNDATIONS.Producers where [id]=@id";
-            return await Get(query, id);
+            const string query = @"Select [id],[Name],[Sex],[DOB],[Bio] from FOUNDATION.Producers where [id]=@id";
+            return await Get(query, new {Id=id});
         }
 
         public async Task Update(Producer producer)

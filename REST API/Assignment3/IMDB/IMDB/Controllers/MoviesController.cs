@@ -1,4 +1,5 @@
-﻿using IMDB.CustomExceptions;
+﻿using Firebase.Storage;
+using IMDB.CustomExceptions;
 using IMDB.Domain.Model;
 using IMDB.Domain.Request;
 using IMDB.Services;
@@ -51,12 +52,12 @@ namespace IMDB.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMovie([FromBody] MovieRequest movieRequest)
+        public async Task<IActionResult> AddMovie(MovieRequest movieRequest)
         {
             try
             {
-                var addedMovie=_movieService.Create(movieRequest);
-                var routeValues=new {id=addedMovie.Id};
+                var addedMovie=await _movieService.Create(movieRequest);
+                var routeValues=new {id=addedMovie};
                 return CreatedAtAction("GetMovie",routeValues,addedMovie);
             }
             catch (BadRequestException ex)
@@ -65,6 +66,19 @@ namespace IMDB.Controllers
             }
             
         }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Content("file not selected");
+            var task = await new FirebaseStorage("imdb-3fcd7.appspot.com")
+                    .Child("CoverImages")
+                    .Child(Guid.NewGuid().ToString() + ".png")
+                    .PutAsync(file.OpenReadStream());
+            return Ok(task);
+        }
+
 
         [HttpPut("{id}")]
         public IActionResult Update(int id,[FromBody] MovieRequest movieRequest)

@@ -24,7 +24,7 @@ namespace IMDB.Services
             _producerRepository=producerRepository;
             _genreRepository=genreRepository;
         }
-        public Movie Create(MovieRequest movieRequest)
+        public async Task<int> Create(MovieRequest movieRequest)
         {
             if (string.IsNullOrWhiteSpace(movieRequest.Name)) throw new BadRequestException("Not valid");
             if (movieRequest.YearOfRelease < 1800 || movieRequest.YearOfRelease > DateTime.Now.Year + 10) throw new BadRequestException("Not valid"); 
@@ -37,17 +37,16 @@ namespace IMDB.Services
             var genres = new List<Genre>();
             for (int i=0;i<movieRequest.ActorIds.Count;i++)
             {
-                //actors.Add(_actorRepository.Get(movieRequest.ActorIds[i]));
+                actors.Add(await _actorRepository.Get(movieRequest.ActorIds[i]));
             }
             for (int i = 0; i<movieRequest.GenreIds.Count; i++)
             {
-                genres.Add(_genreRepository.Get(movieRequest.GenreIds[i]));
+                genres.Add(await _genreRepository.Get(movieRequest.GenreIds[i]));
             }
-            var producer = _producerRepository.Get(movieRequest.ProducerId);
-            _id++;
-            return _movieRepository.Create(new Movie
+            var producer =await _producerRepository.Get(movieRequest.ProducerId);
+            
+            return await _movieRepository.Create(new Movie
             {
-                Id = _id,
                 Name = movieRequest.Name,
                 YearOfRelease = movieRequest.YearOfRelease,
                 Plot = movieRequest.Plot,
@@ -58,10 +57,10 @@ namespace IMDB.Services
             });
         }
 
-        public IList<MovieResponse> Get()
+        public async Task<IEnumerable<MovieResponse>> Get()
         {
-            if(!_movieRepository.Get().Any()) throw new BadRequestException("Not valid");
-            return _movieRepository.Get().Select(x=>new MovieResponse
+            if(!(await _movieRepository.Get()).Any()) throw new BadRequestException("Not valid");
+            return (await _movieRepository.Get()).Select(x=>new MovieResponse
             {
                 Id=x.Id,
                 Name = x.Name,
@@ -74,10 +73,10 @@ namespace IMDB.Services
             }).ToList();
         }
 
-        public MovieResponse Get(int id)
+        public async Task<MovieResponse> Get(int id)
         {
-            if (!_movieRepository.Get().Any(x=>x.Id==id)) throw new BadRequestException("Not valid");
-            var responseData= _movieRepository.Get(id);
+            if (!(await _movieRepository.Get()).Any(x=>x.Id==id)) throw new BadRequestException("Not valid");
+            var responseData= await _movieRepository.Get(id);
             return new MovieResponse
             {
                 Id=id,
@@ -91,9 +90,9 @@ namespace IMDB.Services
             };
         }
 
-        public IList<MovieResponse> GetByYear(int year) {
+        public async Task<IEnumerable<MovieResponse>> GetByYear(int year) {
             if (year < 1800 || year > DateTime.Now.Year + 10) throw new BadRequestException("Not valid"); 
-            var responseData= _movieRepository.GetByYear(year);
+            var responseData= await _movieRepository.GetByYear(year);
             return responseData.Select(x=> new MovieResponse
             {
                 Id = x.Id,
@@ -106,9 +105,9 @@ namespace IMDB.Services
                 CoverImage=x.CoverImage
             }).ToList();
         }
-        public void Update(int id,MovieRequest movieRequest)
+        public async Task Update(int id,MovieRequest movieRequest)
         {
-            if (!_movieRepository.Get().Any(x => x.Id==id)) throw new BadRequestException("Not valid");
+            /*if (!_movieRepository.Get().Any(x => x.Id==id)) throw new BadRequestException("Not valid");
             if (string.IsNullOrWhiteSpace(movieRequest.Name)) throw new BadRequestException("Not valid");
             if (movieRequest.YearOfRelease < 1800 || movieRequest.YearOfRelease > DateTime.Now.Year + 10) throw new BadRequestException("Not valid");
             if (string.IsNullOrWhiteSpace(movieRequest.Plot)) throw new BadRequestException("Not valid");
@@ -126,9 +125,10 @@ namespace IMDB.Services
                 Producer=_producerRepository.Get(movieRequest.ProducerId),
                 CoverImage=movieRequest.CoverImage
             });
+            */
         }
-        public void Delete(int id) {
-            if (!_movieRepository.Get().Any(x => x.Id==id)) throw new BadRequestException("Not valid");
+        public async Task Delete(int id) {
+            if (!(await _movieRepository.Get()).Any(x => x.Id==id)) throw new BadRequestException("Not valid");
             _movieRepository.Delete(id);
         }
     }

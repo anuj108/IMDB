@@ -6,14 +6,14 @@ namespace IMDB.Services.Interfaces
 {
     public interface IMovieService
     {
-        Movie Create(MovieRequest movie);
+        Task<int> Create(MovieRequest movie);
 
-        IList<MovieResponse> GetByYear(int year);
-        IList<MovieResponse> Get();
-        MovieResponse Get(int id);
+        Task<IEnumerable<MovieResponse>> GetByYear(int year);
+        Task<IEnumerable<MovieResponse>> Get();
+        Task<MovieResponse> Get(int id);
 
-        void Update(int id,MovieRequest movie);
+        Task Update(int id,MovieRequest movie);
 
-        void Delete(int id);
+        Task Delete(int id);
     }
 }

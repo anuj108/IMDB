@@ -21,7 +21,7 @@ namespace IMDB.Services
         public async Task<int> Create(ReviewRequest reviewRequest)
         {
             if (string.IsNullOrWhiteSpace(reviewRequest.Message)) throw new BadRequestException("Invalid Message");
-            if (reviewRequest.MovieId>_movieRepository.Get().Last().Id || reviewRequest.MovieId<=0) throw new BadRequestException("Invalid Id");
+            if (reviewRequest.MovieId>(await _movieRepository.Get()).Last().Id || reviewRequest.MovieId<=0) throw new BadRequestException("Invalid Id");
             
             return await _reviewRepository.Create(new Review
             {
@@ -72,7 +72,7 @@ namespace IMDB.Services
         public async Task Update(int id,ReviewRequest reviewRequest)
         {
             if (string.IsNullOrWhiteSpace(reviewRequest.Message)) throw new BadRequestException("Invalid Message");
-            if (reviewRequest.MovieId>_movieRepository.Get().Last().Id || reviewRequest.MovieId<=0) throw new BadRequestException("Invalid Id");
+            if (reviewRequest.MovieId> (await _movieRepository.Get()).Last().Id || reviewRequest.MovieId<=0) throw new BadRequestException("Invalid Id");
             await _reviewRepository.Update(new Review
             {
                 Id=id,
