@@ -28,7 +28,7 @@ namespace IMDB.Services
         {
             
             var responseData = await _actorRepository.Get();
-            if (!responseData.Any()) throw new BadRequestException("Empty Actor List returned");
+            if (!responseData.Any()) throw new NotFoundException("EMPTY ACTOR LIST");
             return responseData.Select(x => new ActorResponse()
             {
                 Id = x.Id,
@@ -43,7 +43,7 @@ namespace IMDB.Services
         public async Task<ActorResponse> Get(int id)
         {
             var responseData = await _actorRepository.Get(id);
-            if (responseData == null) throw new BadRequestException("No Actor Found");
+            if (responseData == null) throw new NotFoundException("NO ACTOR FOUND");
             return new ActorResponse()
             {
                 Id = responseData.Id,
@@ -54,14 +54,14 @@ namespace IMDB.Services
             };
         }
 
-
+        //TO CREATE AN ACTOR
         public async Task<int> Create(ActorRequest actorRequest)
         {
             
-            if (string.IsNullOrWhiteSpace(actorRequest.Name)) throw new BadRequestException("Invalid Name");
-            if (string.IsNullOrWhiteSpace(actorRequest.Bio)) throw new BadRequestException("Invalid Bio Data");
-            if (actorRequest.DOB.Year < 1800 || actorRequest.DOB.Year > DateTime.Now.Year) throw new BadRequestException("Invalid Date of Birth");
-            if (!actorRequest.Gender.Equals("Male") && !actorRequest.Gender.Equals("Female")) throw new BadRequestException("Invalid Gender");
+            if (string.IsNullOrWhiteSpace(actorRequest.Name)) throw new BadRequestException("INVALID ACTORNAME");
+            if (string.IsNullOrWhiteSpace(actorRequest.Bio)) throw new BadRequestException("INVALID ACTOR BIO");
+            if (actorRequest.DOB.Year < 1800 || actorRequest.DOB.Year > DateTime.Now.Year) throw new BadRequestException("INVALID DATE OF BIRTH");
+            if (!actorRequest.Gender.Equals("Male") && !actorRequest.Gender.Equals("Female")) throw new BadRequestException("INVALID GENDER");
             
             return await _actorRepository.Create(
                 new Actor {
@@ -74,15 +74,15 @@ namespace IMDB.Services
 
         
 
-       
+       //TO UPDATE AN ACTOR
         public async Task Update(int id,ActorRequest actorRequest)
         {
-            if(await _actorRepository.Get(id)==null) throw new BadRequestException("Invalid Id");
-           
-            if (string.IsNullOrWhiteSpace(actorRequest.Name)) throw new BadRequestException("Invalid Name");
-            if (string.IsNullOrWhiteSpace(actorRequest.Bio)) throw new BadRequestException("Invalid Bio Data");
-            if (actorRequest.DOB.Year < 1800 || actorRequest.DOB.Year > DateTime.Now.Year) throw new BadRequestException("Invalid Date of Birth");
-            if (!actorRequest.Gender.Equals("Male") && !actorRequest.Gender.Equals("Female")) throw new BadRequestException("Invalid Gender");
+            if(await _actorRepository.Get(id)==null) throw new NotFoundException("NO ACTOR FOUND");
+
+            if (string.IsNullOrWhiteSpace(actorRequest.Name)) throw new BadRequestException("INVALID ACTOR NAME");
+            if (string.IsNullOrWhiteSpace(actorRequest.Bio)) throw new BadRequestException("INVALID ACTOR BIO");
+            if (actorRequest.DOB.Year < 1800 || actorRequest.DOB.Year > DateTime.Now.Year) throw new BadRequestException("INVALID DATE OF BIRTH");
+            if (!actorRequest.Gender.Equals("Male") && !actorRequest.Gender.Equals("Female")) throw new BadRequestException("INVALID GENDER");
             await _actorRepository.Update(new Actor
             {
                 Id = id,
@@ -93,9 +93,10 @@ namespace IMDB.Services
             });
         }
 
+        //TO DELETE AN ACTOR
         public async Task Delete(int id)
         {
-            if (await _actorRepository.Get(id)==null) throw new BadRequestException("Invalid Id");
+            if (await _actorRepository.Get(id)==null) throw new NotFoundException("NO ACTOR FOUND");
             await _actorRepository.Delete(id);
         }
     }

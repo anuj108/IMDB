@@ -9,9 +9,9 @@
 
         public string Plot { get; set; }
 
-        public IList<Actor> Actors { get; set; }
-        public IList<Genre> Genres { get; set; }
-        public Producer Producer { get; set; }
+        public string Actors { get; set; }
+        public string Genres { get; set; }
+        public int Producer { get; set; }
 
         public string CoverImage { get; set; }
     }

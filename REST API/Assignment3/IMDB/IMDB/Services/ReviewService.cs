@@ -20,8 +20,8 @@ namespace IMDB.Services
 
         public async Task<int> Create(ReviewRequest reviewRequest)
         {
-            if (string.IsNullOrWhiteSpace(reviewRequest.Message)) throw new BadRequestException("Invalid Message");
-            if (reviewRequest.MovieId>(await _movieRepository.Get()).Last().Id || reviewRequest.MovieId<=0) throw new BadRequestException("Invalid Id");
+            if (string.IsNullOrWhiteSpace(reviewRequest.Message)) throw new BadRequestException("INVALID MESSAGE");
+            if (reviewRequest.MovieId>(await _movieRepository.Get()).Last().Id || reviewRequest.MovieId<=0) throw new BadRequestException("INVALID ID");
             
             return await _reviewRepository.Create(new Review
             {
@@ -34,7 +34,7 @@ namespace IMDB.Services
         public async Task<IEnumerable<ReviewResponse>> Get()
         {
             var responseData = await _reviewRepository.Get();
-            if (!responseData.Any()) throw new BadRequestException("No review Found");
+            if (!responseData.Any()) throw new NotFoundException("NO REVIEW FOUND");
             return responseData.Select(x=>new ReviewResponse
             {
                 Id =x.Id,
@@ -45,9 +45,9 @@ namespace IMDB.Services
 
         public async Task<IEnumerable<ReviewResponse>> GetByMovieId(int movieId) {
             var responseData = await _reviewRepository.GetByMovieId(movieId);
-            if (!responseData.Any()) throw new BadRequestException("Invalid Message");
-            
-            
+            if (!responseData.Any()) throw new NotFoundException("NO REVIEW FOUND");
+
+
             return responseData.Select(x => new ReviewResponse
             {
                 Id=x.Id,
@@ -59,7 +59,7 @@ namespace IMDB.Services
         public async Task<ReviewResponse> Get(int id)
         {
             var responseData = await _reviewRepository.Get(id);
-            if (responseData==null) throw new BadRequestException("Invalid Message");
+            if (responseData==null) throw new NotFoundException("NO REVIEW FOUND");
 
             return new ReviewResponse
             {
@@ -71,8 +71,8 @@ namespace IMDB.Services
 
         public async Task Update(int id,ReviewRequest reviewRequest)
         {
-            if (string.IsNullOrWhiteSpace(reviewRequest.Message)) throw new BadRequestException("Invalid Message");
-            if (reviewRequest.MovieId> (await _movieRepository.Get()).Last().Id || reviewRequest.MovieId<=0) throw new BadRequestException("Invalid Id");
+            if (string.IsNullOrWhiteSpace(reviewRequest.Message)) throw new BadRequestException("INVALID MESSAGE");
+            if (reviewRequest.MovieId> (await _movieRepository.Get()).Last().Id || reviewRequest.MovieId<=0) throw new BadRequestException("INVALID MOVIEID");
             await _reviewRepository.Update(new Review
             {
                 Id=id,
@@ -84,7 +84,7 @@ namespace IMDB.Services
         public async Task Delete(int id)
         {
             var responseData = await _reviewRepository.Get(id);
-            if (responseData==null) throw new BadRequestException("Invalid Message");
+            if (responseData==null) throw new NotFoundException("NO REVIEW FOUND");
             await _reviewRepository.Delete(id);
         }
     }

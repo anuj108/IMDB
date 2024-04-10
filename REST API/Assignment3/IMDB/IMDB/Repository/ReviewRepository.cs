@@ -17,7 +17,11 @@ namespace IMDB.Repository
         {
             var message=review.Message;
             var movieId = review.MovieId;
-            const string query = @"Insert into Foundation.reviews([message],[movieId]) select Scope_Identity";
+            const string query = @"INSERT INTO Foundation.reviews (
+	[message]
+	,[movieId]
+	)
+SELECT Scope_Identity";
             return await Create(query, new
             {
                 Message=message,
@@ -28,14 +32,20 @@ namespace IMDB.Repository
         //To Get All The Reviews
         public async Task<IEnumerable<Review>> Get()
         {
-            const string query = @"Select * from Foundation.reviews";
+            const string query = @"SELECT [Id]
+	,[Message]
+	,[MovieId]
+FROM Foundation.reviews";
             return await Get(query);
         }
 
         //To Get Reviews for a movie
         public async Task<IEnumerable<Review>> GetByMovieId(int movieId)
         {
-            const string query = @"Select * from Foundation.reviews ";
+            const string query = @"SELECT [Id]
+	,[Message]
+	,[MovieId]
+FROM Foundation.reviews";
             var allReviews=await Get(query);
 
             return allReviews.Where(x=>x.MovieId==movieId);
@@ -44,7 +54,11 @@ namespace IMDB.Repository
 
         //To get a particular review
         public async Task<Review> Get(int id) {
-            const string query = @"Select * from Foundation.reviews where [Id]=@id";
+            const string query = @"SELECT [Id]
+	,[Message]
+	,[MovieId]
+FROM Foundation.reviews
+WHERE [Id] = @id";
             return await Get(query, new { Id = id });
         }
 
@@ -52,7 +66,10 @@ namespace IMDB.Repository
         {
             var message = review.Message;
             var movieId = review.MovieId;
-            const string query = @"Update Foundation.Reviews SET [Message]=@message,[MovieId]=@movieId where [Id]=@id";
+            const string query = @"UPDATE Foundation.Reviews
+SET [Message] = @message
+	,[MovieId] = @movieId
+WHERE [Id] = @id";
             await Update(query, new
             {
                 Message=message,
@@ -62,7 +79,9 @@ namespace IMDB.Repository
 
         public async Task Delete(int id)
         {
-            const string query = @"Delete from FOUNDATION.Reviews where id=@id";
+            const string query = @"DELETE
+FROM FOUNDATION.Reviews
+WHERE [Id] = @id";
             await Delete(query, new { Id = id });
         }
     }

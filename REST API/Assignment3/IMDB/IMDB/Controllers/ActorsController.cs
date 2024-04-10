@@ -69,7 +69,7 @@ namespace IMDB.Controllers
             try
             {
                 await _actorService.Update(id,actorRequest);
-                return Ok("Actor with id updated "+id);
+                return Ok("ACTOR WITH THE GIVEN ID UPDATED: "+id);
             }
             catch(BadRequestException ex)
             {
@@ -83,7 +83,7 @@ namespace IMDB.Controllers
             try
             {
                 await _actorService.Delete(id);
-                return Ok("Actor with id deleted "+id);
+                return Ok("ACTOR WITH THE GIVEN ID DELETED"+id);
             }
             catch (BadRequestException ex)
             {

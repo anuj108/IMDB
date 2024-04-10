@@ -18,7 +18,7 @@ namespace IMDB.Services
         }
         public async Task<int> Create(GenreRequest genreRequest)
         {
-            if (string.IsNullOrWhiteSpace(genreRequest.Name)) throw new BadRequestException("Invalid Name");
+            if (string.IsNullOrWhiteSpace(genreRequest.Name)) throw new BadRequestException("INVALID GENRE NAME");
             
             return await _genreRepository.Create(
                 new Genre
@@ -30,14 +30,14 @@ namespace IMDB.Services
         public async Task<IEnumerable<GenreResponse>> Get()
         {
             var responseData = await _genreRepository.Get();
-            if (!responseData.Any()) throw new BadRequestException("Empty Genre List returned");
+            if (!responseData.Any()) throw new NotFoundException("EMPTY GENRE LIST");
             return responseData.Select(x=> new GenreResponse { Id = x.Id, Name = x.Name }).ToList();
         }
 
         public async Task<GenreResponse> Get(int id)
         {
             var responseData = await _genreRepository.Get(id);
-            if (responseData == null) throw new BadRequestException("No Genre Found");
+            if (responseData == null) throw new NotFoundException("EMPTY GENRE LIST");
             return new GenreResponse
             {
                 Id = responseData.Id,
@@ -47,7 +47,7 @@ namespace IMDB.Services
 
         public async Task Update(int id,GenreRequest genreRequest)
         {
-            if (await _genreRepository.Get(id)==null) throw new BadRequestException("Invalid Id");
+            if (await _genreRepository.Get(id)==null) throw new NotFoundException("NO GENRE FOUND");
             await _genreRepository.Update(new Genre
             {
                 Id= id,
@@ -56,7 +56,7 @@ namespace IMDB.Services
         }
         public async Task Delete(int id)
         {
-            if (await _genreRepository.Get(id)==null) throw new BadRequestException("Invalid Id");
+            if (await _genreRepository.Get(id)==null) throw new BadRequestException("NO GENRE FOUND");
             await _genreRepository.Delete(id);
         }
     }

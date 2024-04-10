@@ -21,14 +21,28 @@ namespace IMDB.Controllers
         }
 
         //To get all Movies
-
         [HttpGet("")]
-  
-        public IActionResult GetAllMoviesByYear([FromQuery] int year)
+
+        public async Task<IActionResult> GetAllMovies()
         {
             try
             {
-                return Ok(_movieService.GetByYear(year));
+                return Ok(await _movieService.Get());
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("year")]
+  
+        public async Task<IActionResult> GetAllMoviesByYear([FromQuery] int year)
+        {
+            try
+            {
+                return Ok(await _movieService.GetByYear(year));
             }
             catch (BadRequestException ex)
             {
@@ -38,11 +52,11 @@ namespace IMDB.Controllers
         }
         //To get an Movie by ID
         [HttpGet("{id}")]
-        public IActionResult GetMovie(int id)
+        public async Task<IActionResult> GetMovie(int id)
         {
             try
             {
-                return Ok(_movieService.Get(id));
+                return Ok(await _movieService.Get(id));
             }
             catch (BadRequestException ex)
             {
@@ -81,11 +95,11 @@ namespace IMDB.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id,[FromBody] MovieRequest movieRequest)
+        public async Task<IActionResult> Update(int id,[FromBody] MovieRequest movieRequest)
         {
             try
             {
-                _movieService.Update(id, movieRequest);
+               await _movieService.Update(id, movieRequest);
                 return Ok("Movie updated with id "+id);
             }
             catch (BadRequestException ex)
@@ -96,7 +110,7 @@ namespace IMDB.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute]int id)
+        public async Task<IActionResult> Delete([FromRoute]int id)
         {
             try
             {

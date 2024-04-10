@@ -16,7 +16,10 @@ namespace IMDB.Repository
         public async Task<int> Create(Genre genre)
         {
             var name = genre.Name;
-            const string query = @"Insert into Foundation.Genres([Name]) values(@name) Select Scope_Identity()";
+            const string query = @"INSERT INTO Foundation.Genres ([Name])
+VALUES (@name)
+
+SELECT Scope_Identity()";
             return await Create(query,
                 new
                 {
@@ -26,12 +29,12 @@ namespace IMDB.Repository
 
         public async Task<IEnumerable<Genre>> Get()
         {
-            const string query = @"SELECT * FROM Foundation.Genres";
+            const string query = @"SELECT [Id],[Name] FROM Foundation.Genres";
             return await Get(query);
         }
         public async Task<Genre> Get(int id)
         {
-            const string query = @"Select * from foundation.Genres where [Id]=@id";
+            const string query = @"Select [Id],[Name] from foundation.Genres where [Id]=@id";
             return await Get(query, new { Id = id });
         }
 
@@ -49,7 +52,7 @@ WHERE [Id] = @id";
 
         public async Task Delete(int id)
         {
-            const string query = @"Delete from FOUNDATION.Genres where [Id]=@id";
+            const string query = @"EXEC Foundation.usp_Delete_Producer @Id = @Id";
             await Delete(query, new { Id = id });
         }
     }

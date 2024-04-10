@@ -22,8 +22,18 @@ namespace IMDB.Repository
             var bio=producer.Bio;
             var gender=producer.Gender;
             var dob = producer.DOB;
-            const string query = @"Insert into foundation.producers([Name],[Sex],[DOB],[Bio] values(@name,@gender,@dob,@bio))
-Select Scope_Identity()";
+            const string query = @"INSERT INTO foundation.producers (
+	[Name]
+	,[Sex]
+	,[DOB]
+	,[Bio] VALUES (
+		@name
+		,@gender
+		,@dob
+		,@bio
+		)
+	)
+SELECT Scope_Identity()";
             return await Create(query,new
             {
                 Name = name,
@@ -35,13 +45,24 @@ Select Scope_Identity()";
 
         public async Task<IEnumerable<Producer>> Get()
         {
-            const string query = @"Select [id],[Name],[Sex],[DOB],[Bio] from FOUNDATION.Producers";
+            const string query = @"SELECT [id]
+	,[Name]
+	,[Sex]
+	,[DOB]
+	,[Bio]
+FROM FOUNDATION.Producers";
             return await Get(query);
         }
 
         public async Task<Producer> Get(int id)
         {
-            const string query = @"Select [id],[Name],[Sex],[DOB],[Bio] from FOUNDATION.Producers where [id]=@id";
+            const string query = @"SELECT [id]
+	,[Name]
+	,[Sex]
+	,[DOB]
+	,[Bio]
+FROM FOUNDATION.Producers
+WHERE [id] = @id";
             return await Get(query, new {Id=id});
         }
 
@@ -53,7 +74,12 @@ Select Scope_Identity()";
             var gender= producer.Gender;
             var dob = producer.DOB;
             var bio= producer.Bio;
-            const string query = @"Update Foundation.Producers SET [name]=@name,[Sex]=@gender,[DOB]=@dob,[Bio]=bio where [Id]=@id";
+            const string query = @"UPDATE Foundation.Producers
+SET [name] = @name
+	,[Sex] = @gender
+	,[DOB] = @dob
+	,[Bio] = bio
+WHERE [Id] = @id";
             await Get(query, new
             {
                 Name=name,
@@ -65,7 +91,7 @@ Select Scope_Identity()";
 
         public async Task Delete(int id)
         {
-            const string query = @"Delete from Foundation.Producers where [Id]=@id";
+            const string query = @"EXEC Foundation.usp_Delete_Producer @Id = @Id";
             await Delete(query, new {Id=id});
         }
     }

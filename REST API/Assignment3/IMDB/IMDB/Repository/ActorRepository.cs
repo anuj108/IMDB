@@ -9,26 +9,31 @@ namespace IMDB.Repository
 {
     public class ActorRepository:BaseRepository<Actor>, IActorRepository
     {
-        private readonly ConnectionString _connectionString;
+        //private readonly ConnectionString _connectionString;
 
         public ActorRepository(IOptions<ConnectionString> connectionString)
         :base(connectionString.Value.IMDBDB)
         { 
-            
+           // _connectionString=connectionString.Value;
         }
         public async Task<IEnumerable<Actor>> Get()
         {
-            const string query = @"Select [Id],[Name],[Bio],[DOB],[Sex] As Gender from [FOUNDATION].Actors (NOLOCK)";
+            const string query = @"SELECT [Id]
+	,[Name]
+	,[Bio]
+	,[DOB]
+	,[Sex] AS Gender
+FROM [FOUNDATION].Actors";
             return await Get(query);
         }
         public async Task<Actor> Get(int id)
         {
             const string query = @"SELECT [Id]
-    , [Name]
-    , [Bio]
-    , [DOB]
-    , [sex]
-FROM [FOUNDATION].Actors (NOLOCK)
+	,[Name]
+	,[Bio]
+	,[DOB]
+	,[sex]
+FROM [FOUNDATION].Actors
 WHERE [Id] = @Id";
             return await Get(query, new {Id=id});
         }
@@ -39,9 +44,19 @@ WHERE [Id] = @Id";
             var dob = actor.DOB;
             var bio = actor.Bio;
             const string query = @"
-INSERT INTO FOUNDATION.Actors([Name],[Sex],[DOB],[Bio])
-VALUES
-(@name,@gender,@dob,@bio)   
+INSERT INTO FOUNDATION.Actors (
+	[Name]
+	,[Sex]
+	,[DOB]
+	,[Bio]
+	)
+VALUES (
+	@name
+	,@gender
+	,@dob
+	,@bio
+	)
+
 SELECT SCOPE_IDENTITY()
 ";
 
@@ -55,6 +70,7 @@ SELECT SCOPE_IDENTITY()
         }
         public async Task Update(Actor actor)
         {
+            var id=actor.Id;
             var name = actor.Name;
             var gender = actor.Gender;
             var dob = actor.DOB;
@@ -62,13 +78,14 @@ SELECT SCOPE_IDENTITY()
             const string query = @"
 UPDATE FOUNDATION.Actors
 SET [Name] = @name
-    ,[Gender] = @gender
-    ,[DOB] = @dob
-    ,[Bio] = @bio
+	,[Gender] = @gender
+	,[DOB] = @dob
+	,[Bio] = @bio
 WHERE [Id] = @id
 ";
             await Update(query, new
             {
+                Id = id,
                 Name = name,
                 Gender = gender,
                 Bio = bio,
@@ -77,7 +94,7 @@ WHERE [Id] = @id
         }
         public async Task Delete(int id)
         {
-            const string query = @"Delete from FOUNDATION.Actors where id=@id";
+            const string query = @"EXEC Foundation.usp_Delete_Actor @Id = @Id";
             await Delete(query, new {Id=id});
         }
     }

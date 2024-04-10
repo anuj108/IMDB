@@ -26,23 +26,14 @@ namespace IMDB.Services
         }
         public async Task<int> Create(MovieRequest movieRequest)
         {
-            if (string.IsNullOrWhiteSpace(movieRequest.Name)) throw new BadRequestException("Not valid");
-            if (movieRequest.YearOfRelease < 1800 || movieRequest.YearOfRelease > DateTime.Now.Year + 10) throw new BadRequestException("Not valid"); 
-            if(string.IsNullOrWhiteSpace(movieRequest.Plot)) throw new BadRequestException("Not valid");
-            if(movieRequest.ActorIds.Count<=0) throw new BadRequestException("Not valid");
-            if (movieRequest.GenreIds.Count<=0) throw new BadRequestException("Not valid");
-            if (movieRequest.ProducerId<=0) throw new BadRequestException("Not valid");
-            if (string.IsNullOrWhiteSpace(movieRequest.CoverImage)) throw new BadRequestException("Not valid");
-            var actors = new List<Actor>();
-            var genres = new List<Genre>();
-            for (int i=0;i<movieRequest.ActorIds.Count;i++)
-            {
-                actors.Add(await _actorRepository.Get(movieRequest.ActorIds[i]));
-            }
-            for (int i = 0; i<movieRequest.GenreIds.Count; i++)
-            {
-                genres.Add(await _genreRepository.Get(movieRequest.GenreIds[i]));
-            }
+            if (string.IsNullOrWhiteSpace(movieRequest.Name)) throw new BadRequestException("INVALID MOVIE NAME");
+            if (movieRequest.YearOfRelease < 1800 || movieRequest.YearOfRelease > DateTime.Now.Year + 10) throw new BadRequestException("INVALID YEAR"); 
+            if(string.IsNullOrWhiteSpace(movieRequest.Plot)) throw new BadRequestException("INVALID MOVIE PLOT");
+            if(movieRequest.ActorIds.Count<=0) throw new NotFoundException("ACTORS EMPTY");
+            if (movieRequest.GenreIds.Count<=0) throw new NotFoundException("GENRES EMPTY");
+            if (movieRequest.ProducerId<=0) throw new NotFoundException("PRODUCER INVALID");
+            if (string.IsNullOrWhiteSpace(movieRequest.CoverImage)) throw new BadRequestException("INVALID COVERIMAGE");
+            
             var producer =await _producerRepository.Get(movieRequest.ProducerId);
             
             return await _movieRepository.Create(new Movie
@@ -50,86 +41,99 @@ namespace IMDB.Services
                 Name = movieRequest.Name,
                 YearOfRelease = movieRequest.YearOfRelease,
                 Plot = movieRequest.Plot,
-                Actors = actors,
-                Genres = genres,
-                Producer = producer,
+                Actors = string.Join(',', movieRequest.ActorIds),
+                Genres = string.Join(',', movieRequest.GenreIds),
+                Producer = movieRequest.ProducerId,
                 CoverImage = movieRequest.CoverImage
             });
         }
 
         public async Task<IEnumerable<MovieResponse>> Get()
         {
-            if(!(await _movieRepository.Get()).Any()) throw new BadRequestException("Not valid");
-            return (await _movieRepository.Get()).Select(x=>new MovieResponse
+            var movieResponse=await _movieRepository.Get();
+            if(!movieResponse.Any()) throw new NotFoundException("NO MOVIE FOUND");
+            var actorResponse = await _actorRepository.Get();
+            var genreResponse = await _genreRepository.Get();
+            var producerResponse = await _producerRepository.Get();
+            return movieResponse.Select(x=>new MovieResponse
             {
                 Id=x.Id,
                 Name = x.Name,
                 YearOfRelease = x.YearOfRelease,
                 Plot = x.Plot,
-                Actors=string.Join(",",x.Actors.Select(y => y.Name)),
-                Genres=string.Join(",", x.Genres.Select(y => y.Name)),
-                Producer=x.Producer.Name,
+                Actors=string.Join(",", actorResponse.Where(y => x.Actors.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name)),
+                Genres=string.Join(",", genreResponse.Where(y => x.Genres.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name)),
+                Producer=producerResponse.FirstOrDefault(y => y.Id==x.Producer).Name,
                 CoverImage=x.CoverImage
             }).ToList();
         }
 
         public async Task<MovieResponse> Get(int id)
         {
-            if (!(await _movieRepository.Get()).Any(x=>x.Id==id)) throw new BadRequestException("Not valid");
-            var responseData= await _movieRepository.Get(id);
+            var responseData = await _movieRepository.Get(id);
+            if (responseData==null) throw new NotFoundException("NO MOVIE FOUND");
+            var actorResponse = await _actorRepository.Get();
+            var genreResponse = await _genreRepository.Get();
+            var listActor = responseData.Actors.Split(',').Select(int.Parse).ToList();
+            var listGenre = responseData.Genres.Split(',').Select(int.Parse).ToList();
             return new MovieResponse
             {
                 Id=id,
                 Name = responseData.Name,
                 YearOfRelease=responseData.YearOfRelease,
                 Plot = responseData.Plot,
-                Actors=string.Join(",",responseData.Actors.Select(y=>y.Name)),
-                Genres=string.Join(",",responseData.Genres.Select(y=>y.Name)),
-                Producer=responseData.Producer.Name,
+                Actors=string.Join(",",actorResponse.Where(x=>listActor.Contains(x.Id)).Select(x=>x.Name)),
+                Genres=string.Join(",", genreResponse.Where(x => listGenre.Contains(x.Id)).Select(x => x.Name)),
+                Producer=(await _producerRepository.Get(responseData.Producer)).Name,
                 CoverImage=responseData.CoverImage
             };
         }
 
         public async Task<IEnumerable<MovieResponse>> GetByYear(int year) {
-            if (year < 1800 || year > DateTime.Now.Year + 10) throw new BadRequestException("Not valid"); 
+            if (year < 1800 || year > DateTime.Now.Year + 10) throw new BadRequestException("INVALID YEAR"); 
             var responseData= await _movieRepository.GetByYear(year);
-            return responseData.Select(x=> new MovieResponse
+            var actorResponse = await _actorRepository.Get();
+            var genreResponse = await _genreRepository.Get();
+            var producerResponse=await _producerRepository.Get();
+            return responseData.Select(x => new MovieResponse
             {
                 Id = x.Id,
                 Name= x.Name,
                 YearOfRelease=x.YearOfRelease,
                 Plot = x.Plot,
-                Actors=string.Join(",", x.Actors.Select(y => y.Name)),
-                Genres=string.Join(",",x.Genres.Select(y=>y.Name)),
-                Producer=x.Producer.Name,
+                Actors=string.Join(",", actorResponse.Where(y => x.Actors.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name)),
+                Genres=string.Join(",", genreResponse.Where(y => x.Genres.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name)),
+                Producer=producerResponse.FirstOrDefault(y=>y.Id==x.Producer).Name,
                 CoverImage=x.CoverImage
             }).ToList();
         }
         public async Task Update(int id,MovieRequest movieRequest)
         {
-            /*if (!_movieRepository.Get().Any(x => x.Id==id)) throw new BadRequestException("Not valid");
-            if (string.IsNullOrWhiteSpace(movieRequest.Name)) throw new BadRequestException("Not valid");
-            if (movieRequest.YearOfRelease < 1800 || movieRequest.YearOfRelease > DateTime.Now.Year + 10) throw new BadRequestException("Not valid");
-            if (string.IsNullOrWhiteSpace(movieRequest.Plot)) throw new BadRequestException("Not valid");
-            if (movieRequest.ActorIds.Count<=0) throw new BadRequestException("Not valid");
-            if (movieRequest.GenreIds.Count<=0) throw new BadRequestException("Not valid");
-            if (movieRequest.ProducerId<=0) throw new BadRequestException("Not valid");
-            if (string.IsNullOrWhiteSpace(movieRequest.CoverImage)) throw new BadRequestException("Not valid");
-            _movieRepository.Update(new Movie
+            if ((await _movieRepository.Get(id)) == null) throw new NotFoundException("NO MOVIE FOUND");
+            if (string.IsNullOrWhiteSpace(movieRequest.Name)) throw new BadRequestException("INVALID MOVIE NAME");
+            if (movieRequest.YearOfRelease < 1800 || movieRequest.YearOfRelease > DateTime.Now.Year + 10) throw new BadRequestException("INVALID YEAR");
+            if (string.IsNullOrWhiteSpace(movieRequest.Plot)) throw new BadRequestException("INVALID MOVIE PLOT");
+            if (movieRequest.ActorIds.Count<=0) throw new NotFoundException("ACTORS EMPTY");
+            if (movieRequest.GenreIds.Count<=0) throw new NotFoundException("GENRES EMPTY");
+            if (movieRequest.ProducerId<=0) throw new NotFoundException("PRODUCER INVALID");
+            if (string.IsNullOrWhiteSpace(movieRequest.CoverImage)) throw new BadRequestException("INVALID COVERIMAGE");
+           
+            await _movieRepository.Update(new Movie
             {
                 Id = id,
+                Name=movieRequest.Name,
                 YearOfRelease= movieRequest.YearOfRelease,
                 Plot= movieRequest.Plot,
-               // Actors=movieRequest.ActorIds.Select(x=>_actorRepository.Get(x)).ToList(),
-                Genres=movieRequest.GenreIds.Select(x=>_genreRepository.Get(x)).ToList(),
-                Producer=_producerRepository.Get(movieRequest.ProducerId),
+                Actors = string.Join(',', movieRequest.ActorIds),
+                Genres = string.Join(',', movieRequest.GenreIds),
+                Producer = movieRequest.ProducerId,
                 CoverImage=movieRequest.CoverImage
             });
-            */
+            
         }
         public async Task Delete(int id) {
-            if (!(await _movieRepository.Get()).Any(x => x.Id==id)) throw new BadRequestException("Not valid");
-            _movieRepository.Delete(id);
+            if ((await _movieRepository.Get(id)) == null) throw new NotFoundException("NO MOVIE FOUND");
+            await _movieRepository.Delete(id);
         }
     }
 }

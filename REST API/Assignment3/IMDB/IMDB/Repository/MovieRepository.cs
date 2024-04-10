@@ -1,6 +1,7 @@
 ﻿using Firebase.Storage;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using IMDB.CustomExceptions;
 using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
 using Microsoft.Extensions.Options;
@@ -22,19 +23,18 @@ namespace IMDB.Repository
             var name=movie.Name;
             var yor = movie.YearOfRelease;
             var plot = movie.Plot;
-            var producer=movie.Producer.Id;
-            var actors = string.Join(",",movie.Actors.Select(x => x.Id));
-            var genres = string.Join(",", movie.Genres.Select(x=>x.Id));
+            var producer=movie.Producer;
+            var actors = movie.Actors;
+            var genres = movie.Genres;
             var coverImage=movie.CoverImage;
             const string query = @"
-EXEC [usp_Insert_Movie]
-	@Name = @Name,
-	@YearofRelease = @YearOfRelease,
-	@Plot = @Plot,
-	@CoverImage = @CoverImage,
-	@ProducerId = @Producer,
-	@ActorIds = @Actors,
-	@GenreIds = @Genres
+EXEC [usp_Insert_Movie] @Name = @Name
+	,@YearofRelease = @YearOfRelease
+	,@Plot = @Plot
+	,@CoverImage = @CoverImage
+	,@ProducerId = @Producer
+	,@ActorIds = @Actors
+	,@GenreIds = @Genres
 ";
             try
             {
@@ -46,7 +46,9 @@ EXEC [usp_Insert_Movie]
                         .Child(Guid.NewGuid().ToString() + ".png")
                         .PutAsync(coverImageFile.OpenReadStream());
             }
-			catch { }
+			catch(BadRequestException ex) {
+                
+            }
 
             return await Create(query, new
             {
@@ -69,28 +71,116 @@ EXEC [usp_Insert_Movie]
         }*/
         
         public async Task<IEnumerable<Movie>> Get() {
-            return [new Movie(), new Movie()];
+
+            const string query = @"SELECT M.Id
+	,M.Name
+	,M.YearOfRelease
+	,M.Plot
+	,M.[ProducerId] AS Producer
+	,M.CoverImage
+	,STRING_AGG(AM.actorId, ',') AS Actors
+	,STRING_AGG(GM.genreId, ',') AS Genres
+FROM Foundation.Movies M
+INNER JOIN Foundation.Actors_Movies AM ON M.id = AM.MovieId
+INNER JOIN Foundation.Genres_Movies GM ON M.id = GM.MovieId
+GROUP BY M.id
+	,M.Name
+	,M.YearOfRelease
+	,M.Plot
+	,M.ProducerId
+	,M.CoverImage";
+            return await Get(query);
+
         }
 
         public async Task<Movie> Get(int id)
         {
-            return new Movie();
-            //return _movieRepository.FirstOrDefault(movie=>movie.Id==id);
+                const string query = @"SELECT M.Id
+	,M.Name
+	,M.YearOfRelease
+	,M.Plot
+	,M.[ProducerId] AS Producer
+	,M.CoverImage
+	,STRING_AGG(AM.actorId, ',') AS Actors
+	,STRING_AGG(GM.genreId, ',') AS Genres
+FROM Foundation.Movies M
+INNER JOIN Foundation.Actors_Movies AM ON M.id = AM.MovieId
+INNER JOIN Foundation.Genres_Movies GM ON M.id = GM.MovieId
+GROUP BY M.id
+	,M.Name
+	,M.YearOfRelease
+	,M.Plot
+	,M.ProducerId
+	,M.CoverImage
+HAVING M.id = @Id";
+            return await (Get(query, new {Id=id}));
         }
 
         public async Task<IEnumerable<Movie>> GetByYear(int year)
         {
-            return [new Movie(),new Movie()];
+            const string query = @"SELECT M.Id
+	,M.Name
+	,M.YearOfRelease
+	,M.Plot
+	,M.[ProducerId] AS Producer
+	,M.CoverImage
+	,STRING_AGG(AM.actorId, ',') AS Actors
+	,STRING_AGG(GM.genreId, ',') AS Genres
+FROM Foundation.Movies M
+INNER JOIN Foundation.Actors_Movies AM ON M.id = AM.MovieId
+INNER JOIN Foundation.Genres_Movies GM ON M.id = GM.MovieId
+GROUP BY M.id
+	,M.Name
+	,M.YearOfRelease
+	,M.Plot
+	,M.ProducerId
+	,M.CoverImage";
+
+            var allMovies=await Get(query);
+
+            return allMovies.Where(x => x.YearOfRelease==year);
         }
 
         public async Task Update(Movie movie)
         {
-            
+            var id=movie.Id;
+            var name = movie.Name;
+            var yearofrelease = movie.YearOfRelease;
+            var plot=movie.Plot;
+            var producer = movie.Producer;
+            var actors = movie.Actors;
+            var genres = movie.Genres;
+            var coverImage=movie.CoverImage;
+
+
+            const string query = @"EXECUTE [usp_Update_Movie]
+@Id=@Id,
+@Name=@Name,
+@YearofRelease=@Yor,
+@Plot=@Plot,
+@CoverImage=@CoverImage,
+@ProducerId=@Producer,
+@GenreIds=@Genres,
+@ActorIds=@Actors";
+
+            await Update(query, new
+            {
+                Id=id,
+                Name=name,
+                Yor=yearofrelease,
+                Plot=plot,
+                CoverImage=coverImage,
+                Actors=actors,
+                Genres=genres,
+                Producer=producer
+            });
+
         }
 
         public async Task Delete(int id)
         {
-            
+            const string query = @"EXECUTE [usp_DELETE_MOVIE] @Id=@Id";
+            await Delete(query, new { Id = id });
         }
     }
 }
