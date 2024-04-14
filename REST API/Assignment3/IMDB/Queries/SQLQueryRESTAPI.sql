@@ -118,7 +118,7 @@ EXEC Foundation.usp_Delete_Producer @Id=2
 
 
 --DELETING GENRE
-CREATE PROCEDURE usp_Delete_Genre
+CREATE PROCEDURE Foundation.usp_Delete_Genre
 @Id INT
 AS
 BEGIN

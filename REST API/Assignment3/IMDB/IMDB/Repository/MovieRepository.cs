@@ -28,7 +28,7 @@ namespace IMDB.Repository
             var genres = movie.Genres;
             var coverImage=movie.CoverImage;
             const string query = @"
-EXEC [usp_Insert_Movie] @Name = @Name
+EXEC Foundation.[usp_Insert_Movie] @Name = @Name
 	,@YearofRelease = @YearOfRelease
 	,@Plot = @Plot
 	,@CoverImage = @CoverImage
@@ -153,15 +153,14 @@ GROUP BY M.id
             var coverImage=movie.CoverImage;
 
 
-            const string query = @"EXECUTE [usp_Update_Movie]
-@Id=@Id,
-@Name=@Name,
-@YearofRelease=@Yor,
-@Plot=@Plot,
-@CoverImage=@CoverImage,
-@ProducerId=@Producer,
-@GenreIds=@Genres,
-@ActorIds=@Actors";
+            const string query = @"EXECUTE Foundation.[usp_Update_Movie] @Id = @Id
+	,@Name = @Name
+	,@YearofRelease = @Yor
+	,@Plot = @Plot
+	,@CoverImage = @CoverImage
+	,@ProducerId = @Producer
+	,@GenreIds = @Genres
+	,@ActorIds = @Actors";
 
             await Update(query, new
             {
@@ -179,7 +178,7 @@ GROUP BY M.id
 
         public async Task Delete(int id)
         {
-            const string query = @"EXECUTE [usp_DELETE_MOVIE] @Id=@Id";
+            const string query = @"EXECUTE Foundation.[usp_DELETE_MOVIE] @Id = @Id";
             await Delete(query, new { Id = id });
         }
     }

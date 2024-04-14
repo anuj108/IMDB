@@ -18,10 +18,12 @@ namespace IMDB.Repository
             var message=review.Message;
             var movieId = review.MovieId;
             const string query = @"INSERT INTO Foundation.reviews (
-	[message]
-	,[movieId]
+	[Message]
+	,[MovieId]
 	)
-SELECT Scope_Identity";
+values(@Message,@MovieId)
+
+SELECT SCOPE_IDENTITY()";
             return await Create(query, new
             {
                 Message=message,
@@ -66,14 +68,16 @@ WHERE [Id] = @id";
         {
             var message = review.Message;
             var movieId = review.MovieId;
+            var id = review.Id;
             const string query = @"UPDATE Foundation.Reviews
-SET [Message] = @message
-	,[MovieId] = @movieId
-WHERE [Id] = @id";
+SET [Message] = @Message
+	,[MovieId] = @MovieId
+WHERE [Id] = @Id";
             await Update(query, new
             {
                 Message=message,
                 MovieId=movieId,
+                Id=id
             });
         }
 

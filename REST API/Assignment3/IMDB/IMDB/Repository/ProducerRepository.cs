@@ -26,13 +26,15 @@ namespace IMDB.Repository
 	[Name]
 	,[Sex]
 	,[DOB]
-	,[Bio] VALUES (
-		@name
-		,@gender
-		,@dob
-		,@bio
-		)
+	,[Bio]
 	)
+VALUES (
+	@name
+	,@gender
+	,@dob
+	,@bio
+	)
+
 SELECT Scope_Identity()";
             return await Create(query,new
             {
@@ -47,7 +49,7 @@ SELECT Scope_Identity()";
         {
             const string query = @"SELECT [id]
 	,[Name]
-	,[Sex]
+	,[Sex] As Gender
 	,[DOB]
 	,[Bio]
 FROM FOUNDATION.Producers";
@@ -58,7 +60,7 @@ FROM FOUNDATION.Producers";
         {
             const string query = @"SELECT [id]
 	,[Name]
-	,[Sex]
+	,[Sex] As Gender
 	,[DOB]
 	,[Bio]
 FROM FOUNDATION.Producers
@@ -75,17 +77,18 @@ WHERE [id] = @id";
             var dob = producer.DOB;
             var bio= producer.Bio;
             const string query = @"UPDATE Foundation.Producers
-SET [name] = @name
-	,[Sex] = @gender
-	,[DOB] = @dob
-	,[Bio] = bio
-WHERE [Id] = @id";
+SET [name] = @Name
+	,[Sex] = @Gender
+	,[DOB] = @Dob
+	,[Bio] = @Bio
+WHERE [Id] = @Id";
             await Get(query, new
             {
                 Name=name,
                 Gender=gender,
                 DOB=dob,
-                Bio=bio
+                Bio=bio,
+                Id=id
             });
         }
 

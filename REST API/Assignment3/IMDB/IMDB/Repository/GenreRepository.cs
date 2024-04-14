@@ -41,18 +41,20 @@ SELECT Scope_Identity()";
         public async Task Update(Genre genre)
         {
             var name=genre.Name;
+            var id = genre.Id;
             const string query = @"UPDATE FOUNDATION.Genres
-SET [Name] = @name
-WHERE [Id] = @id";
+SET [Name] = @Name
+WHERE [Id] = @Id";
             await Update(query, new
             {
-                Name = name
+                Name = name,
+                Id=id
             });
         }
 
         public async Task Delete(int id)
         {
-            const string query = @"EXEC Foundation.usp_Delete_Producer @Id = @Id";
+            const string query = @"EXEC Foundation.usp_Delete_Genre @Id = @Id";
             await Delete(query, new { Id = id });
         }
     }

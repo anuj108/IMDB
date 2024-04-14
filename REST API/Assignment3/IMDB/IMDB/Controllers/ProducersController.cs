@@ -68,7 +68,7 @@ namespace IMDB.Controllers
             try
             {
                 await _producerService.Update(id, producer);
-                return Ok("Producer with id updated "+id);
+                return Ok("PRODUCER UPDATED WITH ID: "+id);
             }
             catch (BadRequestException ex)
             {
@@ -83,7 +83,7 @@ namespace IMDB.Controllers
             try
             {
                 await _producerService.Delete(id);
-                return Ok("Producer with id deleted "+id);
+                return Ok("PRODUCER DELETED WITH ID: "+id);
             }
             catch (BadRequestException ex)
             {

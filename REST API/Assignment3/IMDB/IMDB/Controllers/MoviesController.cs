@@ -100,7 +100,7 @@ namespace IMDB.Controllers
             try
             {
                await _movieService.Update(id, movieRequest);
-                return Ok("Movie updated with id "+id);
+                return Ok("MOVIE UPDATED WITH ID : "+id);
             }
             catch (BadRequestException ex)
             {
@@ -115,7 +115,7 @@ namespace IMDB.Controllers
             try
             {
                 _movieService.Delete(id);
-                return Ok("Movie deleted with id "+id);
+                return Ok("MOVIE DELETED WITH ID :"+id);
             }
             catch (BadRequestException ex)
             {

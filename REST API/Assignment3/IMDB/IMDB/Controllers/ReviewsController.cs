@@ -80,7 +80,7 @@ namespace IMDB.Controllers
             try
             {
                 await _reviewService.Update(id, review);
-                return Ok("Review updated with id "+id);
+                return Ok("REVIEW UPDATED WITH ID: "+id);
             }
             catch (BadRequestException ex)
             {
@@ -95,7 +95,7 @@ namespace IMDB.Controllers
             try
             {
                 await _reviewService.Delete(id);
-                return Ok("Review deleted with id "+id);
+                return Ok("REVIEW DELETED WITH ID: "+id);
             }
             catch (BadRequestException ex)
             {

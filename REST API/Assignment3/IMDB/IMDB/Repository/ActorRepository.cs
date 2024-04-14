@@ -32,7 +32,7 @@ FROM [FOUNDATION].Actors";
 	,[Name]
 	,[Bio]
 	,[DOB]
-	,[sex]
+	,[Sex] As Gender
 FROM [FOUNDATION].Actors
 WHERE [Id] = @Id";
             return await Get(query, new {Id=id});
@@ -78,7 +78,7 @@ SELECT SCOPE_IDENTITY()
             const string query = @"
 UPDATE FOUNDATION.Actors
 SET [Name] = @name
-	,[Gender] = @gender
+	,[Sex] = @gender
 	,[DOB] = @dob
 	,[Bio] = @bio
 WHERE [Id] = @id
