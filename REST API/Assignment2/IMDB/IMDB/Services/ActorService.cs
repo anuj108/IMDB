@@ -24,12 +24,12 @@ namespace IMDB.Services
         }
 
         //TO GET ALL THE ACTORS
-        public IList<ActorResponse> Get()
+        public List<ActorResponse> Get()
         {
             
-            var responseData = _actorRepository.Get();
-            if (!responseData.Any()) throw new BadRequestException("Empty Actor List returned");
-            return responseData.Select(x => new ActorResponse()
+            var actorData = _actorRepository.Get();
+            if (actorData==null) throw new BadRequestException("Empty Actor List returned");
+            return actorData.Select(x => new ActorResponse()
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -42,8 +42,9 @@ namespace IMDB.Services
         //TO GET THE ACTOR BY ID
         public ActorResponse Get(int id)
         {
-            if (!_actorRepository.Get().Any(x => x.Id == id)) throw new BadRequestException("Actor not Found");
-            var actor= _actorRepository.Get(id);
+            var actor = _actorRepository.Get(id);
+            if (actor==null) throw new BadRequestException("Actor not Found");
+
             return new ActorResponse()
             {
                 Id = actor.Id,
@@ -94,7 +95,8 @@ namespace IMDB.Services
 
         public void Delete(int id)
         {
-            if (id>_actorRepository.Get().Last().Id || id<=0) throw new BadRequestException("Invalid Id");
+            var actorData = _actorRepository.Get(id);
+            if (actorData==null) throw new BadRequestException("Invalid Id");
             _actorRepository.Delete(id);
         }
     }

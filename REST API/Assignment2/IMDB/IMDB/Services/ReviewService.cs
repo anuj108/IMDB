@@ -32,10 +32,11 @@ namespace IMDB.Services
             
         }
 
-        public IList<ReviewResponse> Get()
+        public List<ReviewResponse> Get()
         {
-            if (!_reviewRepository.Get().Any()) throw new BadRequestException("EMPTY");
-            return _reviewRepository.Get().Select(x=>new ReviewResponse
+            var reviewsData=_reviewRepository.Get();
+            if (reviewsData==null) throw new BadRequestException("EMPTY");
+            return reviewsData.Select(x=>new ReviewResponse
             {
                 Id =x.Id,
                 Message = x.Message,
@@ -43,11 +44,10 @@ namespace IMDB.Services
             }).ToList();
         }
 
-        public IList<ReviewResponse> GetByMovieId(int movieId) {
-            if(!_reviewRepository.GetByMovieId(movieId).Any()) throw new BadRequestException("Invalid Message");
+        public List<ReviewResponse> GetByMovieId(int movieId) {
+            var reviewsData = _reviewRepository.GetByMovieId(movieId);
             if (movieId>_movieRepository.Get().Last().Id ||  movieId<=0) throw new BadRequestException("Invalid Id");
-            var responseData=_reviewRepository.GetByMovieId(movieId);
-            return responseData.Select(x => new ReviewResponse
+            return reviewsData.Select(x => new ReviewResponse
             {
                 Id=x.Id,
                 MovieId=x.MovieId,
@@ -57,13 +57,13 @@ namespace IMDB.Services
 
         public ReviewResponse Get(int id)
         {
-            if (!_reviewRepository.Get().Any(x => x.Id == id)) throw new BadRequestException("Review not Found");
-            var responseData= _reviewRepository.Get(id);
+            var reviewsData = _reviewRepository.Get(id);
+            if (reviewsData==null) throw new BadRequestException("Review not Found"); 
             return new ReviewResponse
             {
                 Id=id,
                 Message=responseData.Message,
-                MovieId=responseData.MovieId
+                MovieId=reviewsData.MovieId
             };
         }
 
@@ -81,8 +81,8 @@ namespace IMDB.Services
 
         public void Delete(int id)
         {
-            if (id > _reviewRepository.Get().Last().Id || id <= 0) throw new BadRequestException("Invalid Id");
-            if (!_reviewRepository.Get().Any(x => x.Id == id)) throw new BadRequestException("Review not Found");
+            var reviewData= _reviewRepository.Get(id);
+            if (reviewData==null) throw new BadRequestException("Invalid Id");
             _reviewRepository.Delete(id);
         }
     }

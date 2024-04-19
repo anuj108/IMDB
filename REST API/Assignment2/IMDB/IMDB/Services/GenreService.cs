@@ -28,17 +28,18 @@ namespace IMDB.Services
                 });
         }
 
-        public IList<GenreResponse> Get()
+        public List<GenreResponse> Get()
         {
-            if(!_genreRepository.Get().Any()) throw new BadRequestException("Empty");
-            var responseData=_genreRepository.Get();
-            return responseData.Select(x=> new GenreResponse { Id = x.Id, Name = x.Name }).ToList();
+            var genreData = _genreRepository.Get();
+            if (genreData==null) throw new BadRequestException("Empty");
+            
+            return genreData.Select(x=> new GenreResponse { Id = x.Id, Name = x.Name }).ToList();
         }
 
         public GenreResponse Get(int id)
         {
-            if (id>_genreRepository.Get().Last().Id || id<=0) throw new BadRequestException("Invalid Id");
-            var responseData= _genreRepository.Get(id);
+            var genreData = _genreRepository.Get(id);
+            if (id>genreData.Last().Id || id<=0) throw new BadRequestException("Invalid Id");
             return new GenreResponse
             {
                 Id = id,
@@ -48,7 +49,8 @@ namespace IMDB.Services
 
         public void Update(int id,GenreRequest genreRequest)
         {
-            if (id>_genreRepository.Get().Last().Id || id<=0) throw new BadRequestException("Invalid Id");
+            var genreData = _genreRepository.Get(id);
+            if (id>genreData.Last().Id || id<=0) throw new BadRequestException("Invalid Id");
             _genreRepository.Update(new Genre
             {
                 Id= id,
@@ -57,7 +59,8 @@ namespace IMDB.Services
         }
         public void Delete(int id)
         {
-            if (id>_genreRepository.Get().Last().Id || id<=0) throw new BadRequestException("Invalid Id");
+            var genreData = _genreRepository.Get(id);
+            if (id>genreData.Last().Id || id<=0) throw new BadRequestException("Invalid Id");
             _genreRepository.Delete(id);
         }
     }
