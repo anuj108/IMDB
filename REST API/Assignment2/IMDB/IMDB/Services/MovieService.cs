@@ -68,8 +68,8 @@ namespace IMDB.Services
                 Name = x.Name,
                 YearOfRelease = x.YearOfRelease,
                 Plot = x.Plot,
-                Actors=string.Join(",",x.Actors.Select(y => y.Name)),
-                Genres=string.Join(",", x.Genres.Select(y => y.Name)),
+                Actors=x.Actors.Select(y => y.Name).ToList(),
+                Genres=x.Genres.Select(y => y.Name).ToList(),
                 Producer=x.Producer.Name,
                 CoverImage=x.CoverImage
             }).ToList();
@@ -86,8 +86,8 @@ namespace IMDB.Services
                 Name = movie.Name,
                 YearOfRelease=movie.YearOfRelease,
                 Plot = movie.Plot,
-                Actors=string.Join(",", movie.Actors.Select(y=>y.Name)),
-                Genres=string.Join(",", movie.Genres.Select(y=>y.Name)),
+                Actors=x.Actors.Select(y => y.Name).ToList(),
+                Genres=x.Genres.Select(y => y.Name).ToList(),
                 Producer=movie.Producer.Name,
                 CoverImage=movie.CoverImage
             };
@@ -102,8 +102,8 @@ namespace IMDB.Services
                 Name= x.Name,
                 YearOfRelease=x.YearOfRelease,
                 Plot = x.Plot,
-                Actors=string.Join(",", x.Actors.Select(y => y.Name)),
-                Genres=string.Join(",",x.Genres.Select(y=>y.Name)),
+                Actors=x.Actors.Select(y => y.Name).ToList(),
+                Genres=x.Genres.Select(y => y.Name).ToList(),
                 Producer=x.Producer.Name,
                 CoverImage=x.CoverImage
             }).ToList();
