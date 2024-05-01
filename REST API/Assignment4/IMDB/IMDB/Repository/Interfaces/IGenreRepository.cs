@@ -13,5 +13,6 @@ namespace IMDB.Repository.Interfaces
 
         Task Update(Genre genre);
         Task Delete(int id);
+        Task<IEnumerable<Genre>> GetGenresForMovie(int id);
     }
 }

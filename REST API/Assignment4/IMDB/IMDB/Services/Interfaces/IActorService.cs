@@ -14,6 +14,7 @@ namespace IMDB.Services.Interfaces
         Task<int> Create(ActorRequest actorRequest);
         Task Update(int id, ActorRequest actorRequest);
         Task Delete(int id);
+        Task<IEnumerable<ActorResponse>> GetActorsForMovie(int id);
     }
 
 }

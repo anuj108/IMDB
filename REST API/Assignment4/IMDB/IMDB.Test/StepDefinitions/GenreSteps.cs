@@ -56,5 +56,10 @@ namespace IMDB.Test.StepDefinitions
         {
             GenreMock.MockDelete();
         }
+
+        public static void MockGetGenresForMovie()
+        {
+            GenreMock.MockGetGenresForMovie();
+        }
     }
 }

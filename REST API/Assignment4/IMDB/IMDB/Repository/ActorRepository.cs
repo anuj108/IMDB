@@ -99,5 +99,15 @@ WHERE [Id] = @id
             const string query = @"EXEC Foundation.usp_Delete_Actor @Id = @Id";
             await Delete(query, new {Id=id});
         }
+
+        public async Task<IEnumerable<Actor>> GetActorsForMovie(int id)
+        {
+            const string query = @"Select A.[Id]
+	,A.[Name]
+	,A.[Bio]
+	,A.[DOB]
+	,A.[Sex] AS Gender from Foundation.Actors A inner join Foundation.actors_movies AM on A.id=AM.actorId where AM.movieId=@id";
+            return await GetForMovie(query, new { Id = id });
+        }
     }
 }

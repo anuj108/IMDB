@@ -99,5 +99,6 @@ WHERE [Id] = @Id";
             const string query = @"EXEC Foundation.usp_Delete_Producer @Id = @Id";
             await Delete(query, new {Id=id});
         }
+
     }
 }

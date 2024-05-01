@@ -45,5 +45,10 @@ namespace IMDB.Repository
             using var connection = new SqlConnection(_connectionString);
             await connection.QueryFirstOrDefaultAsync<T>(query, parameters);
         }
+        public async Task<IEnumerable<T>> GetForMovie(string query,object parameters)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            return await connection.QueryAsync<T>(query, parameters);
+        }
     }
 }

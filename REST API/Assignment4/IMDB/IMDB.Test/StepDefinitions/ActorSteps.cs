@@ -59,5 +59,10 @@ namespace IMDB.Test
         {
             ActorMock.MockDelete();
         }
+
+        public static void MockGetActorsForMovie()
+        {
+            ActorMock.MockGetActorsForMovie();
+        }
     }
 }

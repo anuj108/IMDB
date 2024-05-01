@@ -1,4 +1,6 @@
-﻿namespace IMDB.Domain.Response
+﻿using System.Collections.Generic;
+
+namespace IMDB.Domain.Response
 {
     public class MovieResponse
     {
@@ -9,9 +11,9 @@
 
         public string Plot { get; set; }
 
-        public string Actors { get; set; }
-        public string Genres { get; set; }
-        public string Producer { get; set; }
+        public  IEnumerable<ActorResponse> Actors { get; set; }
+        public IEnumerable<GenreResponse> Genres { get; set; }
+        public ProducerResponse Producer { get; set; }
 
         public string CoverImage { get; set; }
     }

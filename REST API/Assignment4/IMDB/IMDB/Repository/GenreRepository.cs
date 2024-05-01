@@ -59,5 +59,11 @@ WHERE [Id] = @Id";
             const string query = @"EXEC Foundation.usp_Delete_Genre @Id = @Id";
             await Delete(query, new { Id = id });
         }
+
+        public async Task<IEnumerable<Genre>> GetGenresForMovie(int id)
+        {
+            const string query = @"Select * from Foundation.genres G inner join Foundation.Genres_Movies GM on G.id=GM.genreId where movieId=@id";
+            return await GetForMovie(query, new { Id = id });
+        }
     }
 }

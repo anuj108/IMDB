@@ -13,5 +13,6 @@ namespace IMDB.Services.Interfaces
         Task<int> Create(ProducerRequest producerRequest);
         Task Update(int id,ProducerRequest producerRequest);
         Task Delete(int id);
+      
     }
 }

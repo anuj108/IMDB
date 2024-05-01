@@ -24,14 +24,14 @@ namespace IMDB.Repository
         }
        
 
-        public async Task<int> Create(Movie movie)
+        public async Task<int> Create(Movie movie,string actorIds,string genreIds)
         {
             var name=movie.Name;
             var yor = movie.YearOfRelease;
             var plot = movie.Plot;
             var producer=movie.Producer;
-            var actors = movie.Actors;
-            var genres = movie.Genres;
+            var actors = actorIds;
+            var genres = genreIds;
             var coverImage=movie.CoverImage;
             const string query = @"
 EXEC Foundation.[usp_Insert_Movie] @Name = @Name
@@ -147,15 +147,15 @@ GROUP BY M.id
             return allMovies.Where(x => x.YearOfRelease==year);
         }
 
-        public async Task Update(Movie movie)
+        public async Task Update(Movie movie, string actorIds, string genreIds)
         {
             var id=movie.Id;
             var name = movie.Name;
             var yearofrelease = movie.YearOfRelease;
             var plot=movie.Plot;
             var producer = movie.Producer;
-            var actors = movie.Actors;
-            var genres = movie.Genres;
+            var actors = actorIds;
+            var genres = genreIds;
             var coverImage=movie.CoverImage;
 
 

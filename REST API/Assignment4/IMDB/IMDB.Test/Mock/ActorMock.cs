@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace IMDB.Test.Mock
 {
-    public  class ActorMock
+    public partial class ActorMock
     {
-         public static readonly Mock<IActorRepository> MockActorRepo = new Mock<IActorRepository>();
-        public static List<Actor> ListOfActors = new List<Actor>()
+
+        public static readonly Mock<IActorRepository> MockActorRepo = new Mock<IActorRepository>();
+        public static List<Actor> ActorList = new List<Actor>()
         {
             new Actor
             {
@@ -39,18 +40,27 @@ namespace IMDB.Test.Mock
                 Gender = "male"
             }
         };
+
+        public static List<Actors_Movies> ActorsMovies = new List<Actors_Movies>()
+        {
+            new Actors_Movies
+            {
+                actorId=1,
+                movieId=1
+            }
+        };
         public static void MockCreate()
         {
-            MockActorRepo.Setup(x => x.Create(It.IsAny<Actor>())).ReturnsAsync(ListOfActors.Max(x => x.Id) + 1);
+            MockActorRepo.Setup(x => x.Create(It.IsAny<Actor>())).ReturnsAsync(ActorList.Max(x => x.Id) + 1);
         }
         public static void MockGetAll()
         {
-            MockActorRepo.Setup(x => x.Get()).ReturnsAsync(ListOfActors);
+            MockActorRepo.Setup(x => x.Get()).ReturnsAsync(ActorList);
         }
 
         public static void MockGetById()
         {
-            MockActorRepo.Setup(x=>x.Get(It.IsAny<int>())).ReturnsAsync((int id)=>ListOfActors.FirstOrDefault(x=>x.Id==id));
+            MockActorRepo.Setup(x=>x.Get(It.IsAny<int>())).ReturnsAsync((int id)=> ActorList.FirstOrDefault(x=>x.Id==id));
         }
 
         public static void MockUpdate()
@@ -61,6 +71,15 @@ namespace IMDB.Test.Mock
         public static void MockDelete()
         {
             MockActorRepo.Setup(x => x.Delete(It.IsAny<int>()));
+        }
+
+        public static void MockGetActorsForMovie()
+        {
+            MockActorRepo.Setup(x=>x.GetActorsForMovie(It.IsAny<int>())).ReturnsAsync((int id)=>
+            {
+                var actorIds = ActorsMovies.Where(y=>y.movieId==id).Select(y=>y.actorId);
+                return ActorList.Where(y => actorIds.Contains(y.Id));
+            });
         }
 
     }

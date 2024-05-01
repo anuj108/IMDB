@@ -20,11 +20,11 @@ namespace IMDB.Test.Mock
             YearOfRelease = 2000,
             Plot="something",
             CoverImage="1.jpg",
-            Producer=1,
-            Actors="1,2",
-            Genres="1"
+            Producer=1
         }
         };
+
+
 
         public static void MockGetAll()
         {
@@ -32,7 +32,7 @@ namespace IMDB.Test.Mock
         }
         public static void MockCreate()
         {
-            MockMovieRepo.Setup(x => x.Create(It.IsAny<Movie>())).ReturnsAsync(ListOfMovies.Max(x=>x.Id)+1);
+            MockMovieRepo.Setup(x => x.Create(It.IsAny<Movie>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(ListOfMovies.Max(x=>x.Id)+1);
         }
 
         public static void MockGetById()
@@ -47,7 +47,7 @@ namespace IMDB.Test.Mock
 
         public static void MockUpdate()
         {
-            MockMovieRepo.Setup(x => x.Update(It.IsAny<Movie>()));
+            MockMovieRepo.Setup(x => x.Update(It.IsAny<Movie>(), It.IsAny<string>(), It.IsAny<string>()));
         }
 
     }

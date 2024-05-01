@@ -13,5 +13,6 @@ namespace IMDB.Repository.Interfaces
         Task<int> Create(Actor actor);
         Task Update(int Id,Actor actor);
         Task Delete(int id);
+        Task<IEnumerable<Actor>> GetActorsForMovie(int id);
     }
 }

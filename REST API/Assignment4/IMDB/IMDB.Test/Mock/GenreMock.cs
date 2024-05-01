@@ -1,18 +1,20 @@
 ﻿using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
+using IMDB.Test.Mock.Mapping;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static IMDB.Test.Mock.ActorMock;
 
 namespace IMDB.Test.Mock
 {
     public class GenreMock
     {
         public static readonly Mock<IGenreRepository> MockGenreRepo = new Mock<IGenreRepository>();
-        public static List<Genre> ListOfGenres = new List<Genre>()
+        public static List<Genre> GenreList = new List<Genre>()
         {
             new Genre
             {
@@ -33,18 +35,27 @@ namespace IMDB.Test.Mock
                 
             }
         };
+
+        public static List<Genres_Movies> GenresMovies = new List<Genres_Movies>()
+        {
+            new Genres_Movies
+            {
+                genreId=1,
+                movieId=1
+            }
+        };
         public static void MockCreate()
         {
-            MockGenreRepo.Setup(x => x.Create(It.IsAny<Genre>())).ReturnsAsync(ListOfGenres.Max(x => x.Id) + 1);
+            MockGenreRepo.Setup(x => x.Create(It.IsAny<Genre>())).ReturnsAsync(GenreList.Max(x => x.Id) + 1);
         }
         public static void MockGetAll()
         {
-            MockGenreRepo.Setup(x => x.Get()).ReturnsAsync(ListOfGenres);
+            MockGenreRepo.Setup(x => x.Get()).ReturnsAsync(GenreList);
         }
 
         public static void MockGetById()
         {
-            MockGenreRepo.Setup(x => x.Get(It.IsAny<int>())).ReturnsAsync((int id) => ListOfGenres.FirstOrDefault(x => x.Id==id));
+            MockGenreRepo.Setup(x => x.Get(It.IsAny<int>())).ReturnsAsync((int id) => GenreList.FirstOrDefault(x => x.Id==id));
         }
 
         public static void MockUpdate()
@@ -55,6 +66,14 @@ namespace IMDB.Test.Mock
         public static void MockDelete()
         {
             MockGenreRepo.Setup(x => x.Delete(It.IsAny<int>()));
+        }
+        public static void MockGetGenresForMovie()
+        {
+            MockGenreRepo.Setup(x => x.GetGenresForMovie(It.IsAny<int>())).ReturnsAsync((int id) =>
+            {
+                var actorIds = GenresMovies.Where(y => y.movieId==id).Select(y => y.genreId);
+                return GenreList.Where(y => actorIds.Contains(y.Id));
+            });
         }
     }
 }

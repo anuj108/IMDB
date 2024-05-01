@@ -20,6 +20,9 @@ namespace IMDB.Test.StepDefinitions
                    services.AddScoped(_ => ProducerMock.MockProducerRepo.Object);
                    services.AddScoped(_ => GenreMock.MockGenreRepo.Object);
                    services.AddScoped<IMovieService, MovieService>();
+                   services.AddScoped<IActorService, ActorService>();
+                   services.AddScoped<IGenreService, GenreService>();
+                   services.AddScoped<IProducerService, ProducerService>();
                });
            }))
         {
@@ -53,6 +56,7 @@ namespace IMDB.Test.StepDefinitions
         }
         [BeforeScenario]
         [Scope(Tag = "GetMovieById")]
+        [Scope(Tag = "GetAllMovies")]
         public static void MockGetByIdProducer()
         {
             ProducerMock.MockGetById();
@@ -85,6 +89,22 @@ namespace IMDB.Test.StepDefinitions
         public static void MockDeletemovie()
         {
             MovieMock.MockDelete();
+        }
+
+        [BeforeScenario]
+        [Scope(Tag = "GetMovieById")]
+        [Scope(Tag = "GetAllMovies")]
+        public static void MockGetActorsForMovie()
+        {
+            ActorMock.MockGetActorsForMovie();
+        }
+
+        [BeforeScenario]
+        [Scope(Tag = "GetAllMovies")]
+        [Scope(Tag = "GetMovieById")]
+        public static void MockGetGenresForMovie()
+        {
+            GenreMock.MockGetGenresForMovie();
         }
     }
 }

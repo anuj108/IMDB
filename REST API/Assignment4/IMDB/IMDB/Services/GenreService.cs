@@ -63,5 +63,20 @@ namespace IMDB.Services
             if (await _genreRepository.Get(id)==null) throw new NotFoundException("NO GENRE FOUND");
             await _genreRepository.Delete(id);
         }
+
+        //TO GET STRING OF IDS OF GENRES USING genreS_MOVIES TABLE
+        public async Task<IEnumerable<GenreResponse>> GetGenresForMovie(int id)
+        {
+            var genreResponse = await _genreRepository.GetGenresForMovie(id);
+           
+            if (genreResponse == null) throw new NotFoundException("EMPTY GENRE LIST");
+            return genreResponse.Select(x => new GenreResponse()
+            {
+                Id = x.Id,
+                Name = x.Name
+            }).ToList();
+
+        }
+
     }
 }
