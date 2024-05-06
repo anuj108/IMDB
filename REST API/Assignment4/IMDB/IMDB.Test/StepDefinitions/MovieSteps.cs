@@ -44,6 +44,7 @@ namespace IMDB.Test.StepDefinitions
         [BeforeScenario]
         [Scope(Tag = "GetAllMovies")]
         [Scope(Tag = "GetMovieById")]
+        [Scope(Tag = "GetMoviesByYear")]
         public static void MockGetAllActors()
         {
             ActorMock.MockGetAll();
@@ -57,6 +58,7 @@ namespace IMDB.Test.StepDefinitions
         [BeforeScenario]
         [Scope(Tag = "GetMovieById")]
         [Scope(Tag = "GetAllMovies")]
+        [Scope(Tag = "GetMoviesByYear")]
         public static void MockGetByIdProducer()
         {
             ProducerMock.MockGetById();
@@ -94,6 +96,7 @@ namespace IMDB.Test.StepDefinitions
         [BeforeScenario]
         [Scope(Tag = "GetMovieById")]
         [Scope(Tag = "GetAllMovies")]
+        [Scope(Tag = "GetMoviesByYear")]
         public static void MockGetActorsForMovie()
         {
             ActorMock.MockGetActorsForMovie();
@@ -102,9 +105,19 @@ namespace IMDB.Test.StepDefinitions
         [BeforeScenario]
         [Scope(Tag = "GetAllMovies")]
         [Scope(Tag = "GetMovieById")]
+        [Scope(Tag = "GetMoviesByYear")]
         public static void MockGetGenresForMovie()
         {
             GenreMock.MockGetGenresForMovie();
+        }
+
+        [Scope(Tag = "GetAllMovies")]
+        [Scope(Tag = "GetMovieById")]
+        [Scope(Tag = "GetMoviesByYear")]
+        [BeforeScenario]
+        public static void MockGetMoviesByYear()
+        {
+            MovieMock.MockGetMoviesByYear();
         }
     }
 }

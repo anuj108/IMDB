@@ -28,21 +28,30 @@ namespace IMDB.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch(NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
         //To get all reviews for a movie
         [HttpGet]
-        [Route("movie/{movieId}")]
+        [Route("~/api/movies/{movieId}/reviews")]
         public async Task<IActionResult> GetByMovieId([FromRoute] int movieId)
         {
             try
             {
                 return Ok(await _reviewService.GetByMovieId(movieId));
             }
+
             catch(BadRequestException ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
         //To get a specific review for a movie 
         [HttpGet("{id}")]
@@ -51,6 +60,10 @@ namespace IMDB.Controllers
             try
             {
                 return Ok(await _reviewService.Get(id));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (NotFoundException ex)
             {
@@ -73,6 +86,10 @@ namespace IMDB.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
@@ -86,6 +103,10 @@ namespace IMDB.Controllers
             catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
 
         }
@@ -101,6 +122,10 @@ namespace IMDB.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
 
         }

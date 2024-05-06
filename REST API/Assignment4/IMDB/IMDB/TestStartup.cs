@@ -22,6 +22,10 @@ namespace IMDB
             services.AddControllers();
             services.AddScoped<IActorService,ActorService>();
             services.AddScoped<IProducerService, ProducerService>();
+       
+            services.AddScoped<IGenreService, GenreService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IMovieService, MovieService>();
 
         }
         // This method gets called by the runtime. Use this method to configurethe HTTP request pipeline.

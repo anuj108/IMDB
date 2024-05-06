@@ -37,12 +37,12 @@ namespace IMDB.Services
         public async Task<IEnumerable<ReviewResponse>> Get()
         {
             var responseData = await _reviewRepository.Get();
-            if (!responseData.Any()) throw new NotFoundException("NO REVIEW FOUND");
+            if (responseData==null) throw new NotFoundException("NO REVIEW FOUND");
             return responseData.Select(x=>new ReviewResponse
             {
                 Id =x.Id,
                 Message = x.Message,
-                MovieId = x.MovieId
+                MovieName = _movieRepository.Get(x.MovieId).Result.Name
             }).ToList();
         }
 
@@ -54,7 +54,7 @@ namespace IMDB.Services
             return responseData.Select(x => new ReviewResponse
             {
                 Id=x.Id,
-                MovieId=x.MovieId,
+                MovieName=_movieRepository.Get(x.MovieId).Result.Name,
                 Message = x.Message,
             }).ToList();
         }
@@ -68,7 +68,7 @@ namespace IMDB.Services
             {
                 Id=id,
                 Message=responseData.Message,
-                MovieId=responseData.MovieId
+                MovieName=_movieRepository.Get(responseData.MovieId).Result.Name,
             };
         }
 

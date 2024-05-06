@@ -19,7 +19,9 @@ namespace IMDB.Test.StepDefinitions
                       services.AddScoped(_ => ReviewMock.MockReviewRepo.Object);
                       services.AddScoped<IReviewService, ReviewService>();
                       services.AddScoped(_ => MovieMock.MockMovieRepo.Object);
-
+                      services.AddScoped(_ => ActorMock.MockActorRepo.Object);
+                      services.AddScoped(_ => GenreMock.MockGenreRepo.Object);
+                      services.AddScoped(_ => ProducerMock.MockProducerRepo.Object);
                   });
               }))
         {
@@ -40,19 +42,23 @@ namespace IMDB.Test.StepDefinitions
         }
 
         [BeforeScenario]
-        [Scope(Tag = "GetReviewById")]
         [Scope(Tag = "GetAllReviews")]
-        [Scope(Tag = "CreateReview")]
         public static void MockGetAll()
         {
             ReviewMock.MockGetAll();
         }
         [BeforeScenario]
         [Scope(Tag = "GetReviewById")]
-        [Scope(Tag = "DeleteReview")]
         public static void MockGetById()
         {
             ReviewMock.MockGetById();
+        }
+
+        [BeforeScenario]
+        [Scope(Tag = "GetReviewsByMovieId")]
+        public static void MockGetByMovieId()
+        {
+            ReviewMock.MockGetByMovieId();
         }
 
         [BeforeScenario]

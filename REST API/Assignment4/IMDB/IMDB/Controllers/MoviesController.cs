@@ -35,10 +35,14 @@ namespace IMDB.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
 
         }
 
-        [HttpGet("year")]
+        [HttpGet("filter")]
   
         public async Task<IActionResult> GetAllMoviesByYear([FromQuery] int year)
         {
@@ -50,7 +54,11 @@ namespace IMDB.Controllers
             {
                 return NotFound(ex.Message);
             }
-           
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
         //To get an Movie by ID
         [HttpGet("{id}")]
@@ -63,6 +71,10 @@ namespace IMDB.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
 
         }
@@ -130,6 +142,10 @@ namespace IMDB.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

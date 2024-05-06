@@ -5,7 +5,7 @@ Scenario: Get All Reviews
 	Given I am a Client
 	When I make a GET Request '/api/reviews'
 	Then response code must be '200'
-	And response should look like '[{"id":1,"message":"Dummy","movieId":1},{"id":2,"message":"Dummy2","movieId":1},{"id":3,"message":"Dummy3","movieId":2}]'
+	And response should look like '[{"id":1,"message":"Dummy","movieName":"Foo"},{"id":2,"message":"Dummy2","movieName":"Foo"},{"id":3,"message":"Dummy3","movieName":"Foo"}]'
 
 @GetReviewById
 Scenario: Get Review By Id
@@ -16,9 +16,21 @@ Scenario: Get Review By Id
 
 	Examples: 
 	| resourceEndpoint | status | response |
-	| /api/Reviews/1    | 200    | {"id":1,"message":"Dummy","movieId":1}         |
-	| /api/Reviews/2    | 200    | {"id":2,"message":"Dummy2","movieId":1}         |
+	| /api/Reviews/1    | 200    | {"id":1,"message":"Dummy","movieName":"Foo"}         |
+	| /api/Reviews/2    | 200    | {"id":2,"message":"Dummy2","movieName":"Foo"}         |
 	|        /api/Reviews/0          | 404       | NO REVIEW FOUND       |
+
+@GetReviewsByMovieId
+Scenario: Get Reviews By MovieId
+	Given I am a Client
+	When I make a GET Request '<resourceEndpoint>'
+	Then response code must be '<status>'
+	And response should look like '<response>'
+
+	Examples: 
+	| resourceEndpoint | status | response |
+	| /api/Movies/1/Reviews    | 200    | [{"id":1,"message":"Dummy","movieName":"Foo"},{"id":2,"message":"Dummy2","movieName":"Foo"},{"id":3,"message":"Dummy3","movieName":"Foo"}]         |
+	|        /api/Movies/0/Reviews          | 404       | NO REVIEW FOUND       |
 
 @CreateReview
 Scenario: Create Review

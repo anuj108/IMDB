@@ -84,17 +84,7 @@ EXEC Foundation.[usp_Insert_Movie] @Name = @Name
 	,M.Plot
 	,M.[ProducerId] AS Producer
 	,M.CoverImage
-	,STRING_AGG(AM.actorId, ',') AS Actors
-	,STRING_AGG(GM.genreId, ',') AS Genres
-FROM Foundation.Movies M
-INNER JOIN Foundation.Actors_Movies AM ON M.id = AM.MovieId
-INNER JOIN Foundation.Genres_Movies GM ON M.id = GM.MovieId
-GROUP BY M.id
-	,M.Name
-	,M.YearOfRelease
-	,M.Plot
-	,M.ProducerId
-	,M.CoverImage";
+FROM Foundation.Movies M";
             return await Get(query);
 
         }
@@ -107,40 +97,20 @@ GROUP BY M.id
 	,M.Plot
 	,M.[ProducerId] AS Producer
 	,M.CoverImage
-	,STRING_AGG(AM.actorId, ',') AS Actors
-	,STRING_AGG(GM.genreId, ',') AS Genres
 FROM Foundation.Movies M
-INNER JOIN Foundation.Actors_Movies AM ON M.id = AM.MovieId
-INNER JOIN Foundation.Genres_Movies GM ON M.id = GM.MovieId
-GROUP BY M.id
-	,M.Name
-	,M.YearOfRelease
-	,M.Plot
-	,M.ProducerId
-	,M.CoverImage
-HAVING M.id = @Id";
+WHERE M.id = @Id";
             return await (Get(query, new {Id=id}));
         }
 
         public async Task<IEnumerable<Movie>> GetByYear(int year)
         {
-            const string query = @"SELECT M.Id
-	,M.Name
-	,M.YearOfRelease
-	,M.Plot
-	,M.[ProducerId] AS Producer
-	,M.CoverImage
-	,STRING_AGG(AM.actorId, ',') AS Actors
-	,STRING_AGG(GM.genreId, ',') AS Genres
-FROM Foundation.Movies M
-INNER JOIN Foundation.Actors_Movies AM ON M.id = AM.MovieId
-INNER JOIN Foundation.Genres_Movies GM ON M.id = GM.MovieId
-GROUP BY M.id
-	,M.Name
-	,M.YearOfRelease
-	,M.Plot
-	,M.ProducerId
-	,M.CoverImage";
+            const string query = @"SELECT Id
+	,Name
+	,YearOfRelease
+	,Plot
+	,[ProducerId] AS Producer
+	,CoverImage
+FROM Foundation.Movies";
 
             var allMovies=await Get(query);
 

@@ -19,6 +19,18 @@ Scenario: Get movie By Id
 	| /api/movies/1    | 200    |{"id":1,"name":"Foo","yearOfRelease":2000,"plot":"something","actors":[{"id":1,"name":"Actor1","bio":"Bio1","dob":"1999-07-08T00:00:00","gender":"Male"}],"genres":[{"id":1,"name":"Dummy"}],"producer":{"id":1,"name":"ABC","bio":"some info","dob":"1999-08-08T00:00:00","gender":"Male"},"coverImage":"1.jpg"}         |
 	|        /api/movies/0          | 404       | NO MOVIE FOUND       |
 
+@GetMoviesByYear
+Scenario: Get movies by year
+	Given I am a Client
+	When I make a GET Request '<resourceEndpoint>'
+	Then response code must be '<status>'
+	And response should look like '<response>'
+
+	Examples: 
+	| resourceEndpoint | status | response |
+	| /api/movies/filter?year=2000    | 200    |[{"id":1,"name":"Foo","yearOfRelease":2000,"plot":"something","actors":[{"id":1,"name":"Actor1","bio":"Bio1","dob":"1999-07-08T00:00:00","gender":"Male"}],"genres":[{"id":1,"name":"Dummy"}],"producer":{"id":1,"name":"ABC","bio":"some info","dob":"1999-08-08T00:00:00","gender":"Male"},"coverImage":"1.jpg"}]         |
+	|        /api/movies/0          | 404       | NO MOVIE FOUND       |
+
 @CreateMovie
 Scenario: Create movie
 	Given I am a Client

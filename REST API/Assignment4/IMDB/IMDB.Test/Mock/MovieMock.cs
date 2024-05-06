@@ -50,5 +50,10 @@ namespace IMDB.Test.Mock
             MockMovieRepo.Setup(x => x.Update(It.IsAny<Movie>(), It.IsAny<string>(), It.IsAny<string>()));
         }
 
+        public static void MockGetMoviesByYear()
+        {
+            MockMovieRepo.Setup(x => x.GetByYear(It.IsAny<int>())).ReturnsAsync((int year) => ListOfMovies.Where(x => x.YearOfRelease==year));
+        }
+
     }
 }

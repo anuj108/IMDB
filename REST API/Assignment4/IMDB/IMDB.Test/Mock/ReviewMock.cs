@@ -31,7 +31,7 @@ namespace IMDB.Test.Mock
             {
                 Id = 3,
                 Message = "Dummy3",
-                MovieId = 2,
+                MovieId = 1,
             }
         };
         public static void MockCreate()
@@ -56,6 +56,11 @@ namespace IMDB.Test.Mock
         public static void MockDelete()
         {
             MockReviewRepo.Setup(x => x.Delete(It.IsAny<int>()));
+        }
+
+        public static void MockGetByMovieId()
+        {
+            MockReviewRepo.Setup(x=>x.GetByMovieId(It.IsAny<int>())).ReturnsAsync((int id)=>ListOfReviews.Where(x=>x.MovieId==id));
         }
     }
 }
