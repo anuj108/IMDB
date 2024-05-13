@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IMDB.Test.Mock
 {
-    public partial class ActorMock
+    public class ActorMock
     {
 
         public static readonly Mock<IActorRepository> MockActorRepo = new Mock<IActorRepository>();

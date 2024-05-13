@@ -32,19 +32,19 @@ namespace IMDB.Services
 
         public async Task<IEnumerable<GenreResponse>> Get()
         {
-            var responseData = await _genreRepository.Get();
-            if (!responseData.Any()) throw new NotFoundException("EMPTY GENRE LIST");
-            return responseData.Select(x=> new GenreResponse { Id = x.Id, Name = x.Name }).ToList();
+            var genreData = await _genreRepository.Get();
+            if (!genreData.Any()) throw new NotFoundException("EMPTY GENRE LIST");
+            return genreData.Select(x=> new GenreResponse { Id = x.Id, Name = x.Name }).ToList();
         }
 
         public async Task<GenreResponse> Get(int id)
         {
-            var responseData = await _genreRepository.Get(id);
-            if (responseData == null) throw new NotFoundException("EMPTY GENRE LIST");
+            var genreData = await _genreRepository.Get(id);
+            if (genreData == null) throw new NotFoundException("EMPTY GENRE LIST");
             return new GenreResponse
             {
-                Id = responseData.Id,
-                Name = responseData.Name
+                Id = genreData.Id,
+                Name = genreData.Name
             };
         }
 
@@ -67,10 +67,10 @@ namespace IMDB.Services
         //TO GET STRING OF IDS OF GENRES USING genreS_MOVIES TABLE
         public async Task<IEnumerable<GenreResponse>> GetGenresForMovie(int id)
         {
-            var genreResponse = await _genreRepository.GetGenresForMovie(id);
+            var genreData = await _genreRepository.GetGenresForMovie(id);
            
-            if (genreResponse == null) throw new NotFoundException("EMPTY GENRE LIST");
-            return genreResponse.Select(x => new GenreResponse()
+            if (genreData == null) throw new NotFoundException("EMPTY GENRE LIST");
+            return genreData.Select(x => new GenreResponse()
             {
                 Id = x.Id,
                 Name = x.Name

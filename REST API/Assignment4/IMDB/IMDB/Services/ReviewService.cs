@@ -15,7 +15,7 @@ namespace IMDB.Services
     {
         private readonly IReviewRepository _reviewRepository;
         private readonly IMovieRepository _movieRepository;
-        private int _id = 0;
+  
         public ReviewService(IReviewRepository reviewRepository,IMovieRepository movieRepository) {
             _reviewRepository = reviewRepository;
             _movieRepository = movieRepository;
@@ -36,9 +36,9 @@ namespace IMDB.Services
 
         public async Task<IEnumerable<ReviewResponse>> Get()
         {
-            var responseData = await _reviewRepository.Get();
-            if (responseData==null) throw new NotFoundException("NO REVIEW FOUND");
-            return responseData.Select(x=>new ReviewResponse
+            var reviewData = await _reviewRepository.Get();
+            if (reviewData==null) throw new NotFoundException("NO REVIEW FOUND");
+            return reviewData.Select(x=>new ReviewResponse
             {
                 Id =x.Id,
                 Message = x.Message,
@@ -47,11 +47,11 @@ namespace IMDB.Services
         }
 
         public async Task<IEnumerable<ReviewResponse>> GetByMovieId(int movieId) {
-            var responseData = await _reviewRepository.GetByMovieId(movieId);
-            if (!responseData.Any()) throw new NotFoundException("NO REVIEW FOUND");
+            var reviewData = await _reviewRepository.GetByMovieId(movieId);
+            if (!reviewData.Any()) throw new NotFoundException("NO REVIEW FOUND");
 
 
-            return responseData.Select(x => new ReviewResponse
+            return reviewData.Select(x => new ReviewResponse
             {
                 Id=x.Id,
                 MovieName=_movieRepository.Get(x.MovieId).Result.Name,
@@ -61,14 +61,14 @@ namespace IMDB.Services
 
         public async Task<ReviewResponse> Get(int id)
         {
-            var responseData = await _reviewRepository.Get(id);
-            if (responseData==null) throw new NotFoundException("NO REVIEW FOUND");
+            var reviewData = await _reviewRepository.Get(id);
+            if (reviewData==null) throw new NotFoundException("NO REVIEW FOUND");
 
             return new ReviewResponse
             {
                 Id=id,
-                Message=responseData.Message,
-                MovieName=_movieRepository.Get(responseData.MovieId).Result.Name,
+                Message=reviewData.Message,
+                MovieName=_movieRepository.Get(reviewData.MovieId).Result.Name,
             };
         }
 
@@ -86,8 +86,8 @@ namespace IMDB.Services
 
         public async Task Delete(int id)
         {
-            var responseData = await _reviewRepository.Get(id);
-            if (responseData==null) throw new NotFoundException("NO REVIEW FOUND");
+            var reviewData = await _reviewRepository.Get(id);
+            if (reviewData==null) throw new NotFoundException("NO REVIEW FOUND");
             await _reviewRepository.Delete(id);
         }
     }

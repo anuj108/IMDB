@@ -40,22 +40,22 @@ namespace IMDB.Services
 
         public async Task<IEnumerable<ProducerResponse>> Get()
         {
-            var responseData=await _producerRepository.Get();
-            if (!responseData.Any()) throw new NotFoundException("NO PRODUCER FOUND");
-            return responseData.Select(x=>new ProducerResponse { Id=x.Id, Name=x.Name, Bio=x.Bio,Gender=x.Gender,DOB=x.DOB}).ToList();
+            var producerData=await _producerRepository.Get();
+            if (!producerData.Any()) throw new NotFoundException("NO PRODUCER FOUND");
+            return producerData.Select(x=>new ProducerResponse { Id=x.Id, Name=x.Name, Bio=x.Bio,Gender=x.Gender,DOB=x.DOB}).ToList();
         }
 
         public async Task<ProducerResponse> Get(int id)
         {
-            var responseData = await _producerRepository.Get(id);
-            if (responseData == null) throw new NotFoundException("NO PRODUCER FOUND");
+            var producerData = await _producerRepository.Get(id);
+            if (producerData == null) throw new NotFoundException("NO PRODUCER FOUND");
             return new ProducerResponse
             {
-                Id = responseData.Id,
-                Name=responseData.Name,
-                Bio=responseData.Bio,
-                DOB=responseData.DOB,
-                Gender=responseData.Gender
+                Id = producerData.Id,
+                Name=producerData.Name,
+                Bio=producerData.Bio,
+                DOB=producerData.DOB,
+                Gender=producerData.Gender
             };
         }
 

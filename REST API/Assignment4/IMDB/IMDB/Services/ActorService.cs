@@ -30,9 +30,9 @@ namespace IMDB.Services
         public async Task<IEnumerable<ActorResponse>> Get()
         {
 
-            var responseData = await _actorRepository.Get();
-            if (!responseData.Any()) throw new NotFoundException("EMPTY ACTOR LIST");
-            return responseData.Select(x => new ActorResponse()
+            var actorData = await _actorRepository.Get();
+            if (!actorData.Any()) throw new NotFoundException("EMPTY ACTOR LIST");
+            return actorData.Select(x => new ActorResponse()
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -45,15 +45,15 @@ namespace IMDB.Services
         //TO GET THE ACTOR BY ID
         public async Task<ActorResponse> Get(int id)
         {
-            var responseData = await _actorRepository.Get(id);
-            if (responseData == null) throw new NotFoundException("NO ACTOR FOUND");
+            var actorData = await _actorRepository.Get(id);
+            if (actorData == null) throw new NotFoundException("NO ACTOR FOUND");
             return new ActorResponse()
             {
-                Id = responseData.Id,
-                Name = responseData.Name,
-                Bio = responseData.Bio,
-                DOB = responseData.DOB,
-                Gender = responseData.Gender
+                Id = actorData.Id,
+                Name = actorData.Name,
+                Bio = actorData.Bio,
+                DOB = actorData.DOB,
+                Gender = actorData.Gender
             };
         }
 
@@ -106,8 +106,8 @@ namespace IMDB.Services
         //TO GET STRING OF IDS OF ACTORS USING ACTORS_MOVIES TABLE
         public async Task<IEnumerable<ActorResponse>> GetActorsForMovie(int id)
         {
-            var actorResponse= await _actorRepository.GetActorsForMovie(id);
-            return actorResponse.Select(x => new ActorResponse(){
+            var actorData= await _actorRepository.GetActorsForMovie(id);
+            return actorData.Select(x => new ActorResponse(){
                 Id = x.Id,
                 Name = x.Name,
                 Bio = x.Bio,

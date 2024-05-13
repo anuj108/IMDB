@@ -74,29 +74,29 @@ namespace IMDB.Services
 
         public async Task<MovieResponse> Get(int id)
         {
-            var responseData = await _movieRepository.Get(id);
-            if (responseData==null) throw new NotFoundException("NO MOVIE FOUND");
+            var movieData = await _movieRepository.Get(id);
+            if (movieData==null) throw new NotFoundException("NO MOVIE FOUND");
            
             
             return new MovieResponse
             {
                 Id=id,
-                Name = responseData.Name,
-                YearOfRelease=responseData.YearOfRelease,
-                Plot = responseData.Plot,
+                Name = movieData.Name,
+                YearOfRelease=movieData.YearOfRelease,
+                Plot = movieData.Plot,
 
                 Actors=_actorService.GetActorsForMovie(id).Result,
                 Genres=_genreService.GetGenresForMovie(id).Result,
                 Producer=_producerService.Get(id).Result,
-                CoverImage=responseData.CoverImage
+                CoverImage=movieData.CoverImage
             };
         }
 
         public async Task<IEnumerable<MovieResponse>> GetByYear(int year) {
             if (year < 1800 || year > DateTime.Now.Year + 10) throw new BadRequestException("INVALID YEAR"); 
-            var responseData= await _movieRepository.GetByYear(year);
+            var movieData= await _movieRepository.GetByYear(year);
 
-            return responseData.Select(x => new MovieResponse
+            return movieData.Select(x => new MovieResponse
             {
                 Id = x.Id,
                 Name= x.Name,

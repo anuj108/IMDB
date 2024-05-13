@@ -119,13 +119,13 @@ namespace IMDB.Controllers
                 await _reviewService.Delete(id);
                 return Ok("REVIEW DELETED WITH ID: "+id);
             }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
 
         }

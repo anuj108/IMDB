@@ -50,13 +50,13 @@ namespace IMDB.Controllers
             {
                 return Ok(await _movieService.GetByYear(year));
             }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
 
         }
@@ -68,13 +68,13 @@ namespace IMDB.Controllers
             {
                 return Ok(await _movieService.Get(id));
             }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
 
         }
@@ -139,13 +139,13 @@ namespace IMDB.Controllers
                 await _movieService.Delete(id);
                 return Ok("MOVIE DELETED WITH ID :"+id);
             }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
     }
