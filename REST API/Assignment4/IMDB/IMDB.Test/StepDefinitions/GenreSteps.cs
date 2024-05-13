@@ -30,7 +30,6 @@ namespace IMDB.Test.StepDefinitions
             GenreMock.MockCreate();
         }
         [BeforeScenario]
-        [Scope(Tag = "GetGenreById")]
         [Scope(Tag = "GetAllGenres")]
         public static void MockGetAll()
         {
@@ -38,7 +37,6 @@ namespace IMDB.Test.StepDefinitions
         }
         [BeforeScenario]
         [Scope(Tag = "GetGenreById")]
-        [Scope(Tag = "DeleteGenre")]
         public static void MockGetById()
         {
             GenreMock.MockGetById();

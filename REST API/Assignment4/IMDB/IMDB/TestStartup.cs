@@ -20,9 +20,9 @@ namespace IMDB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<IActorService,ActorService>();
+            services.AddScoped<IActorService, ActorService>();
             services.AddScoped<IProducerService, ProducerService>();
-       
+
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IMovieService, MovieService>();

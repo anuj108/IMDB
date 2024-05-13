@@ -36,44 +36,13 @@ namespace IMDB.Test.StepDefinitions
         }
         [BeforeScenario]
         [Scope(Tag = "GetAllMovies")]
-        [Scope(Tag = "GetMovieById")]
         public static void MockGetAll()
         {
             MovieMock.MockGetAll();
         }
-        [BeforeScenario]
-        [Scope(Tag = "GetAllMovies")]
-        [Scope(Tag = "GetMovieById")]
-        [Scope(Tag = "GetMoviesByYear")]
-        public static void MockGetAllActors()
-        {
-            ActorMock.MockGetAll();
-        }
-        [BeforeScenario]
-        [Scope(Tag = "GetAllMovies")]
-        public static void MockGetAllProducer()
-        {
-            ProducerMock.MockGetAll();
-        }
+
         [BeforeScenario]
         [Scope(Tag = "GetMovieById")]
-        [Scope(Tag = "GetAllMovies")]
-        [Scope(Tag = "GetMoviesByYear")]
-        public static void MockGetByIdProducer()
-        {
-            ProducerMock.MockGetById();
-        }
-        [BeforeScenario]
-        [Scope(Tag="GetMovieById")]
-        [Scope(Tag = "GetAllMovies")]
-        public static void MockGetAllGenre()
-        {
-            GenreMock.MockGetAll();
-        }
-        [BeforeScenario]
-        [Scope(Tag = "GetMovieById")]
-        [Scope(Tag = "DeleteMovie")]
-        [Scope(Tag = "UpdateMovie")]
         public static void MockGetById()
         {
             MovieMock.MockGetById();
@@ -87,33 +56,23 @@ namespace IMDB.Test.StepDefinitions
 
         [BeforeScenario]
         [Scope(Tag = "DeleteMovie")]
-        [Scope(Tag = "GetMovieById")]
         public static void MockDeletemovie()
         {
             MovieMock.MockDelete();
         }
 
         [BeforeScenario]
-        [Scope(Tag = "GetMovieById")]
-        [Scope(Tag = "GetAllMovies")]
-        [Scope(Tag = "GetMoviesByYear")]
         public static void MockGetActorsForMovie()
         {
             ActorMock.MockGetActorsForMovie();
         }
 
         [BeforeScenario]
-        [Scope(Tag = "GetAllMovies")]
-        [Scope(Tag = "GetMovieById")]
-        [Scope(Tag = "GetMoviesByYear")]
         public static void MockGetGenresForMovie()
         {
             GenreMock.MockGetGenresForMovie();
         }
 
-        [Scope(Tag = "GetAllMovies")]
-        [Scope(Tag = "GetMovieById")]
-        [Scope(Tag = "GetMoviesByYear")]
         [BeforeScenario]
         public static void MockGetMoviesByYear()
         {

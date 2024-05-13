@@ -42,6 +42,13 @@ namespace IMDB.Test.StepDefinitions
         }
 
         [BeforeScenario]
+        [Scope(Tag = "GetReviewById")]
+        public static void MockGetMovieByMovieId()
+        {
+            MovieMock.MockGetById();
+        }
+
+        [BeforeScenario]
         [Scope(Tag = "GetAllReviews")]
         public static void MockGetAll()
         {

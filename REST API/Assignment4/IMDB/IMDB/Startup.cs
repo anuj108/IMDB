@@ -34,11 +34,16 @@ namespace IMDB
             services.AddSingleton<IReviewRepository, ReviewRepository>();
 
             services.Configure<ConnectionString>(Configuration.GetSection("ConnectionString"));
+//This line binds configuration settings from the appsettings.json file to a class named ConnectionString.
+//It tells the application to load configuration settings under the "ConnectionString" section from the appsettings.json file and bind them to an instance of the ConnectionString class.
+//This allows your application to access database connection string settings defined in the configuration file in a strongly-typed manner.
         }
 
         public void Configure(IApplicationBuilder app,IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+
+            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

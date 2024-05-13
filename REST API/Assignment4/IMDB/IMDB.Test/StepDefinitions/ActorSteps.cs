@@ -41,7 +41,6 @@ namespace IMDB.Test
         }
         [BeforeScenario]
         [Scope(Tag = "GetActorById")]
-        [Scope(Tag = "DeleteActor")]
         public static void MockGetById()
         {
             ActorMock.MockGetById();

@@ -36,7 +36,6 @@ namespace IMDB.Test.StepDefinitions
         }
         [BeforeScenario]
         [Scope(Tag = "GetProducerById")]
-        [Scope(Tag = "DeleteProducer")]
         public static void MockGetById()
         {
             ProducerMock.MockGetById();
