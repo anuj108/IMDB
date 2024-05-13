@@ -32,6 +32,10 @@ namespace IMDB.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
         //To get an Genre by ID
         [HttpGet("{id}")]
@@ -40,6 +44,10 @@ namespace IMDB.Controllers
             try
             {
                 return Ok(await _genreService.Get(id));
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (NotFoundException ex)
             {
@@ -56,10 +64,14 @@ namespace IMDB.Controllers
                 var routeValues = new { id = addedGenre };
                 return CreatedAtAction("GetGenre", routeValues, addedGenre);
             }
-            
+
             catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
 
@@ -75,6 +87,10 @@ namespace IMDB.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -84,6 +100,10 @@ namespace IMDB.Controllers
             {
                 await _genreService.Delete(id);
                 return Ok("GENRE DELETED WITH ID "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (NotFoundException ex)
             {

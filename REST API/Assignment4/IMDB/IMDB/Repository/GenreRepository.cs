@@ -62,7 +62,10 @@ WHERE [Id] = @Id";
 
         public async Task<IEnumerable<Genre>> GetGenresForMovie(int id)
         {
-            const string query = @"Select * from Foundation.genres G inner join Foundation.Genres_Movies GM on G.id=GM.genreId where movieId=@id";
+            const string query = @"SELECT [Id],[Name]
+FROM Foundation.Genres G
+INNER JOIN Foundation.Genres_Movies GM ON G.id = GM.genreId
+WHERE movieId = @id";
             return await GetForMovie(query, new { Id = id });
         }
     }

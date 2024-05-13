@@ -102,11 +102,14 @@ WHERE [Id] = @id
 
         public async Task<IEnumerable<Actor>> GetActorsForMovie(int id)
         {
-            const string query = @"Select A.[Id]
+            const string query = @"SELECT A.[Id]
 	,A.[Name]
 	,A.[Bio]
 	,A.[DOB]
-	,A.[Sex] AS Gender from Foundation.Actors A inner join Foundation.actors_movies AM on A.id=AM.actorId where AM.movieId=@id";
+	,A.[Sex] AS Gender
+FROM Foundation.Actors A
+INNER JOIN Foundation.Actors_Movies AM ON A.id = AM.actorId
+WHERE AM.movieId = @id";
             return await GetForMovie(query, new { Id = id });
         }
     }

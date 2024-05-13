@@ -30,7 +30,11 @@ namespace IMDB.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
         //To get an Producer by ID
         [HttpGet("{id}")]
@@ -40,11 +44,15 @@ namespace IMDB.Controllers
             {
                 return Ok(await _producerService.Get(id));
             }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            
+
         }
 
         [HttpPost]
@@ -56,11 +64,15 @@ namespace IMDB.Controllers
                 var routeValues = new { id = producerAdded};
                 return CreatedAtAction("GetProducer",routeValues,producerAdded);
             }
-            catch(BadRequestException ex)
+            catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
 
         [HttpPut("{id}")]
@@ -75,6 +87,10 @@ namespace IMDB.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
 
         }
 
@@ -86,11 +102,15 @@ namespace IMDB.Controllers
                 await _producerService.Delete(id);
                 return Ok("PRODUCER DELETED WITH ID: "+id);
             }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            
+
         }
     }
 }

@@ -32,7 +32,7 @@ namespace IMDB.Controllers
             }
             catch (NotFoundException ex)
             {
-                return Ok(ex);
+                return NotFound(ex.Message);
             }
         }
         //To get an actor by ID
@@ -44,11 +44,15 @@ namespace IMDB.Controllers
             {
                 return Ok(await _actorService.Get(id));
             }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            
+
         }
 
         [HttpPost]
@@ -65,6 +69,10 @@ namespace IMDB.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
 
         }
 
@@ -76,9 +84,13 @@ namespace IMDB.Controllers
                 await _actorService.Update(id,actorRequest);
                 return Ok("ACTOR WITH THE GIVEN ID UPDATED: "+id);
             }
-            catch(BadRequestException ex)
+            catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
 
@@ -89,6 +101,10 @@ namespace IMDB.Controllers
             {
                 await _actorService.Delete(id);
                 return Ok("ACTOR WITH THE GIVEN ID DELETED: "+id);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (NotFoundException ex)
             {
