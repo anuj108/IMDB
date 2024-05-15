@@ -61,8 +61,8 @@ namespace IMDB.Services
                 Name = x.Name,
                 YearOfRelease = x.YearOfRelease,
                 Plot = x.Plot,
-                Actors=string.Join(",", actorResponse.Where(y => x.Actors.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name)),
-                Genres=string.Join(",", genreResponse.Where(y => x.Genres.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name)),
+                Actors= actorResponse.Where(y => x.Actors.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name).ToList(),
+                Genres=genreResponse.Where(y => x.Genres.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name).ToList(),
                 Producer=producerResponse.FirstOrDefault(y => y.Id==x.Producer).Name,
                 CoverImage=x.CoverImage
             }).ToList();
@@ -74,16 +74,17 @@ namespace IMDB.Services
             if (responseData==null) throw new NotFoundException("NO MOVIE FOUND");
             var actorResponse = await _actorRepository.Get();
             var genreResponse = await _genreRepository.Get();
-            var listActor = responseData.Actors.Split(',').Select(int.Parse).ToList();
-            var listGenre = responseData.Genres.Split(',').Select(int.Parse).ToList();
+            var listActorId = responseData.Actors.Split(',').Select(int.Parse).ToList();
+            var listGenreId = responseData.Genres.Split(',').Select(int.Parse).ToList();
+            var listActor = new List<string>();
             return new MovieResponse
             {
                 Id=id,
                 Name = responseData.Name,
                 YearOfRelease=responseData.YearOfRelease,
                 Plot = responseData.Plot,
-                Actors=string.Join(",",actorResponse.Where(x=>listActor.Contains(x.Id)).Select(x=>x.Name)),
-                Genres=string.Join(",", genreResponse.Where(x => listGenre.Contains(x.Id)).Select(x => x.Name)),
+                Actors=actorResponse.Where(x=>listActorId.Contains(x.Id)).Select(x=>x.Name).ToList(),
+                Genres=genreResponse.Where(x => listGenreId.Contains(x.Id)).Select(x => x.Name).ToList(),
                 Producer=(await _producerRepository.Get(responseData.Producer)).Name,
                 CoverImage=responseData.CoverImage
             };
@@ -101,8 +102,8 @@ namespace IMDB.Services
                 Name= x.Name,
                 YearOfRelease=x.YearOfRelease,
                 Plot = x.Plot,
-                Actors=string.Join(",", actorResponse.Where(y => x.Actors.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name)),
-                Genres=string.Join(",", genreResponse.Where(y => x.Genres.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name)),
+                Actors=actorResponse.Where(y => x.Actors.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name).ToList(),
+                Genres=genreResponse.Where(y => x.Genres.Split(',').Select(int.Parse).ToList().Contains(y.Id)).Select(z => z.Name).ToList(),
                 Producer=producerResponse.FirstOrDefault(y=>y.Id==x.Producer).Name,
                 CoverImage=x.CoverImage
             }).ToList();
