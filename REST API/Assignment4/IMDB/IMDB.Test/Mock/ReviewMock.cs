@@ -45,7 +45,7 @@ namespace IMDB.Test.Mock
 
         public static void MockGetById()
         {
-            MockReviewRepo.Setup(x => x.Get(It.IsAny<int>())).ReturnsAsync((int id) => ListOfReviews.FirstOrDefault(x => x.Id==id));
+            MockReviewRepo.Setup(x => x.GetById(It.IsAny<int>())).ReturnsAsync((int id) => ListOfReviews.FirstOrDefault(x => x.Id==id));
         }
 
         public static void MockUpdate()

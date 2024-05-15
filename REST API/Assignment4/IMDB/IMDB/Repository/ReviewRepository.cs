@@ -47,13 +47,16 @@ FROM Foundation.reviews";
         //To Get Reviews for a movie
         public async Task<IEnumerable<Review>> GetByMovieId(int movieId)
         {
-            const string query = @"SELECT [Id]
-	,[Message]
-	,[MovieId]
-FROM Foundation.reviews where [MovieId]=@movieId";
+            string query = $@"
+            SELECT [Id]
+            ,[Message]
+            ,[MovieId]
+            FROM Foundation.review
+            WHERE MovieId = {movieId}
+            ";
 
 
-            return await Get(query, new {movieId});
+            return await Get(query);
 
             
         }

@@ -84,7 +84,7 @@ SET [name] = @Name
 	,[DOB] = @Dob
 	,[Bio] = @Bio
 WHERE [Id] = @Id";
-            await Get(query, new
+            await GetById(query, new
             {
                 Name=name,
                 Gender=gender,

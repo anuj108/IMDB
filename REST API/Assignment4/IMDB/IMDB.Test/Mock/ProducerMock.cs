@@ -40,7 +40,7 @@ namespace IMDB.Test.Mock
 
         public static void MockGetById()
         {
-            MockProducerRepo.Setup(x => x.Get(It.IsAny<int>())).ReturnsAsync((int id)=>ListOfProducers.FirstOrDefault(y=>y.Id==id));
+            MockProducerRepo.Setup(x => x.GetById(It.IsAny<int>())).ReturnsAsync((int id)=>ListOfProducers.FirstOrDefault(y=>y.Id==id));
         }
 
         public static void MockCreate()

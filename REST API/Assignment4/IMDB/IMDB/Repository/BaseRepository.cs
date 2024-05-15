@@ -15,10 +15,10 @@ namespace IMDB.Repository
             _connectionString=connectionString; 
         }
 
-        public async Task<IEnumerable<T>> Get(string query, object parameters = null)
+        public async Task<IEnumerable<T>> Get(string query)
         {
             using var connection = new SqlConnection(_connectionString);
-            return await connection.QueryAsync<T>(query,parameters);
+            return await connection.QueryAsync<T>(query);
         }
 
         public async Task<T> GetById(string query,object parameters)
