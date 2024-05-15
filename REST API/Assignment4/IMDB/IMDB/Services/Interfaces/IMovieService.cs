@@ -12,7 +12,7 @@ namespace IMDB.Services.Interfaces
 
         Task<IEnumerable<MovieResponse>> GetByYear(int year);
         Task<IEnumerable<MovieResponse>> Get();
-        Task<MovieResponse> Get(int id);
+        Task<MovieResponse> GetById(int id);
 
         Task Update(int id,MovieRequest movie);
 

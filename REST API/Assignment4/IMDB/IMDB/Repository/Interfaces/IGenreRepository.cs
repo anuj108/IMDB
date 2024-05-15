@@ -9,7 +9,7 @@ namespace IMDB.Repository.Interfaces
         
         Task<int> Create(Genre genre);
         Task<IEnumerable<Genre>> Get();
-        Task<Genre> Get(int id);
+        Task<Genre> GetById(int id);
 
         Task Update(Genre genre);
         Task Delete(int id);

@@ -10,7 +10,7 @@ namespace IMDB.Services.Interfaces
     {
         Task<int> Create(ReviewRequest review);
         Task<IEnumerable<ReviewResponse>> Get();
-        Task<ReviewResponse> Get(int id);
+        Task<ReviewResponse> GetById(int id);
         Task<IEnumerable<ReviewResponse>> GetByMovieId(int movieId);
 
 

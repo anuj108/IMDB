@@ -58,7 +58,7 @@ FROM FOUNDATION.Producers";
             return await Get(query);
         }
 
-        public async Task<Producer> Get(int id)
+        public async Task<Producer> GetById(int id)
         {
             const string query = @"SELECT [id]
 	,[Name]
@@ -67,7 +67,7 @@ FROM FOUNDATION.Producers";
 	,[Bio]
 FROM FOUNDATION.Producers
 WHERE [id] = @id";
-            return await Get(query, new {Id=id});
+            return await GetById(query, new {Id=id});
         }
 
         public async Task Update(Producer producer)

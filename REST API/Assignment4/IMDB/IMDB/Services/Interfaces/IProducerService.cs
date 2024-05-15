@@ -9,7 +9,7 @@ namespace IMDB.Services.Interfaces
     public interface IProducerService
     {
         Task<IEnumerable<ProducerResponse>> Get();
-        Task<ProducerResponse> Get(int id);
+        Task<ProducerResponse> GetById(int id);
         Task<int> Create(ProducerRequest producerRequest);
         Task Update(int id,ProducerRequest producerRequest);
         Task Delete(int id);

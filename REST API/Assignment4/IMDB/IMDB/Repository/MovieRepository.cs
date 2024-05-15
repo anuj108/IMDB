@@ -41,20 +41,7 @@ EXEC Foundation.[usp_Insert_Movie] @Name = @Name
 	,@ProducerId = @Producer
 	,@ActorIds = @Actors
 	,@GenreIds = @Genres
-";
-            try
-            {
-                using var fileStream = File.OpenRead(coverImage);
-                var coverImageFile = new FormFile(fileStream, 0, fileStream.Length, null, Path.GetFileName(fileStream.Name));
-              
-                coverImage = await new FirebaseStorage("imdb-3fcd7.appspot.com")
-                        .Child("CoverImages")
-                        .Child(Guid.NewGuid().ToString() + ".png")
-                        .PutAsync(coverImageFile.OpenReadStream());
-            }
-			catch(BadRequestException ex) {
-                
-            }
+";  
 
             return await Create(query, new
             {
@@ -89,7 +76,7 @@ FROM Foundation.Movies M";
 
         }
 
-        public async Task<Movie> Get(int id)
+        public async Task<Movie> GetById(int id)
         {
                 const string query = @"SELECT M.Id
 	,M.Name
@@ -99,7 +86,7 @@ FROM Foundation.Movies M";
 	,M.CoverImage
 FROM Foundation.Movies M
 WHERE M.id = @Id";
-            return await (Get(query, new {Id=id}));
+            return await (GetById(query, new {Id=id}));
         }
 
         public async Task<IEnumerable<Movie>> GetByYear(int year)

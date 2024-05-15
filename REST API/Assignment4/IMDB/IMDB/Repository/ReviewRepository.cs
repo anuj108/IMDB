@@ -50,21 +50,22 @@ FROM Foundation.reviews";
             const string query = @"SELECT [Id]
 	,[Message]
 	,[MovieId]
-FROM Foundation.reviews";
-            var allReviews=await Get(query);
+FROM Foundation.reviews where [MovieId]=@movieId";
 
-            return allReviews.Where(x=>x.MovieId==movieId);
+
+            return await Get(query, new {movieId});
+
             
         }
 
         //To get a particular review
-        public async Task<Review> Get(int id) {
+        public async Task<Review> GetById(int id) {
             const string query = @"SELECT [Id]
 	,[Message]
 	,[MovieId]
 FROM Foundation.reviews
 WHERE [Id] = @id";
-            return await Get(query, new { Id = id });
+            return await GetById(query, new { Id = id });
         }
 
         public async Task Update(Review review)

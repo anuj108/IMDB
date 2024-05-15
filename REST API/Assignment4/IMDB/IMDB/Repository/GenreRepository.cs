@@ -34,10 +34,10 @@ SELECT Scope_Identity()";
             const string query = @"SELECT [Id],[Name] FROM Foundation.Genres";
             return await Get(query);
         }
-        public async Task<Genre> Get(int id)
+        public async Task<Genre> GetById(int id)
         {
             const string query = @"Select [Id],[Name] from foundation.Genres where [Id]=@id";
-            return await Get(query, new { Id = id });
+            return await GetById(query, new { Id = id });
         }
 
         public async Task Update(Genre genre)

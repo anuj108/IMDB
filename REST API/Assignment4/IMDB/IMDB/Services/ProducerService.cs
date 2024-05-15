@@ -45,9 +45,9 @@ namespace IMDB.Services
             return producerData.Select(x=>new ProducerResponse { Id=x.Id, Name=x.Name, Bio=x.Bio,Gender=x.Gender,DOB=x.DOB}).ToList();
         }
 
-        public async Task<ProducerResponse> Get(int id)
+        public async Task<ProducerResponse> GetById(int id)
         {
-            var producerData = await _producerRepository.Get(id);
+            var producerData = await _producerRepository.GetById(id);
             if (producerData == null) throw new NotFoundException("NO PRODUCER FOUND");
             return new ProducerResponse
             {
@@ -61,7 +61,7 @@ namespace IMDB.Services
 
         public async Task Update(int id,ProducerRequest producerRequest)
         {
-            if (await _producerRepository.Get(id) == null) throw new NotFoundException("NO PRODUCER FOUND");
+            if (await _producerRepository.GetById(id) == null) throw new NotFoundException("NO PRODUCER FOUND");
             if (string.IsNullOrWhiteSpace(producerRequest.Name)) throw new BadRequestException("INVALID PRODUCER NAME");
             if (string.IsNullOrWhiteSpace(producerRequest.Bio)) throw new BadRequestException("INVALID BIO DATA");
             if (producerRequest.DOB.Year < 1800 || producerRequest.DOB.Year > DateTime.Now.Year) throw new BadRequestException("INVALID DATE OF BIRTH");
@@ -77,7 +77,7 @@ namespace IMDB.Services
         }
         public async Task Delete(int id)
         {
-            if (await _producerRepository.Get(id) == null) throw new NotFoundException("NO PRODUCER FOUND");
+            if (await _producerRepository.GetById(id) == null) throw new NotFoundException("NO PRODUCER FOUND");
             await _producerRepository.Delete(id);
         }
 

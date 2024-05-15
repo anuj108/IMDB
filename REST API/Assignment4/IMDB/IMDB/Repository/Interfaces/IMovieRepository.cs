@@ -8,7 +8,7 @@ namespace IMDB.Repository.Interfaces
     {
         Task<int> Create(Movie movie,string actorIds,string genreIds);
         Task<IEnumerable<Movie>> Get();
-        Task<Movie> Get(int id);
+        Task<Movie> GetById(int id);
 
         Task<IEnumerable<Movie>> GetByYear(int year);
 

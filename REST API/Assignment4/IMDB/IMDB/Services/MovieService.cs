@@ -67,14 +67,14 @@ namespace IMDB.Services
                 Plot = x.Plot,
                 Actors=_actorService.GetActorsForMovie(x.Id).Result,
                 Genres=_genreService.GetGenresForMovie(x.Id).Result,
-                Producer=_producerService.Get(x.Id).Result,
+                Producer=_producerService.GetById(x.Id).Result,
                 CoverImage=x.CoverImage
             });
         }
 
-        public async Task<MovieResponse> Get(int id)
+        public async Task<MovieResponse> GetById(int id)
         {
-            var movieData = await _movieRepository.Get(id);
+            var movieData = await _movieRepository.GetById(id);
             if (movieData==null) throw new NotFoundException("NO MOVIE FOUND");
            
             
@@ -87,7 +87,7 @@ namespace IMDB.Services
 
                 Actors=_actorService.GetActorsForMovie(id).Result,
                 Genres=_genreService.GetGenresForMovie(id).Result,
-                Producer=_producerService.Get(id).Result,
+                Producer=_producerService.GetById(id).Result,
                 CoverImage=movieData.CoverImage
             };
         }
@@ -104,13 +104,13 @@ namespace IMDB.Services
                 Plot = x.Plot,
                 Actors=_actorService.GetActorsForMovie(x.Id).Result,
                 Genres=_genreService.GetGenresForMovie(x.Id).Result,
-                Producer=_producerService.Get(x.Id).Result,
+                Producer=_producerService.GetById(x.Id).Result,
                 CoverImage=x.CoverImage
             }).ToList();
         }
         public async Task Update(int id,MovieRequest movieRequest)
         {
-            if ((await _movieRepository.Get(id)) == null) throw new NotFoundException("NO MOVIE FOUND");
+            if ((await _movieRepository.GetById(id)) == null) throw new NotFoundException("NO MOVIE FOUND");
             if (string.IsNullOrWhiteSpace(movieRequest.Name)) throw new BadRequestException("INVALID MOVIE NAME");
             if (movieRequest.YearOfRelease < 1800 || movieRequest.YearOfRelease > DateTime.Now.Year + 10) throw new BadRequestException("INVALID YEAR");
             if (string.IsNullOrWhiteSpace(movieRequest.Plot)) throw new BadRequestException("INVALID MOVIE PLOT");
@@ -132,7 +132,7 @@ namespace IMDB.Services
 
         }
         public async Task Delete(int id) {
-            if ((await _movieRepository.Get(id)) == null) throw new NotFoundException("NO MOVIE FOUND");
+            if ((await _movieRepository.GetById(id)) == null) throw new NotFoundException("NO MOVIE FOUND");
             await _movieRepository.Delete(id);
         }
     }

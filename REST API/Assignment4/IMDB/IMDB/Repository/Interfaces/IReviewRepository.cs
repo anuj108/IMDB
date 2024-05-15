@@ -11,7 +11,7 @@ namespace IMDB.Repository.Interfaces
         Task<IEnumerable<Review>> Get();
         Task<IEnumerable<Review>> GetByMovieId(int movieId);
 
-        Task<Review> Get(int id);
+        Task<Review> GetById(int id);
 
         Task Update(Review review);
 

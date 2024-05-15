@@ -37,9 +37,9 @@ namespace IMDB.Services
             return genreData.Select(x=> new GenreResponse { Id = x.Id, Name = x.Name }).ToList();
         }
 
-        public async Task<GenreResponse> Get(int id)
+        public async Task<GenreResponse> GetById(int id)
         {
-            var genreData = await _genreRepository.Get(id);
+            var genreData = await _genreRepository.GetById(id);
             if (genreData == null) throw new NotFoundException("EMPTY GENRE LIST");
             return new GenreResponse
             {
@@ -50,7 +50,7 @@ namespace IMDB.Services
 
         public async Task Update(int id,GenreRequest genreRequest)
         {
-            if (await _genreRepository.Get(id)==null) throw new NotFoundException("NO GENRE FOUND");
+            if (await _genreRepository.GetById(id)==null) throw new NotFoundException("NO GENRE FOUND");
             if (string.IsNullOrWhiteSpace(genreRequest.Name)) throw new BadRequestException("INVALID GENRE NAME");
             await _genreRepository.Update(new Genre
             {
@@ -60,7 +60,7 @@ namespace IMDB.Services
         }
         public async Task Delete(int id)
         {
-            if (await _genreRepository.Get(id)==null) throw new NotFoundException("NO GENRE FOUND");
+            if (await _genreRepository.GetById(id)==null) throw new NotFoundException("NO GENRE FOUND");
             await _genreRepository.Delete(id);
         }
 

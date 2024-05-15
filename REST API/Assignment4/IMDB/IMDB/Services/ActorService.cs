@@ -43,9 +43,9 @@ namespace IMDB.Services
         }
 
         //TO GET THE ACTOR BY ID
-        public async Task<ActorResponse> Get(int id)
+        public async Task<ActorResponse> GetById(int id)
         {
-            var actorData = await _actorRepository.Get(id);
+            var actorData = await _actorRepository.GetById(id);
             if (actorData == null) throw new NotFoundException("NO ACTOR FOUND");
             return new ActorResponse()
             {
@@ -80,7 +80,7 @@ namespace IMDB.Services
         //TO UPDATE AN ACTOR
         public async Task Update(int id, ActorRequest actorRequest)
         {
-            if (await _actorRepository.Get(id)==null) throw new NotFoundException("NO ACTOR FOUND");
+            if (await _actorRepository.GetById(id)==null) throw new NotFoundException("NO ACTOR FOUND");
 
             if (string.IsNullOrWhiteSpace(actorRequest.Name)) throw new BadRequestException("INVALID ACTOR NAME");
             if (string.IsNullOrWhiteSpace(actorRequest.Bio)) throw new BadRequestException("INVALID ACTOR BIO");
@@ -99,7 +99,7 @@ namespace IMDB.Services
         //TO DELETE AN ACTOR
         public async Task Delete(int id)
         {
-            if (await _actorRepository.Get(id)==null) throw new NotFoundException("NO ACTOR FOUND");
+            if (await _actorRepository.GetById(id)==null) throw new NotFoundException("NO ACTOR FOUND");
             await _actorRepository.Delete(id);
         }
 

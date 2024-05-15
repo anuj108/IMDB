@@ -28,7 +28,7 @@ namespace IMDB.Repository
 FROM [FOUNDATION].Actors";
             return await Get(query);
         }
-        public async Task<Actor> Get(int id)
+        public async Task<Actor> GetById(int id)
         {
             const string query = @"SELECT [Id]
 	,[Name]
@@ -37,7 +37,7 @@ FROM [FOUNDATION].Actors";
 	,[Sex] As Gender
 FROM [FOUNDATION].Actors
 WHERE [Id] = @Id";
-            return await Get(query, new {Id=id});
+            return await GetById(query, new {Id=id});
         }
         public async Task<int> Create(Actor actor)
         {

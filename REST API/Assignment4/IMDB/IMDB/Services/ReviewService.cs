@@ -42,7 +42,7 @@ namespace IMDB.Services
             {
                 Id =x.Id,
                 Message = x.Message,
-                MovieName = _movieRepository.Get(x.MovieId).Result.Name
+                MovieName = _movieRepository.GetById(x.MovieId).Result.Name
             }).ToList();
         }
 
@@ -54,21 +54,21 @@ namespace IMDB.Services
             return reviewData.Select(x => new ReviewResponse
             {
                 Id=x.Id,
-                MovieName=_movieRepository.Get(x.MovieId).Result.Name,
+                MovieName=_movieRepository.GetById(x.MovieId).Result.Name,
                 Message = x.Message,
             }).ToList();
         }
 
-        public async Task<ReviewResponse> Get(int id)
+        public async Task<ReviewResponse> GetById(int id)
         {
-            var reviewData = await _reviewRepository.Get(id);
+            var reviewData = await _reviewRepository.GetById(id);
             if (reviewData==null) throw new NotFoundException("NO REVIEW FOUND");
 
             return new ReviewResponse
             {
                 Id=id,
                 Message=reviewData.Message,
-                MovieName=_movieRepository.Get(reviewData.MovieId).Result.Name,
+                MovieName=_movieRepository.GetById(reviewData.MovieId).Result.Name,
             };
         }
 
@@ -86,7 +86,7 @@ namespace IMDB.Services
 
         public async Task Delete(int id)
         {
-            var reviewData = await _reviewRepository.Get(id);
+            var reviewData = await _reviewRepository.GetById(id);
             if (reviewData==null) throw new NotFoundException("NO REVIEW FOUND");
             await _reviewRepository.Delete(id);
         }

@@ -42,7 +42,7 @@ namespace IMDB.Controllers
         {
             try
             {
-                return Ok(await _producerService.Get(id));
+                return Ok(await _producerService.GetById(id));
             }
             catch (BadRequestException ex)
             {

@@ -10,7 +10,7 @@ namespace IMDB.Services.Interfaces
     {
         Task<int> Create(GenreRequest genreRequest);
         Task<IEnumerable<GenreResponse>> Get();
-        Task<GenreResponse> Get(int id);
+        Task<GenreResponse> GetById(int id);
 
         Task Update(int id,GenreRequest genreRequest);
         Task Delete(int id);
