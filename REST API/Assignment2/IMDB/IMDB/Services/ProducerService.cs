@@ -34,24 +34,25 @@ namespace IMDB.Services
             });
         }
 
-        public IList<ProducerResponse> Get()
+        public List<ProducerResponse> Get()
         {
-            var responseData= _producerRepository.Get();
-            if (!responseData.Any()) throw new BadRequestException("Invalid Request");
-            return responseData.Select(x=>new ProducerResponse { Id=x.Id, Name=x.Name, Bio=x.Bio,Gender=x.Gender}).ToList();
+            var producersData= _producerRepository.Get();
+            if (!producersData.Any()) throw new BadRequestException("Invalid Request");
+            return producersData.Select(x=>new ProducerResponse { Id=x.Id, Name=x.Name, Bio=x.Bio,Gender=x.Gender}).ToList();
         }
 
         public ProducerResponse Get(int id)
         {
-            if(!_producerRepository.Get().Any(x=>x.Id==id)) throw new BadRequestException("Invalid Request");
-            var responseData= _producerRepository.Get(id);
+            var producerData = _producerRepository.Get(id);
+            if (producerData==null) throw new BadRequestException("Invalid Request");
+    
             return new ProducerResponse
             {
-                Id=responseData.Id,
-                Name=responseData.Name,
-                Bio=responseData.Bio,
-                DOB=responseData.DOB,
-                Gender=responseData.Gender
+                Id=producerData.Id,
+                Name=producerData.Name,
+                Bio=producerData.Bio,
+                DOB=producerData.DOB,
+                Gender=producerData.Gender
             };
         }
 

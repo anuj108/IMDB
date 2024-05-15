@@ -58,17 +58,18 @@ namespace IMDB.Services
             });
         }
 
-        public IList<MovieResponse> Get()
+        public List<MovieResponse> Get()
         {
-            if(!_movieRepository.Get().Any()) throw new BadRequestException("Not valid");
-            return _movieRepository.Get().Select(x=>new MovieResponse
+            var movieData = _movieRepository.Get();
+            if (movieData==null) throw new BadRequestException("Not valid");
+            return movieData.Select(x=>new MovieResponse
             {
                 Id=x.Id,
                 Name = x.Name,
                 YearOfRelease = x.YearOfRelease,
                 Plot = x.Plot,
-                Actors=string.Join(",",x.Actors.Select(y => y.Name)),
-                Genres=string.Join(",", x.Genres.Select(y => y.Name)),
+                Actors=x.Actors.Select(y => y.Name).ToList(),
+                Genres=x.Genres.Select(y => y.Name).ToList(),
                 Producer=x.Producer.Name,
                 CoverImage=x.CoverImage
             }).ToList();
@@ -76,32 +77,33 @@ namespace IMDB.Services
 
         public MovieResponse Get(int id)
         {
-            if (!_movieRepository.Get().Any(x=>x.Id==id)) throw new BadRequestException("Not valid");
-            var responseData= _movieRepository.Get(id);
+            var movie = _movieRepository.Get(id);
+            if (movie==null) throw new BadRequestException("Not valid");
+            
             return new MovieResponse
             {
                 Id=id,
-                Name = responseData.Name,
-                YearOfRelease=responseData.YearOfRelease,
-                Plot = responseData.Plot,
-                Actors=string.Join(",",responseData.Actors.Select(y=>y.Name)),
-                Genres=string.Join(",",responseData.Genres.Select(y=>y.Name)),
-                Producer=responseData.Producer.Name,
-                CoverImage=responseData.CoverImage
+                Name = movie.Name,
+                YearOfRelease=movie.YearOfRelease,
+                Plot = movie.Plot,
+                Actors=x.Actors.Select(y => y.Name).ToList(),
+                Genres=x.Genres.Select(y => y.Name).ToList(),
+                Producer=movie.Producer.Name,
+                CoverImage=movie.CoverImage
             };
         }
 
-        public IList<MovieResponse> GetByYear(int year) {
+        public List<MovieResponse> GetByYear(int year) {
             if (year < 1800 || year > DateTime.Now.Year + 10) throw new BadRequestException("Not valid"); 
-            var responseData= _movieRepository.GetByYear(year);
-            return responseData.Select(x=> new MovieResponse
+            var movieData= _movieRepository.GetByYear(year);
+            return movieData.Select(x=> new MovieResponse
             {
                 Id = x.Id,
                 Name= x.Name,
                 YearOfRelease=x.YearOfRelease,
                 Plot = x.Plot,
-                Actors=string.Join(",", x.Actors.Select(y => y.Name)),
-                Genres=string.Join(",",x.Genres.Select(y=>y.Name)),
+                Actors=x.Actors.Select(y => y.Name).ToList(),
+                Genres=x.Genres.Select(y => y.Name).ToList(),
                 Producer=x.Producer.Name,
                 CoverImage=x.CoverImage
             }).ToList();
@@ -128,7 +130,7 @@ namespace IMDB.Services
             });
         }
         public void Delete(int id) {
-            if (!_movieRepository.Get().Any(x => x.Id==id)) throw new BadRequestException("Not valid");
+            if (_movieRepository.Get(id)==null) throw new BadRequestException("Not valid");
             _movieRepository.Delete(id);
         }
     }
