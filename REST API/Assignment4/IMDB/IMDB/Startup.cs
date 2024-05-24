@@ -6,9 +6,11 @@ using IMDB.Services;
 using IMDB.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace IMDB
 {
@@ -34,9 +36,6 @@ namespace IMDB
             services.AddSingleton<IReviewRepository, ReviewRepository>();
 
             services.Configure<ConnectionString>(Configuration.GetSection("ConnectionString"));
-//This line binds configuration settings from the appsettings.json file to a class named ConnectionString.
-//It tells the application to load configuration settings under the "ConnectionString" section from the appsettings.json file and bind them to an instance of the ConnectionString class.
-//This allows your application to access database connection string settings defined in the configuration file in a strongly-typed manner.
         }
 
         public void Configure(IApplicationBuilder app,IWebHostEnvironment env)
@@ -45,8 +44,6 @@ namespace IMDB
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
-
 
             app.UseEndpoints(endpoints =>
             {
