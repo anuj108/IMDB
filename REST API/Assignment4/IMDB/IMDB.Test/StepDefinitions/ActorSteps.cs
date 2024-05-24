@@ -1,12 +1,9 @@
 using IMDB.Services;
 using IMDB.Services.Interfaces;
 using IMDB.Test.StepDefinitions;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using TechTalk.SpecFlow;
 using Microsoft.Extensions.DependencyInjection;
 using IMDB.Test.Mock;
-using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow;
 
 namespace IMDB.Test
 {

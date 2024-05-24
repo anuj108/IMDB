@@ -1,10 +1,7 @@
-﻿using Dapper;
-using IMDB.Domain.Model;
+﻿using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace IMDB.Repository

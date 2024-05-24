@@ -1,6 +1,4 @@
 ﻿using IMDB.Domain.Model;
-using IMDB.Domain.Response;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

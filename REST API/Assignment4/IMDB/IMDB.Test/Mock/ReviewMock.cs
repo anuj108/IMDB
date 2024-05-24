@@ -1,11 +1,9 @@
 ﻿using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace IMDB.Test.Mock
 {

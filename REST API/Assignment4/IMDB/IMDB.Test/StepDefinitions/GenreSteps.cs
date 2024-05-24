@@ -1,9 +1,8 @@
 using IMDB.Services.Interfaces;
 using IMDB.Services;
 using IMDB.Test.Mock;
-using System;
-using TechTalk.SpecFlow;
 using Microsoft.Extensions.DependencyInjection;
+using TechTalk.SpecFlow;
 
 namespace IMDB.Test.StepDefinitions
 {

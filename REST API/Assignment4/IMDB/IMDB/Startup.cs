@@ -46,6 +46,8 @@ namespace IMDB
             app.UseHttpsRedirection();
             app.UseRouting();
 
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

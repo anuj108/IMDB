@@ -1,14 +1,7 @@
-﻿using Firebase.Storage;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
-using IMDB.CustomExceptions;
-using IMDB.Domain.Model;
+﻿using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -55,13 +48,6 @@ EXEC Foundation.[usp_Insert_Movie] @Name = @Name
             });
         }
 
-        /*public async Task<string> UploadImage(IFormFile file)
-        {
-            var app = FirebaseApp.Create(new AppOptions
-            {
-                Credential = GoogleCredential.FromApiKey(_connectionString.ApiKey)
-            });
-        }*/
         
         public async Task<IEnumerable<Movie>> Get() {
 

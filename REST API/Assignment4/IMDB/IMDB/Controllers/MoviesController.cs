@@ -1,8 +1,6 @@
 ﻿using Firebase.Storage;
 using IMDB.CustomExceptions;
-using IMDB.Domain.Model;
 using IMDB.Domain.Request;
-using IMDB.Services;
 using IMDB.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

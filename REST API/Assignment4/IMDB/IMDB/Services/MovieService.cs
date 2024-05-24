@@ -1,11 +1,8 @@
 ﻿using IMDB.Repository.Interfaces;
-using IMDB.Repository;
 using IMDB.Services.Interfaces;
 using IMDB.Domain.Model;
 using IMDB.Domain.Request;
-using System.Security.Cryptography;
 using IMDB.Domain.Response;
-using System.Xml.Linq;
 using IMDB.CustomExceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;

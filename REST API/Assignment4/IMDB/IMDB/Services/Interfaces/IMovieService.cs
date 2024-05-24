@@ -1,4 +1,4 @@
-﻿using IMDB.Domain.Model;
+﻿
 using IMDB.Domain.Request;
 using IMDB.Domain.Response;
 using System.Collections.Generic;

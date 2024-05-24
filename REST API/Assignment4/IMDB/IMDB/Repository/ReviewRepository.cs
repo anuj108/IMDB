@@ -2,7 +2,6 @@
 using IMDB.Repository.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IMDB.Repository
@@ -51,7 +50,7 @@ FROM Foundation.reviews";
             SELECT [Id]
             ,[Message]
             ,[MovieId]
-            FROM Foundation.review
+            FROM Foundation.reviews
             WHERE MovieId = {movieId}
             ";
 

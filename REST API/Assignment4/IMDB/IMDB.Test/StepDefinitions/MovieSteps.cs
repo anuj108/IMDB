@@ -1,12 +1,12 @@
 using IMDB.Services.Interfaces;
 using IMDB.Services;
 using IMDB.Test.Mock;
-using System;
-using TechTalk.SpecFlow;
 using Microsoft.Extensions.DependencyInjection;
+using TechTalk.SpecFlow;
 
 namespace IMDB.Test.StepDefinitions
 {
+    [Scope(Feature = "Movie")]
     [Binding]
     public class MovieSteps:BaseSteps
     {
@@ -48,7 +48,7 @@ namespace IMDB.Test.StepDefinitions
             MovieMock.MockGetById();
         }
         [BeforeScenario]
-        [Scope(Tag = "Updatemovie")]
+        [Scope(Tag = "UpdateMovie")]
         public static void MockUpdatemovie()
         {
             MovieMock.MockUpdate();

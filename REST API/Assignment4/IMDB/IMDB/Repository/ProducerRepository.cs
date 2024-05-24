@@ -3,9 +3,7 @@ using IMDB.Domain.Model;
 using IMDB.Repository.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace IMDB.Repository
 {

@@ -1,8 +1,6 @@
 ﻿
 using IMDB.CustomExceptions;
-using IMDB.Domain.Model;
 using IMDB.Domain.Request;
-using IMDB.Services;
 using IMDB.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

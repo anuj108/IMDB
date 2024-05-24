@@ -2,17 +2,12 @@
 using IMDB.Domain.Model;
 using IMDB.Domain.Request;
 using IMDB.Domain.Response;
-using IMDB.Repository;
 using IMDB.Repository.Interfaces;
 using IMDB.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace IMDB.Services
 {

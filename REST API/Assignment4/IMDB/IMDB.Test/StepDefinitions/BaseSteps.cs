@@ -1,27 +1,21 @@
-﻿using IMDB.Domain.Model;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.TestPlatform.Common;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using TechTalk.SpecFlow.Infrastructure;
-using static Google.Apis.Requests.BatchRequest;
+using TechTalk.SpecFlow;
+using Xunit;
 
 namespace IMDB.Test.StepDefinitions
 {
     public class BaseSteps: IClassFixture<CustomWebApplicationFactory<TestStartup>>
     {
 
-        protected WebApplicationFactory<TestStartup> _baseFactory;
-        protected HttpResponseMessage Response { get; set; }
-        protected HttpClient Client { get; set; }
+        private WebApplicationFactory<TestStartup> _baseFactory;
+        private HttpResponseMessage _response { get; set; }
+        private HttpClient _client { get; set; }
 
         public BaseSteps(WebApplicationFactory<TestStartup> factory)
         {
@@ -31,7 +25,7 @@ namespace IMDB.Test.StepDefinitions
         [Given(@"I am a Client")]
         public void GivenIAmAClient()
         {
-            Client = _baseFactory.CreateClient(new WebApplicationFactoryClientOptions
+            _client = _baseFactory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 BaseAddress = new Uri($"http://localhost/")
             });
@@ -41,20 +35,20 @@ namespace IMDB.Test.StepDefinitions
         public virtual async Task WhenIMakeAGETRequest(string resourceEndpoint)
         {
             var uri = new Uri(resourceEndpoint, UriKind.Relative);
-            Response = await Client.GetAsync(uri);
+            _response = await _client.GetAsync(uri);
         }
 
         [Then(@"response code must be '([^']*)'")]
         public void ThenResponseCodeMustBe(int statusCode)
         {
             var expectedStatusCode = (HttpStatusCode)statusCode;
-            Assert.Equal(expectedStatusCode, Response.StatusCode);
+            Assert.Equal(expectedStatusCode, _response.StatusCode);
         }
 
         [Then(@"response should look like '([^']*)'")]
         public void ThenResponseShouldLookLike(string expectedResponseData)
         {
-            var responseData = Response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var responseData = _response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             Assert.Equal(expectedResponseData, responseData);
         }
 
@@ -63,7 +57,7 @@ namespace IMDB.Test.StepDefinitions
         {
             var uri = new Uri(resourceEndpoint, UriKind.Relative);
             var content = new StringContent(requestData, Encoding.UTF8, "application/json");
-            Response = await Client.PostAsync(uri, content);
+            _response = await _client.PostAsync(uri, content);
         }
 
         [When(@"I make a put request to '([^']*)' with the following data '([^']*)'")]
@@ -71,14 +65,14 @@ namespace IMDB.Test.StepDefinitions
         {
             var uri = new Uri(resourceEndpoint, UriKind.Relative);
             var content = new StringContent(requestData, Encoding.UTF8, "application/json");
-            Response = await Client.PutAsync(uri, content);
+            _response = await _client.PutAsync(uri, content);
         }
 
         [When(@"I make a delete request to '([^']*)'")]
         public virtual async Task WhenIMakeADeleteRequestTo(string resourceEndpoint)
         {
             var uri = new Uri(resourceEndpoint, UriKind.Relative);
-            Response = await Client.DeleteAsync(uri);
+            _response = await _client.DeleteAsync(uri);
         }
 
 

@@ -1,11 +1,11 @@
-﻿Feature: movie
+﻿Feature: Movie
 
 @GetAllMovies
 Scenario Outline: Get All movies
 	Given I am a Client
 	When I make a GET Request '/api/movies'
 	Then response code must be '200'
-	Then response should look like '[{"id":1,"name":"Foo","yearOfRelease":2000,"plot":"something","actors":[{"id":1,"name":"Actor1","bio":"Bio1","dob":"1999-07-08T00:00:00","gender":"Male"}],"genres":[{"id":1,"name":"Dummy"}],"producer":{"id":1,"name":"ABC","bio":"some info","dob":"1999-08-08T00:00:00","gender":"Male"},"coverImage":"1.jpg"}]'
+	And response should look like '[{"id":1,"name":"Foo","yearOfRelease":2000,"plot":"something","actors":[{"id":1,"name":"Actor1","bio":"Bio1","dob":"1999-07-08T00:00:00","gender":"Male"}],"genres":[{"id":1,"name":"Dummy"}],"producer":{"id":1,"name":"ABC","bio":"some info","dob":"1999-08-08T00:00:00","gender":"Male"},"coverImage":"1.jpg"}]'
 
 @GetMovieById
 Scenario Outline: Get movie By Id

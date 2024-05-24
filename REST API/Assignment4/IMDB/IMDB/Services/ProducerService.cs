@@ -2,7 +2,6 @@
 using IMDB.Domain.Model;
 using IMDB.Domain.Request;
 using IMDB.Domain.Response;
-using IMDB.Repository;
 using IMDB.Repository.Interfaces;
 using IMDB.Services.Interfaces;
 using System;
