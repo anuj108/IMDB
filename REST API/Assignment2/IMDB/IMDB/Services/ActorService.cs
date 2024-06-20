@@ -99,5 +99,6 @@ namespace IMDB.Services
             if (actorData==null) throw new BadRequestException("Invalid Id");
             _actorRepository.Delete(id);
         }
+
     }
 }

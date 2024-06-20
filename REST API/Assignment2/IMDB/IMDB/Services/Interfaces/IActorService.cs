@@ -7,7 +7,7 @@ namespace IMDB.Services.Interfaces
 {
     public interface IActorService
     {
-        IList<ActorResponse> Get();
+        List<ActorResponse> Get();
         ActorResponse Get(int id);
         Actor Create(ActorRequest actorRequest);
         void Update(int id, ActorRequest actorRequest);

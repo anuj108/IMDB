@@ -7,6 +7,7 @@ CREATE PROCEDURE Foundation.[usp_Insert_Movie]
 @YearofRelease INT,
 @Plot VARCHAR(1000),
 @CoverImage VARCHAR(1000),
+1110
 @ProducerId INT,
 @GenreIds VARCHAR(100),
 @ActorIds VARCHAR(100)

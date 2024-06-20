@@ -9,7 +9,7 @@ namespace IMDB.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ActorsController:ControllerBase
+    public class ActorsController:ControllerBase    
     {
         private readonly IActorService _actorService;
         public ActorsController(IActorService actorService)
